@@ -30,7 +30,7 @@ Gradle은 의존관계가 있는 라이브러리를 함께 다운로드
 ---
 ## View 환경설정
 
-![](./images/ps_1.PNG)
+![](../images/ps_1.PNG)
 
 컨트롤러에서 리턴 값으로 문자를 반환하면 viewResolver가 화면을 찾아서 처리한다.
 
