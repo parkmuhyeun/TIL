@@ -44,3 +44,9 @@ Gradle은 의존관계가 있는 라이브러리를 함께 다운로드
 3. java -jar hello-spring-0.0.1-SNAPSHOT.jar
 4. 실행확인
 
+
+
+
+---
+참고
+https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-%EC%9E%85%EB%AC%B8-%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8#
