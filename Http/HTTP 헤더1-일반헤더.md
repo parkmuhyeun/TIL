@@ -1,5 +1,5 @@
 # HTTP 헤더1 - 일반헤더
-#TIL/HTPP/
+#TIL/HTTP/
 
 ---
 ## 표현
