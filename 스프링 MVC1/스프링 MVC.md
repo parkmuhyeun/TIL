@@ -143,6 +143,48 @@ HttpEntity , @RequestBody를 사용하면 HTTP 메시지 컨버터가 HTTP 메�
 
 해당 컨트롤러에 모두 @ResponseBody 적용(Rest API(HTTP API)를 만들 때 사용하는 컨트롤러)
 
+### HTTP 메시지 컨버터
+스프링 MVC는 다음의 경우에 HTTP 메시지 컨버터를 적용
+- HTTP 요청: @RequestBody, HttpEntity(RequestEntity)
+- HTTP 응답: @ResponseBody, HttpEntity(ResponseEntity)
+
+#### 스프링 부트 기본 메시지 컨버터
+(우선순위)
+
+0 = ByteArrayHttpMessageConverter
+
+1 = StringHttpMessageConverter 
+
+2 = MappingJackson2HttpMessageConverter
+
+#### HTTP 요청 데이터 읽기
+- HTTP 요청이 오고, 컨트롤러에서 @RequestBody, HttpEntity 파라미터를 사용
+- 메시지 컨버터가 메시지를 읽을 수 있는지 확인하기 위해 canRead() 호출
+    - 대상 클래스 타입 지원하는가.
+        - ex) (btye[], String, HelloData)
+    - HTTP 요청의 Content-Type 미디어 타입을 지원하는가
+        - ex) text/plain, application/json
+- canRead() 조건을 만족하면 read()를 호출해서 객체를 생성하고 반환
+
+#### HTTP 응답 데이터 생성
+- 컨트롤러에서 @ResponseBody, HttpEntity로 값이 반환
+- 메시지 컨버터가 메시지를 쓸 수 있는지 확인하기 위해 canWrite()를 호출
+    - 대상 클래스 타입 지원하는가
+    - HTTP 요청의 Accept 미디어 타입을 지원하는가
+- canWrite() 조건을 만족하면 write()를 호출해서 HTTP 응답 메시지 바디에 데이터를 생성
+
+### 요청 매핑 핸들러 어댑터  구조
+
+![](./images/스M_2.PNG)
+
+동작방식
+
+ArgumentResolver의 supportsParameter()를 호출해서 해당 파라미터를 지원하는지 체크하고, 지원하면  resloveArgument()를 호출해서 실제 객체 생성후 컨트롤러로 넘어감
+
+#### ReturnValueHandler
+HandlerMethodReturnValueHandler를 줄여서 ReturnValueHandler라 하고 ArgumentResolver와 비슷한데, 이것은 응답 값을 변환하고 처리한다.
+
+![](./images/스M_3.PNG)
 
 ---
 참고
