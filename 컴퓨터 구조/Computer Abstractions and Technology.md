@@ -1,4 +1,4 @@
-# Computer Abstarctions and Technology
+# Computer Abstractions and Technology
 #컴퓨터구조/Instruction
 
 ---
