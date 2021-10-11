@@ -219,3 +219,46 @@ System Design perspective
 - best performance improvement?
 - least cost?
 - best cost/perofrmance?
+---
+
+## Defining performance
+- CPU execution time
+- Instruction count(IC)
+- Clock cycles per instruction(CPI)
+- Clock cycle time
+
+|ex)|CISC|RISC|
+|---|---|---|
+명령어 개수| 1 | 3
+CPI| 4 | 1
+성능| 4 | 3
+
+명령어 개수는 RISC가 더 많지만 CPI가 1개로 성능이 더 좋다
+
+Response Time(execution time)
+- Important to individual persons(user's perspective)
+
+Throughput(bandwidth)
+- Important to data center managers(system's perspective)
+
+To maximize performance, need to minimize execution time
+
+![](./img/CAT_5.PNG)
+
+## Measuring Execution Time
+Elapsed time
+- Total reponse time
+CPU Time
+- Time spent just for processing a given job
+
+CPU time is more important than elapsed time
+- Elapsed time is device-dependent
+
+## Performance Factors
+CPU execution time = #CPU clock cycles x clock cycle time( = /clock rate)
+
+CPU clock cycles = #Instructions x Average clock cycles per instruction
+
+Average CPI = CPU clock cycles/ Instruction Count
+
+### CPU time = Instruction count x CPI x clock cycle time
