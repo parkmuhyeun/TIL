@@ -127,3 +127,133 @@ slti $t0, $s2, 15 #$t0 = 1 if $s2 < 15
 ![](./img/IfM_8.PNG)
 
 -> Increase IC but not common case
+
+
+## Sign Extension
+Representing a number using more bits
+ - Should preserve value after extension
+
+ In MIPS instruction set, which needs extension
+ - addi: extend immediate value
+ - lb, lh: extend loaded byte/halfword
+ - beq, bne: extend the displacement
+
+ Replicae the sign bit to the left
+
+ ![](./img/IfM_9.PNG)
+
+## Instruction Format Encoding
+Can reduce the complexity with multiple formats by keeping them as similar as possible
+
+![](./img/IfM_10.PNG)
+
+## Shift Operations - logcial shift
+Need for shift operation
+- Need operations to pack and unpack 8-bit char/number/data into 32-bit words (by zero extension)
+- Although it has a constant, it is R format instruction
+
+![](./img/IfM_11.PNG)
+
+Such shifts are called logical because they fill with zeros
+- 5-bit shamt field is enough to shift a 32-bit value
+    - shift operation use R type
+    - Shif operation does not use rs field, but use rt/rd/shamt
+
+## Shift Operations - arithmetic shift
+An arithmetic shift(sra) maintain the arithmetic correctness of the shifted value
+- sra uses sign extension
+- There is no need for a sla
+    - sll works for arithmetic left shifts
+
+## AND Operations : masking
+Useful to mask bits in a word
+- Select some bits, clear others to 0
+
+![](./img/IfM_12.PNG)
+
+## OR Operations : including
+Useful to include bits in a word
+- Set some bits to 1, leave others unchanged
+
+![](./img/IfM_13.PNG)
+
+## NOT Operations : converting
+NOT operation is useful to invert bits in a word
+- Change 0 to 1, and 1 to 0
+
+NOT operation is also used to implement NOR
+- a NOR b == NOT (a or b)
+
+NOR with zero is same as NOT operation
+
+![](./img/IfM_14.PNG)
+
+~[(Some value) or (00.00)] = ~ (some value)
+
+## Instructions for Making Decisions
+Decision making instructions
+- alter the control flow
+- change the "next" instruction to be executed
+
+MIPS conditional branch instructions:
+
+![](./img/IfM_15.PNG)
+
+- bne/beq uses I format
+- First two operands are sources(rs, rt)
+- Instruction Format(I format): Label field is immediate
+
+
+![](./img/IfM_16.PNG)
+
+How is the branch destination address specified?
+- 16 bit offset is used for branch distance
+
+Note that varioous uses of offset field
+- Memory address offset for lw & sw
+- Immediate constant value
+- Branch offset for target(branch distance)
+
+## Specifying Branch Destinations
+Use a register and add its value with 16-bit offset
+- which register? Instruction Address Register (PC register)
+    - its use is automatically implied by instruction
+    - PC gets updated (PC+4) during the fetch cycle so that it holds the address of the next instruction
+- limits the branch distance to -2^15 to +2^15-1 instructions(that is word, not byte)
+
+The contents of the updated PC (PC+4) is added to the 16 bit branch offset which is verted into a 32 bit value
+ - concateanting two low-order zeros to mae kit a word address
+ - and then sign-extending with those 18 bits
+ 
+![](./img/IfM_17.PNG)
+
+Concatenating two lower order zeros?
+- branch distance -2^13 to +2^13-1 -> -2^15 to +2^15-1
+
+## In Support of other Branch Instructions
+
+![](./img/IfM_18.PNG)
+
+### We can use slt, beq, bne, and the fixed value of 0 in register $zero to create other conditions
+
+![](./img/IfM_19.PNG)
+
+### Pseudo branch instructions : blt, ble, bgt, bge 
+- These instructions are not included in the ISA (only as a pseudo) because its too complicated (Make common case fast!)
+- It would stretch the clock cycle time or it would take extra clock cycles per instruction. 
+- Two faster instructions are a better choice (RISC concept).
+
+## Unconditional Jump
+MIPS also has an unconditional branch instruction or jump instruction:
+
+![](./img/IfM_20.PNG)
+
+Instruction Foramt(J Format)
+
+How is the jump destination address specified?
+- As an absoulte address formed by
+  - concatenating 00 as the 2 low-order bits to make it a word address
+  - concatenating the upper 4bits of the currently updated PC(PC+4)
+
+![](./img/IfM_21.PNG)
+MSB 4 bit is not changed, So maximum jump distance is 256MB(2^28)
