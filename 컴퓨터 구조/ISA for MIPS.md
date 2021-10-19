@@ -9,11 +9,11 @@ RISC philosophoy
 - limited number of addressing modes
 - limited number of operations
 
-The effciency of Instruction sets are measured by how well compilers use them efficiently(not measured by how well programmers use them easily)
+The effciency of Instruction sets are measured by how well compilers use them efficiently(not measured by how well assembly language programmers use them easily)
 
 ## The Four Design Principles
 1. Simplicity favors regularity
-2. smaller is faster
+2. Smaller is faster
 3. Make the common case fast
 4. Good Design demands good compromises
 
