@@ -209,7 +209,7 @@ MIPS conditional branch instructions:
 How is the branch destination address specified?
 - 16 bit offset is used for branch distance
 
-Note that varioous uses of offset field
+Note that various uses of offset field
 - Memory address offset for lw & sw
 - Immediate constant value
 - Branch offset for target(branch distance)
@@ -256,4 +256,5 @@ How is the jump destination address specified?
   - concatenating the upper 4bits of the currently updated PC(PC+4)
 
 ![](./img/IfM_21.PNG)
+
 MSB 4 bit is not changed, So maximum jump distance is 256MB(2^28)
