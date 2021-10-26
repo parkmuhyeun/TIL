@@ -6,7 +6,7 @@
 - 삽입과 삭제가 "top"이라 불리는 한쪽 끝 지점에서 발생하는 순서화 리스트
 - Last-In-First-Out (LIFO)
 
-![](./img/SQ_1.png)
+![](./img/SQ_1.PNG)
 
 ```C
 Stack CreateS(max_stack_size) ::=
@@ -44,7 +44,7 @@ element pop()
     - 삭제가 발생하는 위치: front
 - First-In-First-Out(FIFO)
 
-![](./img/SQ_2.png)
+![](./img/SQ_2.PNG)
 
 ```C
 Queue CreateQ(max_queue_size) ::=
@@ -93,14 +93,14 @@ element deleteq()
 - 피연산자들 다음에 연산자가 위치
 - 괄호가 필요없고, 한번의 스캔으로 수식 게산 가능
 
-![](./img/SQ_3.png)
+![](./img/SQ_3.PNG)
 
 ### Postfix 수식의 계산
 Stack을 이용: 6 2 / 3 - 4 2 * +
 - 피연산자는 스택에 저장
 - 연산자의 경우, 스택에서 피연산자 pop & 결과를 push
 
-![](./img/SQ_4.png)
+![](./img/SQ_4.PNG)
 
 ```C
 #define MAX_STACK_SIZE 100
@@ -167,7 +167,7 @@ Stack을 이용하여 변환
 - 우선순위(top) = 우선순위(incoming): 결합성에 따라 처리
 - 괄호가 있는 수식 처리에 주의
 
-![](./img/SQ_5.png)
+![](./img/SQ_5.PNG)
 
 ```c
 void postfix ( void )
