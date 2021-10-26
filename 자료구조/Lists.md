@@ -13,7 +13,7 @@
     - 각 노드는 데이터와 링크로 구성
     - 링크는 리스트의 다음 노드를 가르킴
 
-![](./img/L_1.png)
+![](./img/L_1.PNG)
 
 ## 단일 연결 리스트(Singly Linked Lists)
 연결 리스트의 표현
@@ -97,7 +97,7 @@ void delete(struct node **start, struct node *before, sturct node *A)
 - 메모리 낭비
 - Stack Full의 발생 가능성
 
-![](./img/L_2.png)
+![](./img/L_2.PNG)
 
 
 ```c
