@@ -122,7 +122,7 @@ lpad(budget, 20, '.')
 FROM department;
 ```
 
-![](./img/S_1.png)
+![](./img/S_1.PNG)
 
 ### 문자 함수 – SUBSTR
 Substr('문자열' 혹은 필드, pos, n) 함수는 문자열의 pos 위치부터 n개의 문자를 출력(n이 없으면 마지막까지)
@@ -133,7 +133,7 @@ substr(dname, 3, 3)
 FROM department;
 ```
 
-![](./img/S_2.png)
+![](./img/S_2.PNG)
 
 ### 문자 함수 – INSTR
 - Instr(필드, '문자') - 필드에서 문자가 있는 위치를 출력
@@ -145,7 +145,7 @@ instr(dname, 'e', 2, 2)
 FROM department;
 ```
 
-![](./img/S_3.png)
+![](./img/S_3.PNG)
 
 ### 문자 함수 – LENGTH
 필드나 입력한 문자열의 문자 개수를 출력
@@ -164,7 +164,7 @@ translate(dname, 'ie', 'IE')
 FROM department;
 ```
 
-![](./img/S_4.png)
+![](./img/S_4.PNG)
 
 ### 숫자 함수 - ROUND
 ROUND(필드 혹은 입력값, 숫자)함수는 입력값을 숫자만큼 반올림
@@ -176,7 +176,7 @@ FROM student
 WHERE deptno=30;
 ```
 
-![](./img/S_5.png)
+![](./img/S_5.PNG)
 
 ### 숫자 함수 – POWER
 POWER(필드 혹은 입력값, 숫자) 함수는 입력값의 숫자만큼 제곱한 값을 출력
@@ -203,7 +203,7 @@ FROM professor
 WHERE months_between(sysdate, hiredate) > 200;
 ```
 
-![](./img/S_6.png)
+![](./img/S_6.PNG)
 
 ### 날짜 함수 – ADD_MONTHS
 ADD_MONTH(날짜, 숫자) 함수는 날짜의 달에 숫자만큼 더한 값 출력
@@ -220,7 +220,7 @@ FROM professor
 WHERE deptno=10 or deptno = 40;
 ```
 
-![](./img/S_7.png)
+![](./img/S_7.PNG)
 
 ### 날짜 함수 - LAST_DAY
 LAST_DAY(날짜) 함수는 입력 받은 날짜가 포함된 달의 마지막 날짜 출력
@@ -232,7 +232,7 @@ FROM professor
 WHERE deptno=10 or deptno = 40;
 ```
 
-![](./img/S_8.png)
+![](./img/S_8.PNG)
 
 ### 기타 함수 - TO_CHAR
 TO_CHAR(날짜, '문자')함수는 입력 받은 날짜를 입력한 문자형으로 변환하여 출력
@@ -242,7 +242,7 @@ SELECT to_char(sysdate, 'DAY, DDTH MONTH YYYY')
 FROM sys.dual;
 ```
 
-![](./img/S_9.png)
+![](./img/S_9.PNG)
 
 ### 기타 함수 - TO_DATE
 TO_DATE(문자열, 포맷) 함수는 문자열을 포맷에 따라 해석하여 날짜를 반환
@@ -253,7 +253,7 @@ FROM professor
 WHERE hiredate = to_date('2002-06-11', 'yyyy-mm-dd');
 ```
 
-![](./img/S_10.png)
+![](./img/S_10.PNG)
 
 ### 기타 함수 – DECODE
 DECODE(필드, 조건1, 조건1의참, 조건2, 조건2의 참, ..., 거짓) 함수는 필드에서 조건의 참, 거짓에 따라 출력
@@ -264,7 +264,7 @@ SELECT sname, deptno, decode(deptno, 10, 'CE',
 FROM student;
 ```
 
-![](./img/S_11.png)
+![](./img/S_11.PNG)
 
 ---
 ## 집계 함수(Aggregate Functions)
@@ -304,7 +304,7 @@ FROM student
 GROUP BY deptno;
 ```
 
-![](./img/S_11.png)
+![](./img/S_11.PNG)
 
 ### HAVING
 Group By에서 특정 조건을 만족하는 그룹만을 검색하고자 할 경우, HAVING 사용
