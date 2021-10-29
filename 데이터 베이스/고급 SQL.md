@@ -23,7 +23,7 @@ Oracle의 LOB 구현 정책
 - 릴레이션의 애트리뷰트가 가질수 있는 값을 제한
 - SQL에서 CHECK 문에 의해 표현
 
-![](./img/고S_1.png)
+![](./img/고S_1.PNG)
 
 ### Enable/Disable Constraint
 기존에 선언된 제약 조건을 활성화/비활성화
