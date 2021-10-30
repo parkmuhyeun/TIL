@@ -9,7 +9,7 @@
 ## Data and Signals
 To be transmitted, data must be transformed to electromagnetic signals
 
-![](./img/DS_1.png)
+![](./img/DS_1.PNG)
 
 - Data can be analog or digital
 - Signals can be analog or digital
@@ -17,7 +17,7 @@ To be transmitted, data must be transformed to electromagnetic signals
 ### Analog Signals
 The most fundamental form of analog signal: sine wave
 
-![](./img/DS_2.png)
+![](./img/DS_2.PNG)
 
 Sine wave described by the amplitude, frequency(or period), and phase
 
@@ -25,28 +25,28 @@ Sine wave described by the amplitude, frequency(or period), and phase
 #### Peak amplitude of signal
 - Absulute value of its highest intensity
 
-![](./img/DS_3.png)
+![](./img/DS_3.PNG)
 
 #### Period: amount of time in sec, a signal needs to complete 1-cycle
 #### Frequnecy: The number of periods in 1 sec
 
-![](./img/DS_4.png)
+![](./img/DS_4.PNG)
 
 ####  Phase: Describes the position of the waveform relative to time zero
 
-![](./img/DS_5.png)
+![](./img/DS_5.PNG)
 
 
 ## Time-domain and Frequnecy-domain
 - Time-domain shows the relationship between the amplitude and the time
 - Frequency-domain shows the relationship between the amplitude and the frequency
 
-![](./img/DS_6.png)
+![](./img/DS_6.PNG)
 
 ### Composite signal(복합신호)
 A combination of simple sine waves with diffrent frequencies, amplitudes, and phases
 
-![](./img/DS_7.png)
+![](./img/DS_7.PNG)
 
 ### Frequency Spectrum and Bandwidth
 Frequency spectrum
@@ -55,12 +55,12 @@ Frequency spectrum
 Bandwidth
 - The width of the frequency spectrum
 
-![](./img/DS_8.png)
+![](./img/DS_8.PNG)
 
 ## Digital Signals
 Information can also be represented by a digital signal
 
-![](./img/DS_9.png)
+![](./img/DS_9.PNG)
 
 Bitrate
 - of transmitted bits per second
@@ -71,4 +71,4 @@ Throughput
 ### Digital Signal As a Component Signal
 여러개 합쳐져야 밑에꺼 나옴
 
-![](./img/DS_10.png)
+![](./img/DS_10.PNG)
