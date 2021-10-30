@@ -5,15 +5,15 @@
 ## Protocol
 통신규약(foramt + order)
 
-![](./img/NM_1.png)
+![](./img/NM_1.PNG)
 
 ## TCP/IP Protocol Model
 
-![](./img/NM_2.png)
+![](./img/NM_2.PNG)
 
 ### Typcial Communication Path
 
-![](./img/NM_3.png)
+![](./img/NM_3.PNG)
 
 Why Layering?
 - Reduce Complexity
