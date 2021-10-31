@@ -5,15 +5,15 @@
 ## Data Flow
 Simplex
 
-![](./img/DFTNR_1.png)
+![](./img/DFTNR_1.PNG)
 
 Half-duplex
 
-![](./img/DFTNR_2.png)
+![](./img/DFTNR_2.PNG)
 
 Full-duplex
 
-![](./img/DFTNR_3.png)
+![](./img/DFTNR_3.PNG)
 
 ## Physical Topology
 선 구성 방식
@@ -21,7 +21,7 @@ Full-duplex
 ### Fully Connected mesh topology
 각자 device마다 링크가 있음
 
-![](./img/DFTNR_4.png)
+![](./img/DFTNR_4.PNG)
 
 장점
 - 각자의 전용선이 있기 때문에 다른선에 연관 X
@@ -35,7 +35,7 @@ Full-duplex
 - 허브를 통해 각자 연결
 - Used in local-are networks(LANs)
 
-![](./img/DFTNR_5.png)
+![](./img/DFTNR_5.PNG)
 
 장점
 - mesh 보단 덜 복잡
@@ -57,7 +57,7 @@ Full-duplex
 
 ### Ring topology
 
-![](./img/DFTNR_6.png)
+![](./img/DFTNR_6.PNG)
 
 장점
 - 쉬운 설치
@@ -71,4 +71,4 @@ Full-duplex
 - MAN (Metropolitan Area Network)
 - WAN (Wide Area Network)
 
-![](./img/DFTNR_8.png)
+![](./img/DFTNR_8.PNG)
