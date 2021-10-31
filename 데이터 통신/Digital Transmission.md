@@ -7,11 +7,11 @@
 - Digital data -> Digital Signal
 - 전압차를 이용해 0, 1 구분
 
-![](./img/DT1_1.png)
+![](./img/DT1_1.PNG)
 
 ## Data Element vs Signal Element
 
-![](./img/DT1_2.png)
+![](./img/DT1_2.PNG)
 
 ### Considerations
 - DC Components
@@ -23,14 +23,14 @@
 
 ## Unipolar
 
-![](./img/DT1_3.png)
+![](./img/DT1_3.PNG)
 
 - Unipolar scheme has DC component
 - It has no synchronization capacity
 
 ## Polar - NRZ(Non-Return to Zero)
 
-![](./img/DT1_4.png)
+![](./img/DT1_4.PNG)
 
 - NRZ-L: positive voltage for one symbol and negative for the other
 - NRZ-I: 1이 오면 신호 전이 발생
@@ -38,7 +38,7 @@
 
 ## Polar - RZ(Return to Zero)
 
-![](./img/DT1_5.png)
+![](./img/DT1_5.PNG)
 
 - 중간에 전이를 함
 - requires a wider band width
@@ -55,7 +55,7 @@
 - Diffrential Manchester encoding
     - Combining the NRZ-I and RZ schemes
 
-![](./img/DT1_6.png)
+![](./img/DT1_6.PNG)
 
 - No DC Component
 - Synchronization 가능
@@ -63,7 +63,7 @@
 
 ## Bipolar - AMI and Pseudoternary
 
-![](./img/DT1_7.png)
+![](./img/DT1_7.PNG)
 
 - AMI - 1일 때 전이(+,-) 0일 때는 0
 - Pseudoternary - 0일 때 전이(+,-) 1일때는 0
@@ -74,7 +74,7 @@
 ## Block Coding
 4B/5B encoding: resolve synchronization issue of NRZ-I
 
-![](./img/DT1_8.png)
+![](./img/DT1_8.PNG)
 
 ## Scrambling
 - AMI Synchronization 해결
@@ -82,7 +82,7 @@
 - V는 Violation으로 원래하던 AMI 반대로
 - B는 Bipolar로 원해라던 AMI 방식대로
 
-![](./img/DT1_9.png)
+![](./img/DT1_9.PNG)
 
 ---
 
@@ -94,7 +94,7 @@ PCM consists of three steps to digitize an analog signal:
 - Quantization
 - Binary encoding
 
-![](./img/DT1_10.png)
+![](./img/DT1_10.PNG)
 
 ### PCM: Sampling
 - Analog signal is ampled every Ts secs
@@ -103,12 +103,12 @@ PCM consists of three steps to digitize an analog signal:
 Nyquist theorem
 - The sampling rate must be at least 2 time the highest frequency contained in the signal
 
-![](./img/DT1_11.png)
+![](./img/DT1_11.PNG)
 
 ### Quantization
 Infinite amplitude values -> a finite set of known values
 
-![](./img/DT1_12.png)
+![](./img/DT1_12.PNG)
 
 More quantization level?
 - Pros: 더 정밀한 표현 가능
