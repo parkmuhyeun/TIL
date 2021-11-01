@@ -74,3 +74,47 @@ All instructions (except j) use the ALU after reading the registers
 - arithmetic use the ALU to do the required arithmetic operation
 - memory reference use ALU to compute memory addresses
 - control use the ALU to compute branch conditions and target address calculation
+
+## Fetching Instrutions
+- reading the instruction from the instruction memory
+- updating the pc value to be the address of the next instruction
+
+![](./img/PA_3.PNG)
+
+- PC is updated every clock cycle, so it does not need an explicit write control signal
+- There is no need to use read control signal in Instruction Memory because it produces instruction every cycle
+
+## Decoding Instructions
+- First sending the fetched instructions opcode and function field bits to the control unit
+
+![](./img/PA_4.PNG)
+
+- Second, reading two values from the Register File
+    - Two values: Rs and Rt
+
+## Executing R Format Operations
+R format operations(add, sub, slt, and, or)
+- perfrom operation (op and funct) on values in rs and rt
+- store the result back into the Register File(into location rd)
+
+![](./img/PA_5.PNG)
+
+- Note that register File is not written every cycle, so we need and explicit write control signal(RegWrite) for the Register File
+
+## Executing Load and Store Operation
+
+![](./img/PA_6.PNG)
+
+## Executing Branch Opreations
+- compare the operands read from the Register File during decode( rs and rt values) for equality (zero ALU ouput)
+- compute the branch target address by adding the updated PC to the sign extended 16-bit offset filed in the instruction
+    - "base register" is the updated PC
+    - offset value in the low order 16 bits of the instruction must be shifted left 2 bits to turn it into a word address and sign extended to create a 32-bit signed value
+
+![](./img/PA_7.PNG)
+
+## Executing Jump Operations
+- replace the lower 28 bits of the PC with the lower 2 6 bits of the fetched instruction shifted left by 2 bits(word offset)
+- Concatenate with upper 4 bit in PC
+
+![](./img/PA_8.PNG)
