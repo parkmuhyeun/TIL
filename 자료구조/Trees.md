@@ -57,3 +57,78 @@ n개의 노드를 가진 완전 이진 트리가 순차적으로 표현되어 �
 - parent = i/2
 - Lchild = 2i
 - Rchild = 2i + 1
+
+## 이진 트리 순회(Binary Trree Traversal)
+이진 트리의 모든 노드를 한번씩 방문
+
+![](./img/T_5.PNG)
+
+세가지 순회 방법
+- 중위 순회(inorder traversal)
+    - L -> V -> R
+- 전위 순회(preorder traversal)
+    - V -> L -> R
+- 후위 순회(postorder traversal)
+    - L -> R -> V
+
+### 이진 트리의 복사
+후위 순회 알고리즘 응용
+
+```c
+tree_pointer copy(struct node *original)
+{ // original 트리를 복사한 새로운 이진 트리를 반환
+    struct node *temp;
+    if (original) {
+    temp = (struct node *) malloc(sizeof(struct node));
+    temp->left_child = copy(original->left_child); 
+    temp->right_child = copy(original->right_child);
+    temp->data = original->data;
+    return temp;
+    }
+    return NULL;
+}
+```
+
+### 이진 트리의 동일성 검사
+전위 순회 알고리즘을 응용
+
+```c
+int equal(struct node *first, struct node *second)
+{
+    /* first와 second 트리가 다를 경우 FALSE를 반환. 트리가 동일할 경우, TRUE를 반환 */
+    return ((!first && !second) || (first && second &&
+    (first->data == second->data) &&
+    equal(first->left_child, second->left_child) &&
+    equal(first->right_child, second->right_child)));
+}
+```
+
+### 이진 트리의 노드 수 계산
+
+```c
+int get_node_count(struct node *ptr)
+{
+int count = 0
+    if (ptr != NULL)
+        count = 1 + get_node_count(ptrleft_child) +
+            get_node_count(ptrright_child);
+    return count;
+}
+```
+
+### 단말 노드 수 계산
+
+```c
+int get_leaf_count(struct node *ptr)
+{
+    int count = 0;
+    if (ptr != NULL) {
+        if (ptr->left_child == NULL && 
+            ptr->right_child == NULL) // 단말 노드
+                return 1;
+        else count = get_leaf_count(ptrleft_child) + 
+                        get_leaf_count(ptrright_child);
+    }
+    return count;
+}
+```
