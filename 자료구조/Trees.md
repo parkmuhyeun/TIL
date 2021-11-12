@@ -293,3 +293,106 @@ element delete_max_heap (int *n)
     return item;
 }
 ```
+
+## 이진 검색 트리(Binary Search Trees)
+Heap의 문제점
+- 임의의 노드를 삭제할 경우: O(n)
+- 트리에서 특정 데이터를 갖는 노드 검색: O(n)
+
+이진 검색 트리란?
+- 트리 내에서 특정 데이터(키 값)를 효율적으로 찾도록 하는 트리
+
+정의
+- 모든 노드는 유일한 키 값을 가지고 있다.
+- 왼쪽 서브트리에 저장된 키 값 < Root node의 키 값
+- 오른쪽 서브트리에 저장된 키 값 > Root node의 키 값
+- 왼쪽/오른쪽 서브트리도 이진 검색 트리이다.
+
+Complexity: O(height of tree)
+```c
+//Recursive Search
+struct node *search (struct node *root, int key)
+{
+    // key를 포함하고 있는 노드의 포인터를 return
+    // 해당되는 노드가 없을 경우, return NULL.
+    // Recursive version
+    if (!root) return NULL;
+    if (key == root->data) return root;
+    if (key < root->data)
+        return search (root->left_child, key);
+    return search (root->right_child, key);
+}
+
+//Iterative Search
+struct node *iterSearch(struct node *tree, int key)
+{
+    // key를 포함하고 있는 노드의 포인터를 return
+    // 해당되는 노드가 없을 경우, return NULL.
+    // Iterative version
+    while (tree != NULL) {
+        if (key == tree->data) return tree;
+        if (key < tree->data)
+            tree = treeleft_child;
+        else
+            tree = treeright_child;
+    }
+    return NULL;
+}
+```
+
+### 이진 검색 트리에 노드 추가
+- key가 존재할 경우, return(NULL)
+- Otherwise, 검색 알고리즘에서 방문한 마지막 노드에 대한 포인터 return
+
+Complexity: O(height of tree)
+```c
+void insert_node (struct node **root, int num)
+{    // node: root, num: 추가할 키 값.
+
+    struct node *ptr, parent = modified_search (*root, num);
+
+    if (parent || !(*root)) { // num이 tree에 존재하지 않음. 
+        ptr = (struct node *) malloc(sizeof(struct node));
+        ptr->data = num; // num을 키 값으로 하는 노드 생성
+        ptr->left_child = ptr->right_child = NULL;
+        if (*root) // parent의 child node로 삽입
+            if (num < parent->data) 
+                parent->left_child = ptr;
+            else 
+                parent->right_child = ptr;
+        else *root = ptr; // 트리가 empty일 경우, root로 등록
+    }
+}
+
+struct node *modified_search(struct node *root, int key)
+{
+    for (struct node *ptr = root; ptr != NULL; ) {
+        if (ptr->data == key) // 기존에 존재하는 키를 입력: 중복 오류
+            return NULL;
+        if (key < ptr->data) {
+            if (ptr->left_child == NULL) return ptr; // 부모를 반환
+            else ptr = ptr->left_child;
+        }
+        else {  // key > ptr->data
+            if (ptr->right_child == NULL) return ptr; // 부모를 반환
+            else ptr = ptrright_child;
+        }
+    }
+    return NULL; // root가 NULL일 경우
+}
+```
+
+### 이진 검색 트리에서 노드 삭제
+리프 노드의 삭제
+- parent->left_child = NULL
+
+Child가 하나밖에 없는 노드의 삭제
+- 삭제된 자리에 child node를 위치
+
+두 개의 children을 갖는 노드의 삭제
+- 왼쪽 서브트리에서 가장 큰 노드나, 오른쪽 서브트리에서 가장 작은 노드를 삭제된 자리에 위치
+
+### 이진 검색 트리의 깊이
+- 데이터가 정렬된 순서로 입력: O(n)
+- 데이터가 무작위 순서로 입력: O(log2n)
+- 균형 이진검색 트리: AVL Tree, Red-Black Tree
