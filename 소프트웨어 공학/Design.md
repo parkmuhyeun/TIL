@@ -197,3 +197,27 @@ The measure of the interdependence of one module to another
 - 가장 좋은 모듈 간 결합
 - 모듈들이 매개변수를 통해 데이터만 주고받음으로써 서로 간섭을 최소화하는 관계
 - 모듈 간의 독립성 보장
+
+### Characteristics of Good Design
+- A design should exhibit a hierarchical structure.
+- A design should be modular
+
+## Software Design Methods
+Structured Design (구조적 설계)
+- 시스템 전체를 한눈에 볼 수 있는 시스템 배경도를 정점으로 하여 하향식으로 상세하게 분석하여 마치 피라미드와 같은 구조를 연상하게 하는 방법
+- 자료의 흐름을 모델링하여 나타낸 자료흐름도를 위주로 시스템 전체의 구조를 하향식으로 분석하고 문서화
+
+Object-Oriented Design (객체지향 설계)
+- 실세계의 시스템을 분석하는 것으로 많은 객체를 포함하는 모델을 결과물로 얻으며, 모델에 표시된 각각의 객체는 실세계에 존재하는 객체들과 하나씩 대응되도록 설계
+- Identity: Each object is a discrete, distinguishable entity
+- Classification: Objects with the same data structure and operations are grouped into a class
+- Message sending: Objects communicate through the interface via message passing
+
+### Benefits of Object-Oriented Approach
+- Abstraction mechanisms enhance
+    - comprehensibility
+    - reusability
+    - maintainability
+    - modifiability
+    - extensibility
+- Smooth transition from the analysis phase to design and implementation
