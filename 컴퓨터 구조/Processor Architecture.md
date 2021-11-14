@@ -118,3 +118,80 @@ R format operations(add, sub, slt, and, or)
 - Concatenate with upper 4 bit in PC
 
 ![](./img/PA_8.PNG)
+
+## Creating a Single Datapath from the Parts
+- Assemble the datapath segments and add control lines and multiplexors as needed
+- Single cycle design - fetch, decode and execute each instrutions in one clock cycle
+    - datapath resource cannot be used more than once per instruction, so some must be duplicated
+    - multiplexors needed at the input of shared elements with control lines to do the selection
+    - clock distribution to each module is also needed
+    - write control signals is necessary to control writing to the Register File and Data Memory within single long cycle time
+- Cycle time is determined by length of Longest Path
+
+![](./img/PA_9.PNG)
+
+### Clock Distribution
+
+![](./img/PA_10.PNG)
+
+## adding the Control
+- Selecting the operations to perform(ALU, Register File ..)
+- Controlling the flow of data(multiplexor inputs)
+
+![](./img/PA_11.PNG)
+
+Observations
+- op field always bits 31-26
+- Addr. of registers to be read are always specified by the rs field(bits 25-21) and rt field(bits 20-16) in R-type. For LD, read rs[mem] and wirte to rt. For ST, read rt and write to rs[mem]
+- addr. of register to be written is in one of two places - in rd(bits 15-11) for R-type instructions, in rt(bits 20-16) for lw
+- offset for BEQ, LD and ST always in bits 15-0
+
+### Complete Datapath with ALU Control Unit
+
+![](./img/PA_12.PNG)
+
+### ALU Control, Con't
+Controlling the ALU uses of multiple decoding levels
+- main control unit generates the ALUOp bits(2bits) to ALU control
+- ALU control unit
+    - Input: 6bit funct field + 2bit ALUop -> Output ALUcontrol bits(4 bits) to ALU
+
+![](./img/PA_13.PNG)
+
+## Instruction Critical Paths
+Calculate cycle time
+- Instruction and Data Memory(4 ns)
+- ALU and adders(2 ns)
+- Reigster File access(reads or writes) (1 ns)
+
+![](./img/PA_14.PNG)
+
+### Single Cycle Disadvantages & Advantages
+- Uses the clock cycle inefficiently(waste)
+- Anyway, this approach is simple and easy to understand
+
+## How Can We Make It Faster?
+- Start fetching and executing the next insturction before the current one has completed
+    - Pipelining - (most of all) modern processors are pipelined for performance
+- Under ideal conditions and with a large number of instructions, the speedup from pipelining is approximately equal to the number of pipelined stages
+- Fetch more than one instruction at a time?
+    - Superscalar processing
+
+### A Pipelined MIPS Processor
+- Start the next instruction before the current one has completed
+    - improves throughput - total amount of work done in a given time
+    - insturction latency is not reduced
+
+![](./img/PA_15.PNG)
+
+- clock cycle(pipeline stage time) is limited by the slowest stage
+- for some intructions, some stages are wasted cycle
+    - ex) sw has no job in WB, R-type has no job in Mem
+
+### Pipeline Speedup
+- If all stages are "balanced"
+    - all take the same time
+    - Time between instructions(pipelined) = Time between instructions(nonpipelined)/ Number of stages
+- If not balanced, speedup is less
+- Speedup is due to increased throughput by making all modules in busy state
+    - but latency time does not reduced for each instruction
