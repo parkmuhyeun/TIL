@@ -195,3 +195,54 @@ Calculate cycle time
 - If not balanced, speedup is less
 - Speedup is due to increased throughput by making all modules in busy state
     - but latency time does not reduced for each instruction
+
+## Pipelining the MPIS ISA
+What makes it easy in our MIPS architecture to make a pipelined processor
+- Because of mostly RICS features, such as
+    - all instructions are the same length (32 bits)
+    - few instruction formats (three)
+    - memory operations occur only in loads and stores
+    - each instruction writes at most one result
+    - operands must be aligned in memory so a single data transfer takes only one data memory access
+
+### MIPS Pipeline Datapath Additions/Mods
+
+State registers between each pipeline stage to isolate them
+
+![](./img/PA_16.PNG)
+
+- state regsiters are inserted between the state
+- System clock is triggered to every sequential modules as well as newly inserted stage register, except IM
+- PC can be thought of as a pipelin register
+    - the one that feeds IF stage of the pipeline
+    - Unlike all of the other pipeline registers, the PC is part of the visible architecture state
+    - PC is included in programmer's model
+
+![](./img/PA_17.PNG)
+
+- Any information that is needed in a later pipe stage must be passed to that stage via a pipeline register
+    - register address should continuously passed through the pipeline and feed back again(green)
+    - load instruction
+- The only data flow from right tl left(purple)
+    - (1) Loaded data from DM to RF
+    - (2) Selection of the newxt value of PC
+- Later instructions in the pipeline can be influenced by these two REVERSE data movements
+    - The first one (WB to ID stage for LD ins) leads to data hazards
+    - tHE Second one (MEM to IF for branch ins) leads to control hazards
+    - Because of these reverse movements, HAZARDs happen
+
+### Multicycle Implementation Overview
+- Each instruction step takes 1 clock cycle
+    - Therefore, an instruction takes more than 1 clock cycle to complete
+- Not every instruction takes the same number of clock cycles to complete
+    - R type ALU operation : 5 cycles but 1 stall in the middle (DM)
+    - SW : 4 cycles with no operation in WB
+    - Conditional branch is 4 cycles & Jump is 2 cycles 
+- Reading from or writing to any of the internal registers, Register File, or the PC occurs at the beginning (for write) or the end of a clock cycle (for read)
+
+### Multicycle Advantages & Disadvantages
+- Uses the clock cycle efficiently - the clock cycle is timed to accommodate not the slowest instruction but the slowest insturction step
+- Multicycle implementations allow
+    - faster clock rates
+    - functional units to be used more than once as long as they are used on different clock cycles, thus need only one memory, one ALU/adder and ...
+- However, it requires additional internal state registers, muxes, and more complicated (FSM) control
