@@ -46,3 +46,59 @@ Classification of V&V Activities
     - Do not observe system behavior
 - Dynamic(Testing)
     - System behavior is observed
+
+## What is Testing?
+- How: Exercising a system or component
+    - with define inputs
+    - capturing monitored outputs
+    - comparing outputs with specified or intended requirements
+- For What: purposes
+    - to identify discrepancies between actual results and correct or expected behavior
+    - to provide high assurance of reliability, correctness
+- What is NOT software testing?
+    - Debugging
+
+![](./img/ST_1.PNG)
+
+-|Testing|Debugging
+---|---|---|
+목적|알려지지 않은 결함의 발견|이미 알고 있는 결함의 수정
+수행|시스템 내부 관련자, 테스팅 팀등 외부의 제 3자|시스템 내부 관련자
+주요작업|숨겨진 결함 발견|결함의 정확한 위치 파악, 결함의 타입 식별, 결함의 수정
+
+### Fundamental Testing Questions
+- What cases should we test?
+    - What test data should we use?
+    - What aspect of the software should we test?
+- Are we there yet? When can we stop testing?
+    - Did we find a sufficient number of failures?
+- How well do we do?
+    - Did we provide high assurance?
+- Infinite possibilities with limited resources?
+    - Working overnight? Agile? Call experts?
+
+## Realisitc Goal of Testing
+- 테스트의 목적
+    - 프로그램이 사용할만한것인지 확인하기 위하여 결함을 발견할 목적으로 프로그램을 실행하는 작업
+- 완벽한 테스트는 불가능
+- 결함이 없음을 보이려는 것이 아님
+- 현실적인 테스트의 목적
+    - 주어진 시간과 인력으로 오류를 발견할 확률이 높은, 가장 효율적인 테스트 케이스를 찾아내고 실행하는 일
+
+### State of the Testing in Practice
+- 개발에 비하여 적은 관심
+    - 무계획
+    - 개인의 경험에 의존
+    - 개발이 비해 쉽다고 생각
+- 품질의 중요성에 비하여 적은 노력
+    - 테스트 엔지니어 교육
+    - 테스트기법에 대한 교육
+    - 테스트 도구 교육
+
+### Testing Steps
+- Select what is to be measured by the test
+- Decide how to test
+- Develop test case
+- Execute the test case
+- Determine the expected result of the test
+- Compare the actual result and the expected result 
