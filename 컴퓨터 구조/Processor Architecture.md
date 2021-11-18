@@ -246,3 +246,45 @@ State registers between each pipeline stage to isolate them
     - faster clock rates
     - functional units to be used more than once as long as they are used on different clock cycles, thus need only one memory, one ALU/adder and ...
 - However, it requires additional internal state registers, muxes, and more complicated (FSM) control
+
+---
+## Can Pipelining Get Us Into Trouble?
+- Pipeline Hazards
+    - Structural hazards: attempt to use the same hardware resource by two different insturctions at the same time
+    - data hazards: attempt to use data before it is ready
+    - control hazards: attempt to make a decision about program control flow before the condition has been evaluated
+- Can usually resolve hazards by waiting
+    - pipeline control must detect the hazard
+    - and take action to resolve hazards
+
+### A Single Memory Would Be a Structural Hazrd
+
+![](./img/PA_18.PNG)
+
+Fix with separate instr and data memories
+- Necessity of Harvard architecture
+
+### How About Register File Access (structural hazard) ?
+
+![](./img/PA_19.PNG)
+
+Fix register file access hazard by doing
+
+Reads in the second half of the cycle and Writes in the first half cycle
+
+### Data Hazards
+
+![](./img/PA_20.PNG)
+
+- Green is OK but Red is hazard
+- Red hazard is called Read after Write data hazard (RAW hazard)
+
+### One Way to "Fix" a Data Hazard (stall)
+
+![](./img/PA_21.PNG)
+
+### Another Way to "Fix" a Data Hazard
+
+![](./img/PA_22.PNG)
+
+Although WB has final result of $1, ALU output has also updated final result -> Forwarding or Bypassing
