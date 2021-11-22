@@ -288,3 +288,57 @@ Reads in the second half of the cycle and Writes in the first half cycle
 ![](./img/PA_22.PNG)
 
 Although WB has final result of $1, ALU output has also updated final result -> Forwarding or Bypassing
+
+## Data Forwarding (or Bypassing)
+- Take the result from the earliest point that it exists in any of the pipeline state registers and forward it to the functional units that need it
+- For ALU functional unit: the inputs can come from any pipeline register rather than just from previous ID/EX by
+    - adding the multiplexors to the inputs of the ALU
+    - adding the proper control hardware to control the new muxes
+    - connecting the Rd in latter stage registers(previous instructions) such as EX/MEM or MEM/WB into either of the Rs and Rt in EX stage, as ALU mux inputs
+
+        -> "to-ALU" forwarding
+        - EX forwading : ALU to ALU (R to R result forwarding)
+        - MEM forwarding : DM to ALU (load use hazard)
+
+### Forwarding Illustraiton
+
+![](./img/PA_23.PNG)
+
+### Yet Another Complication
+Another potential data hazard can occur when there is a conflict between the forward path - which should be forwarded?
+
+![](./img/PA_24.PNG)
+
+- Second add has to be forwarded!(최근께 forward 되야됨)
+
+## Forwarding with Load-use Data Hazard (LW-USE)
+
+![](./img/PA_25.PNG)
+
+### Load-use Hazard Detection Unit (DM-to-ALU forwarding)
+Even with Forwarding Unit, we need a Hazard detection Unit in the ID stage to insert one stall between the load and it use
+
+```HDL
+ID Hazard detection Unit:
+if (ID/EX.MemRead
+and ((ID/EX.RegisterRt = IF/ID.RegisterRs)
+or (ID/EX.RegisterRt = IF/ID.RegisterRt)))
+then stall the pipeline //this is inevitable!
+```
+- After this one cycle stall, the forwarding logic can handle the ramaining data hazards
+
+### Hazard/Stall Hardaware (How to implement stall)
+- Along with the Hazard Unit, we have to implement the STALL operation, using following two steps
+- 1st: Prevent the instructions in the IF and ID stages from progressing down the pipeline - done by preventing the PC register and the IF/ID pipeline register from changing
+    - Hazard detection Unit controls the writing of the PC(PC.write) and IF/ID(IF/ID.write) registers -> Make it disable
+- 2nd: Insert a "bubble" between the lw instruction and the load-use instruction(insert a noop in the execution stream)
+- Then, let the lw instruction and the instructions after lw in the pipeline proceed normally down the pipeline
+
+### Adding the Hazard unit Hardware (for stall operation)
+
+![](./img/PA_26.PNG)
+
+## Memory-to-Memory Copies (LW-SW)
+For loads immediately followed by stores(memory-to-memory copies) can avoid a stall by adding forwarding hardware from the MEM/WB register to the data memory input -> no stall possible if forwarding logic provided
+
+![](./img/PA_27.PNG)
