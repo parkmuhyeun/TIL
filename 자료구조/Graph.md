@@ -73,3 +73,124 @@
 - Digraph에서 vertex의 in-degree를 조사
     - 인접 행렬:O(n)
     - 인접 리스트: O(n+e)
+
+## Depth First Search
+- 출발 vertext, v의 인접 리스트부터 방문
+- v에 인접하면서 아직 방문하지 않은 vertex, w를 선택
+- w를 시작점으로 하여 다시 깊이 우선 탐색 시작
+- recursion을 이용하여 구현
+```c
+#define FALSE 0
+#define TRUE 1
+short int visited[MAX_VERTICES];
+
+void dfs(int v)
+{
+    struct node * w;
+    visited[v] = TRUE;
+    printf("%5d", v);
+    for( w = graph[v]; w; w= w->link)
+        if(!visited[w->vertex]) dfs(w->vertex);
+}
+```
+
+![](./img/Gra_3.PNG)
+
+## Breadth First Search
+- 출발 vertex, v의 인접 리스트 부터 방문
+- v에 인접한 모든 vertex들을 먼저 방문
+- 그다음, v에 인접한 첫번째 vertex에 인접한 vertex중에서 아직 방문하지 않은 vertex들을 다시 차례대로 방문(Queue를 이용)
+
+```c
+struct queue{
+    int vertex;
+    struct queue *link;
+};
+void addq(...);
+void deleteq(...);
+
+void bfs(int v)
+{
+    node_pointer w;
+    struct queue *front = NULL, *rear = NULL;
+
+    printf("%5d", v);
+    visited[v] =TRUE;
+    add(&front, &rear, v);
+    while(front){
+        v = delete();
+        for( w = graph[v]; w; w= w->link){
+            if(!visited[w->vertex]){
+                print("%5d", w->vertex);
+                addq(&front, &rear, w->vertex);
+                visited[w->vertex] = True;
+            }
+        }
+    }
+}
+```
+
+![](./img/Gra_4.PNG)
+
+## Spanning Trees
+그래프 G에 포함된 edge들로 구성되며, G의 모든 vertex들을 포함하는 트리
+
+![](./img/Gra_5.PNG)
+
+## Biconnected Components and Articulation Points
+- 단절점(articulation point)
+    - 그래프에서 어느 edge 삭제했을 때 그래프가 두개 이상의 connected component들로 분할되는 vertex
+- 이중 결합 그래프
+    - 단절점이 없는 connected graph
+
+## Articulation Point 조사
+- DFS 트리의 루트가 두 개의 children을 가질 경우, 루트 vertex는 articulation point임
+- W의 descendants로 가서 back edge를 이용해 W의 ancestor에 갈 수 없을 경우 articulation point
+
+## 최소 비용 신장트리
+- 가중치가 부여된 무방향 그래프에서 신장 트리의 비용 = 신장 트트리를 구성하는 edge들의 비용의 합
+- Minimum cost spanning tree: 가장 비용이 적은 spanning tree
+
+Minimum cost spanning tree 제약 조건
+- 그래프 내에 존재하는 edge들만 사용
+- n-1개의 edge만 사용(정점의 수 = n)
+- Cycle을 형성할 수 있는 edge는 사용 불가
+
+Minimum cost spanning tree를 구하기 위한 알고리즘
+- Kruskal, Prim, Solin
+- 세 가지 알고리즘 모두 greedy method를 사용
+
+## Kruskal Algorithm
+- 한번에 하나의 edge씩 추가하면서 최소비용 트리 T를 생성
+- Edge들을 비용의 오름차순으로 정렬한 후, 가장 비용이 적은 edge부터 선택
+- 선택된 edge는 기존에 선택된 edge들과 사이클을 형성하지 않을 경우에만 T에 포함
+- 총 n-1개의 edge 선택
+
+![](./img/Gra_6.PNG)
+
+비용이 최소인 edge를 어떻게 찾을까?
+- Edge들을 비용 순서대로 정렬: O(e log e)
+- 개선된 방법: min heap을 이용
+    - 다음 차례의 edge를 발견: O(log e)
+    - heap의 구성: O(e)
+
+Cycle 검사
+- union-find 연산을 이용
+
+## Prim Algorithm
+- 단 하나의 vertex만 갖는 트리 T에서 시작
+- 각 단계에서 트리를 구성하도록 한번에 하나의 edge를 선택
+- T에 포함된 vertex와 포함되지 않은 vertex를 연결하는 edge들 중에서 비용이 최소인 edge를 T에 추가
+- 시간 복잡도 = O(n^2)
+
+![](./img/Gra_7.PNG)
+
+## Solin Algorithm
+- 단계별로 T에 포함시킬 여러 edge들을 동시에 선택
+- 각 단계에서 선택된 edge들은 그래프의 spanning forest를 구성
+- 초기에는 edge가 없으므로, forest에 vertex 수 만큼의 트리가 존재
+- 각 단계에서 forest에 있는 각트리에 대해 하나의 edge를 선택(선택 기준: 최소 비용)
+- 두 개의 트리에서 동일한 edge를 선택할 수 있으므로, 중복된 edge를 제거하는 절차 필요
+- 하나의 트리만 남거나, 혹은 추가할 edge가 없을경우 종료
+
+![](./img/Gra_8.PNG)
