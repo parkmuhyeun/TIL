@@ -102,3 +102,51 @@ Classification of V&V Activities
 - Execute the test case
 - Determine the expected result of the test
 - Compare the actual result and the expected result 
+
+## Test Cases
+- Two kinds of problems to be discovered by testing:
+    - INVALID: The program DOES NOT do something it is supposed to do
+    - UNEXPECTED: The program DOES something it is NOT supposed to do
+- INVALID and UNEXPECTED Cases
+    - Test cases must be written for INVALID and UNEXPECTED, as well as valid and expected, input conditions
+
+Test case: 특정한 요구사항이 제대로 구현되었는지를 검증하기 위하여 테스트 조건, 입력값, 예상출력값, 그리고 실제 수행한 결과를 기록하는것
+
+![](./img/ST_2.PNG)
+
+- OBJECTED
+    - to uncover errors(에러를 찾아내는 것)
+- CRITERIA
+    -  in a complete mannner (완벽히 에러를 찾아내는 것)
+- CONSTRAINT
+    - with a minimum of effort and time (가능한 최소의 시간과 노력으로 찾아내는 것)
+
+좋은 test case는 아직 발견되지 않은 오류를 발견 할 확률이 높은 test case이다
+
+### Test Every Input Conditions?
+It is generally impossible, even for trivial examples, to test a program using EVERY POSSIBLE INPUT CONDITION
+
+## Types of testing: Black box vs White box
+- Black box testing (Functional testing)
+    - Test cases derived from examining the requirements, specifications or user documents
+
+![](./img/ST_3.PNG)
+
+- White box testing (Structural testing)
+    - Test cases derived from examining the actual code (software structure/implementation)
+
+![](./img/ST_4.PNG)
+
+### Black box testing
+(1) Equivalence partitioning
+- input space partitioning
+- Divde the input space into equivalence class so that items in each equivalence class are treated the same
+- Both valid and invalid equivalence classes are considered
+
+(2) Boundary -Value Analysis
+- Rather than selecting any element in an equivalence class, boundary-value analysis focuses on those elements near the boundary of the equivalence class
+
+(3) Error guessing
+- Based on intuition and experience
+
+![](./img/ST_5.PNG)
