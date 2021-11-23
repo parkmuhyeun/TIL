@@ -75,7 +75,7 @@
     - 인접 리스트: O(n+e)
 
 ## Depth First Search
-- 출발 vertext, v의 인접 리스트부터 방문
+- 출발 vertex, v의 인접 리스트부터 방문
 - v에 인접하면서 아직 방문하지 않은 vertex, w를 선택
 - w를 시작점으로 하여 다시 깊이 우선 탐색 시작
 - recursion을 이용하여 구현
@@ -148,7 +148,7 @@ void bfs(int v)
 - W의 descendants로 가서 back edge를 이용해 W의 ancestor에 갈 수 없을 경우 articulation point
 
 ## 최소 비용 신장트리
-- 가중치가 부여된 무방향 그래프에서 신장 트리의 비용 = 신장 트트리를 구성하는 edge들의 비용의 합
+- 가중치가 부여된 무방향 그래프에서 신장 트리의 비용 = 신장 트리를 구성하는 edge들의 비용의 합
 - Minimum cost spanning tree: 가장 비용이 적은 spanning tree
 
 Minimum cost spanning tree 제약 조건
