@@ -150,3 +150,44 @@ It is generally impossible, even for trivial examples, to test a program using E
 - Based on intuition and experience
 
 ![](./img/ST_5.PNG)
+
+### White box testing
+Goal
+- Our goal is to ensure that all statements and conditions have been executed at least once
+
+(1) Statement coverage
+- Simplest form of logic coverage
+- Every statement in the program must be executed at least once
+
+(2) Branch coverage
+- Each branch and each entry point must be taken at least once
+
+(3) Condition coverage
+- Each condition must be true at least once and false at least once
+
+(4) Multiple-Condition
+- At each branch statement, all feasible combinations of condition outcomes must be covered at least once
+
+### Limitations of White Box Testing
+- Missing paths undetected
+- Coincidental correctness
+- Finding data to exercise an arbitrary path is difficult
+
+### Testing loop
+Exercise loops 0, 1, 2, t, (max-1), max, max+1 times
+
+### Black box vs White box
+
+Criteria|Black Box Testing|White Box Testing
+---|---|---
+Definition|Design/ implementation is NOT known to the tester| Design/ implementation is  known to the tester
+Implementation Knowledge|Not Required|Required
+Levels Mainly applicable to|Acceptance Testing, System Testing|Unit Testing, Integration Testing
+Basis for Test Cases|Requirement Spec|Code
+Responsibility|Generally, Independent Testers|Generally, developers
+
+
+## TMMI(Testing Maturity Model Integration)
+소프트웨어 테스팅 프로세스 성숙도 수준 측정 모델
+
+![](./img/ST_6.PNG)
