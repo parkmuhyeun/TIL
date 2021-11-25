@@ -194,3 +194,81 @@ Cycle 검사
 - 하나의 트리만 남거나, 혹은 추가할 edge가 없을경우 종료
 
 ![](./img/Gra_8.PNG)
+
+## Dijkstra의 Algorithm
+알고리즘의 구성
+- 0에서 n-1까지 n 개의 vertex가 존재
+- S를 표현하기 위하여 found[n] 배열을 사용
+- 인접 행렬 cost[n][n]을 이용하여 그래프 G를 표현
+    - cost[i][j]: <i,j>의 비용
+- <i,j>가 없을 때, cost[i][j]를 충분히 큰 값으로 설정
+- 실제로 존재하는 edge들의 비용보다 큰 값
+- distance[u] + cost[u][w]의 결과로 overflow가 발생하지 않도록 주의
+- 시간 복잡도 = O(n^2)
+```c
+#define MAX_VERTICES 6
+int cost[][MAX_VERTICES] = 
+{{ 0, 50, 10, 1000, 45, 1000},
+{ 1000, 0, 15, 1000, 10, 1000},
+{ 20, 1000, 0, 15, 1000, 1000},
+{ 1000, 20, 1000, 0, 35, 1000},
+{ 1000, 1000, 30, 1000, 0, 1000},
+{ 1000, 1000, 1000, 3, 1000, 0}};
+int distance[MAX_VERTICES], n = MAX_VERTICES;
+short int found[MAX_VERTICES];
+
+void shortestpath(int v, int cost[][MAX_VERTICES], int distance[], 
+                    int n, short int found[])
+{       // Dijkstra의 Algorithm을 구현
+    int i, u, w;
+    for (i = 0; i < n; i++) 
+    { found[i] = FALSE; distance[i] = cost[v][i]; }
+
+    found[v] = TRUE;
+    distance[v] = 0;
+    for (i = 0; i < n – 2; i++) {
+        u = choose(distance, n, found); // w  S 중에서 최단 경로 선택
+        found[u] = TRUE;
+        for (w = 0; w < n; w++)
+            if (found[w] == FALSE) // 관찰 3을 구현
+              if (distance[u] + cost[u][w] < distance[w])
+                    distance[w] = distance[u] + cost[u][w];
+} }
+
+int choose(int distance[], int n, short int found[])
+{
+/* 아직 S에 포함되지 않은 vertex중에서 최소 거리를 갖는
+vertex를 return */
+    int i, min, minpos;
+    min = INT_MAX;
+    minpos = -1;
+    for (i = 0; i < n; i++)
+        if (distance[i] < min && found[i] == FALSE) {
+             min = distance[i];
+                minpos = i;
+      }
+    return minpos;
+}
+```
+
+## All Pairs Shortest Paths
+그래프 G에 포함된 모든 vertex의 쌍들에 대해 최단 경로를 발견
+1. V(G)에 속하는 각각의 vertex에 대해 Dijkstra 알고리즘을 수행: 복잡도 O(n^3)
+2. 동적 프로그래밍 방법: 복잡도 O(n^3) with smaller constant factor
+
+```c
+void allcosts (int cost[ ][MAX_V], int distance[][MAX_V], int n)
+{
+/* 각 vertex에서 나머지 모든 vertex까지의 최단 경로를 계산. cost[][]: 인접 행렬, distance[][]: 경로의 거리를 저장 */
+    int i, j, k;
+
+    for (i = 0; i < n; i++)
+        for (j = 0; j < n; j++)
+            distance[i][j] = cost[i][j]; // A-1[][]의 초기화
+    for (k = 0; k < n; k++)             // A0 부터 An-1까지 차례대로 생성
+        for (i = 0; i < n; i++)
+            for (j = 0; j < n; j++)
+            if (distance[i][k] + distance[k][j] < distance[i][j])
+                 distance[i][j] = distance[i][k] + distance[k][j];
+}
+```
