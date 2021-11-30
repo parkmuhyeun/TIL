@@ -140,4 +140,57 @@ allow faster clock rates
 need only one memory, one ALU/adder..
 however it requires additional internal state registers, muxes, and more complicated FSM control
 
+---
+12-1
+1. 파이프라인을 사용하면 왜 performance가 증가하는가?
+동시에 작동하기때문에 첫명령어와 다음명령어 사이의 간격이 줄어듬 -> cycle time이 줄어듬
+
+2. 파이프라인 hazard의 종류는?
+structural hazards
+data hazards
+control hazards
+ 
+2-1 . 정의와 사례를 제시하시오. 
+structural hazards - 다른 명령어로 동시에 같은하드웨어 자원을 사용 
+ex)
+memory
+harvard architecture로 인해 instruction memory, data memory 나눠서 사용
+
+register 
+앞, 뒤로 반으로 나눠서 쓴다
+
+data hazards - data가 준비되기전에 사용
+add, load
+RAW hazard(Read after Write)
+
+control hazards - condition이 측정되기전에 프로그램 control flow가 결정
+bne or beq 
+
+3. forwarding이란 무엇인가?
+fix data hazards by forwarding results as soon as they are available to where they are needed
+ 
+3-1. 어디에서 어디로 forwarding할 수 있는가? 사례를 제시하시오. 
+ALU -> ALU
+DM -> ALU
+
+---
+12-2
+1. to-ALU 포워딩의 2가지 세부 방식은 무엇인가? 
+EX Forwarding: ALU to ALU ( R to R result forwarding)
+MEM forwarding: DM to ALU ( load use hazard)
+ 
+2. 위 1번의 2가지 방식이 충돌될 경우 어떻게 처리되어야 하는가?
+가장 최근에꺼를 update
+ 
+3. Load-Use 해저드의 경우 추가적으로 1 cycle stall이 발생하는 이유는 무엇인가?
+forwarding해도 피할수없음, 1 stall 후에 다시 작동
+ 
+4. stall 연산의 구현절차 2step을 설명하시오.
+1. prevent the instructions in the IF and ID stages from progressing down the pipeline - done by preventing the pc register and the IF/ID pipeline register from changing
+
+2 Insert a "bubble" between lw instruction ( ex stage) and the load-use instruction ( next inst. in the id stage)
+ 
+5. to-MEM 포워딩은 언제 발생하는가?
+LW-SW
+loads immediately followed by stores
 ```
