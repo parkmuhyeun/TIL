@@ -110,3 +110,84 @@ Out-place-Update
 - If no free page? : Garbage Collection
 
 ![](./img/CMS_8.PNG)
+
+### Address Mapping in SSD
+Address mapping in SSD has to translate corresponding block and page, cascadingly
+
+![](./img/CMS_9.PNG)
+
+## FTL (Flash Translationn Layer)
+How to use and manage the flash memory as a new storage system by Operating System, campared to traditional storages(HDD), concerning these unique feature of Flash Memory?
+- (choice 1) Use file systems for flash memory
+- (choice 1) Use FTL
+
+### FTL implementation
+To provide unique feature of SSD, FTL manages overall operations of SSD
+
+![](./img/CMS_10.PNG)
+
+- FTL is embedded in products as a hardware
+    - SD card, USB drives etc.
+- FTL exists in a software layer as a part of OS
+
+### SLC, MLC, and TLC in SSD
+- The number of bit that cab e stored in each cell
+    - SLC: 1 bit, MLC : 2bits, TLC: 3bits
+- As the number of bit is increased
+    - Increased density naturally
+    - Decreased lifetime -> hard to control voltage level
+
+![](./img/CMS_11.PNG)
+
+## The "Memory Wall"
+Processor vs DRAM speed disparity continues to grow
+- Physical time to access DRAM is reduced but clock speed(CPU portion) enhancement is much faster. So #clocks to access memory is increased.
+
+Good memory hierarchy(cache) design is increasingly important to overall performance
+
+### The Memory Hierarchy Goal
+Large memories are slow and fast memories are small
+
+How do we create a memory that gives the illusion of being large, fast and even cheap?
+- with hierarchy
+- with parallellism
+
+### Memory Hierarchy & Locality
+Take advantage of the principle of locality to present the user with as much memory as is available in the cheapest technology at the speed offered by the fastest technology
+
+![](./img/CMS_12.PNG)
+
+### Principle of Locality
+Programs access a small proportion of their address space at any time
+- Temporal locality
+    - most recently accesed data
+- Spatial locality
+    - Items near those accessed recently
+
+### Taking Advantage of Locality
+- Memory hierarchy
+- Store everything on secondary storage disk
+- Copy recently accessed (and nearby) items from disk to smaller DRAM memory
+- Copy more recently accessed (and nearby) items from DRAM to smaller SRAm memory
+- Copy to Cache and Registers, and so on...
+
+### Two Major Memory Performance Metrics
+- Latency: Time to access one word
+    - Access Time: time to take a read(or write) request
+    - Cycle Time: time between successive(read or write) request
+        - Access Time + Required time to trigger next request
+    - Usually cycle time > access time
+- Bandwith: How much data can be supplied per time unit
+    - width of the data channel * the rate at which it can be used
+
+### The Memory Hierarchy: Terminology
+- Block (or line): the minimum unit of information that is present in a cache
+- Hit Rate: the fraction of memory access found in a level of the memory hierarchy
+    - Hit Time: Time to access data for that level, which consists of "Time to determine hit/miss + Time to access the block"
+- Miss Rate: the fraction of memory access not found in a level of the memory hierarchy => "1 - (Hit Rate)"
+- Miss Peanlty: time to replace a block in that level with the corresponding block from a lower level, which consists of Time to access the block in the lower level + Time to transmit that block to the level that experienced the miss + Time to inser the block in that level(replace 일어날때도 있음) + Time to pass the block to the requestor
+
+Hit Time << Miss Penalty (Miss penalty is much longer than hit time)
+
+On the contrary, it is very important that your Hit Time to be much smaller than your miss penalty
+- That is, if hit time is long, the relative impact of miss penalty is small, and there is no need to build and maintain a memory hierarchy
