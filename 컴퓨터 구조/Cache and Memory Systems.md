@@ -191,3 +191,81 @@ Hit Time << Miss Penalty (Miss penalty is much longer than hit time)
 
 On the contrary, it is very important that your Hit Time to be much smaller than your miss penalty
 - That is, if hit time is long, the relative impact of miss penalty is small, and there is no need to build and maintain a memory hierarchy
+
+---
+
+## How is the Hierarchy Managed?
+registres <-> cache
+- by the compiler
+- by the CPU
+
+cache <-> main memory
+- by the cache controller hardware
+ 
+main memory <-> disks
+- by the operating system
+
+## Cache Basics
+Direct mapped
+- Each memory block is mapped to exactly one block in the cache
+    - Therefore, lots of lower level blocks must share blocks in the cache
+- Have a tag associated with each cache block that contains the address information(the upper portion of the address) required to identify the block
+- Address mapping
+
+### Caching: A Simple Example
+
+![](./img/CMS_13.PNG)
+
+### Direct Mapped Cache example 2
+
+![](./img/CMS_14.PNG)
+
+## Miss Rate vs Block Size vs Cache Size
+
+![](./img/CMS_15.PNG)
+
+### Evaluation: Block Size Considerations
+Larger blocks should reduce miss rate
+- Increased cache line (multi-word line)
+- Due to spatial locality
+
+But in a fixed-sized cache,
+- Larger blocks => fewer of them
+    - More competition => increased miss rate (capacity miss)
+    - This effect appears earlier as the cache size is small
+- Also, too much larger blocks => pollution within the block
+
+Larger block also suffers larger miss penalty
+- Because the line size increased
+- Can override benefit of reduced miss rate
+- (advanced) early restart and critical-word first can help
+
+## Cache Field Sizes (Hardware Overhead)
+The number of bits in a cache includes both the storage for data and for tags(c.f., not index)
+- The total number of bits in a direct-mapped cache is 2^n * (block size + tag field size + valid/dirty or any control field)
+
+## Handling Cache Hits
+Read hits(I$ and D$)
+
+Write hits (D$ only): write through vs. write back
+- require the cache and memory to be consisetent(write through)
+    -  always write the data into both the  cache block and the next level in the memory hierarchy
+    - writes run at the speed of the next level in the memory hierarchy - so slow - or can use a write buffer and stall only if the write buffer is full
+    - Simple hardware, main memory is always up-to-date
+- allow cache and memory to be inconsistent(write back)
+    - write the data only into the cache block
+    - write-back the cache block to the next level in the memory hierarchy when that cache block is "evicted"
+    - need a dirty bit for each data cache block to tell if it needs to be written back to mememory when it is evicted - can also use a write buffer to help write of dirty blocks to lower level memory
+
+## Sources of Cache Misses (3 Cs)
+- Compulsory:
+    - First access to a block
+    - If you are going to run "millions" of instruction, compulsory misses are insignificant
+    - Solution: increase block size
+- Capacity:
+    - Cache cannot contain all blocks accessed by the program
+    - Solution: increase cache size
+- Conflict(collision):
+    - Multiple memory locations mapped to the same cache location
+    - Solution 1: increase cache size
+    - Solution 2: increase associativity
