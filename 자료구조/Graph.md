@@ -272,3 +272,94 @@ void allcosts (int cost[ ][MAX_V], int distance[][MAX_V], int n)
                  distance[i][j] = distance[i][k] + distance[k][j];
 }
 ```
+
+## 작업 네트워크(Activity Networks)
+- 작업(Activity)
+    - 부분 프로젝트
+    - 각각의 작업들이 완료되어야 전체 프로젝트가 성공적으로 완료
+
+- 두 가지 종류의 네트워크
+    - Activity on Vertex (AOV) Networks
+        - 작업을 정점으로 표현한 방향성 그래프
+        - 에지는 작업들간의 선후 관게를 표현
+    - Activity on Edge (AOE) Networks
+        - 에지가 작업을 표현(에지의 가중치: 작업의 소요시간)
+        - 정점은 작업의 완료를 나타내는 사건(event)를 의미
+
+### AOV Network
+- AOV Network: Digraph G (vertex = 작업, edge = 작업들 간의 선행 관계)
+- u에서 v까지 방향 경로(directed path)가 존재할 경우
+    - u = predecessor of v, v = successor of u
+- Immediate Predecessor (Successor): <u, v>
+- Partial Order: transitive이며 irreflexive한 선행 관계
+- Topological Order: vertex들 간의 선행 관계를 고려하여 모든 vertex의 선형 순서를 정의
+
+Topological Sort
+- 작업들 간에는 partial order만 존재할 수 있으므로, topological order는 여러 개 존재 가능
+
+### AOV Network의 표현
+- 인접 리스트로 표현
+    - 임의의 정점이 선행 정점을 갖는지 조사
+    - 각 정점에 대해 바로 앞의 선행 정점의 수를 나타내는 count field 저장
+- 정점과 그에 연결된 모든 에지들을 삭제
+    - 삭제되는 에지에 연결된 정점의 count를 1감소
+    - count가 0인 정점들은 스택이나 큐에 저장
+
+```c
+struct node {
+    int vertex;
+    struct node *link;
+};
+typedef struct {
+    int count;
+    struct node *link;
+} hdnode;
+hdnode graph[MAX_VERTICES];
+
+void topSort(hdnode graph[], int n)
+{
+    int i, j, k, top;
+    struct node *ptr;
+
+    top = -1; // Predecessor가 없는 vertex들의 stack 구성
+    for (i = 0; i < n; i++)
+        if (!graph[i].count) { graph[i].count = top; top = i; } // push(i)
+
+    for (i = 0; i < n; i++)
+        if (top == -1) { fprintf(stderr, "Network has a cycle.\n"); exit(1); }
+    else {
+        j = top; top = graph[top].count; // pop()
+        printf("v%d, ", j);
+        for (ptr = graph[j].link; ptr != NULL; ptr = ptrlink) {
+            k = ptrvertex; // Successor vertex들의 count 감소
+            graph[k].count--;
+            if (!graph[k].count) { // 새로운 vertex를 stack에 삽입
+                graph[k].count = top; // push(k)
+                top = k;
+} } } }
+```
+
+### AOE Network
+AOE Network의 정의
+- 에지는 작업을 표현(에지의 가중치: 작업의 소요시간)
+- 정점은 작업의 완료를 나타내는 사건(event)를 의미
+    - 정점에서 나가는 작업은 사건이 발생하기 전까지는 시작될 수 없다.
+
+### AOE Network에서 Critical Path
+- 임계 경로(Critical Path)
+    - 시작 vertex에서 종료 vertex까지 가장 긴 경로
+    - 병목 현상의 원인이 됨
+- 임계 작업을 구하는 알고리즘
+    - 각 작업이 시작할 수 있는 가장 빠른 시간 (early time)을 구한다.
+    - 프로젝트 기간을 증가시키지 않으면서 작업이 시작될 수 있는 가장 나중 시간(late time)을 구한다
+    - 정점의 earlist time과 lastest time을 먼저 구한 후, 이를 이용하여 각 작업의 early time과 late time을 구한다
+        - Topologcial sort 알고리즘을 이용하여 정점의 earliest time과 latest time을 계산
+        - 임계 작업: early time = late time 인 작업
+        - early(i) = earliest[k]
+        - late(i) = latest[I] - duration of a(i)
+
+### Earliest Time의 계산
+if (earliest[k] < earliest[j] + ptr->duration) earliest[k] = earliest[j] + ptr->duration
+
+### Latest Times의 계산
+if (latest[k] > latest[j] – ptr->duration) latest[k] = latest[j] – ptrduration
