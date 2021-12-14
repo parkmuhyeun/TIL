@@ -4,6 +4,79 @@
 ---
 컴퓨터구조 Processor Architecture(review)
 ```
+Processor Architecture
+
+PART A
+MIPS Processor Architecture and Pipeline Implementation
+
+CPU performance factors
+Logic Design Basics
+-Combinational element
+-State elements
+Simple Instruction Execution Step
+Design Principles
+Clocking Methodologies
+- level sensitive latch
+- edge-triggered flip-flops
+Fetching Instructions
+Decoding Instructions
+Executing R Format Operations
+Executing Load and Store Operations
+Executing Branch Operations
+Executing Jump Operations
+Creating a Single Datapath from the Parts
+Multiplexor Insertion(ALUSrc, MemtoReg)
+Clock Distribution
+Adding the Branch Portion(PCSrc)
+adding the Control
+Complete Single Cycle Datapath
+Complete Datapath with Control Unit
+R-type Instruction Data/Control Flow
+I-type “Load” Instruction Data/Control Flow
+I-type Branch Instruction Data/Control Flow
+Adding J-type Jump Inst
+ALU Control, Con’t
+Instruction Critical Paths
+Single Cycle Disadvantages & Advantages
+Pipelining Analogy
+The Five Stages of Load Instruction
+A Pipelined MIPS Processor
+Pipeline Speedup
+Pipelining the MIPS ISA(Because of mostly RICS feactures)
+MIPS Pipeline Datapath Additions/Mods
+MIPS Pipeline Control Path Modifications
+Multicycle Advantages & Disadvantages
+Other Pipeline Structures Are Possible
+63
+---
+
+PART B
+Pipeline Hazards
+
+Can Pipelining Get Us Into Trouble?
+- structural hazards
+- data hazards
+- control hazards
+How About Register File Access (structural hazard) ?
+Register Usage Can Cause Data Hazards (ADD)
+Loads Can Cause Data Hazards (LW)
+Branch Cause Control Hazards (BNE or BEQ)
+One Way to “Fix” a Data Hazard (stall)
+Another Way to “Fix” a Data Hazard
+Data Forwarding (or Bypassing)
+- EX forwarding ( ALU -> ALU)
+- MEM forwarding(DM -> ALU)
++ “DM-to-DM” forwarding LW-> SW)
+Data Forwarding Control Conditions
+Corrected Data Forwarding Control Conditions
+Datapath with Forwarding Hardware(to-ALU forwarding)
+Forwarding with Load-use Data Hazards (LW-USE)
+Load-use Hazard Detection Unit(DM-to-ALU forwarding)
+Hazard/Stall Hardware(How to implement stall)
+Memory-to-Memory Copies (LW-SW)
+93
+---
+
 9-1
 1. 순차 회로의 조합 회로의 차이점은 무엇인가?
 combinational element
