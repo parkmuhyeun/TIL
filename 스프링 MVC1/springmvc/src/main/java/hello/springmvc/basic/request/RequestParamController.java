@@ -15,6 +15,7 @@ import java.util.Map;
 
 @Slf4j
 @Controller
+@Dynamic
 public class RequestParamController {
 
     @RequestMapping("/request-param-v1")
