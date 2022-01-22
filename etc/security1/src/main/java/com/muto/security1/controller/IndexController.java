@@ -1,8 +1,13 @@
 package com.muto.security1.controller;
 
 import com.muto.security1.config.auth.PrincipalDetails;
+import com.muto.security1.config.oauth.PrincipalOauth2UserService;
+import com.muto.security1.config.token.CookieUtil;
+import com.muto.security1.config.token.JwtTokenProvider;
+import com.muto.security1.config.token.RedisUtil;
 import com.muto.security1.domain.User;
 import com.muto.security1.repository.UserRepository;
+import com.nimbusds.oauth2.sdk.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,11 +15,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,6 +33,10 @@ public class IndexController {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final CookieUtil cookieUtil;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final RedisUtil redisUtil;
+    private final PrincipalOauth2UserService principalOauth2UserService;
 
     @ResponseBody
     @GetMapping("/test/login")
@@ -46,6 +61,25 @@ public class IndexController {
 
         System.out.println("oauth2User: " + oauth.getAttributes());
         return "OAuth 세션 정보 확인하기";
+    }
+
+
+    @PostMapping("/api/v1/auth/login")
+    public String login(@RequestBody String username,
+                        HttpServletRequest req,
+                        HttpServletResponse res) {
+        try {
+            System.out.println("prc");
+//            final String token = jwtTokenProvider.createAccessToken(userDetails.getUser().getUsername(), userDetails.getUser().getRole());
+//            final String refreshJwt = jwtTokenProvider.createRefreshToken(userDetails.getUser().getUsername(), userDetails.getUser().getRole());
+//            Cookie accessToken = cookieUtil.createCookie(JwtTokenProvider.ACCESS_TOKEN_NAME, token);
+//            Cookie refreshToken = cookieUtil.createCookie(JwtTokenProvider.REFRESH_TOKEN_NAME, refreshJwt);
+//            redisUtil.setDataExpire(refreshJwt, userDetails.getUser().getUsername(), JwtTokenProvider.refreshTokenValidTime);
+//            res.addCookie(accessToken);
+//            res.addCookie(refreshToken);
+        } catch (Exception e) {
+        }
+        return "/";
     }
 
     @GetMapping("/")
