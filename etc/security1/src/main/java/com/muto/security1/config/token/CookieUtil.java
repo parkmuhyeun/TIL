@@ -10,7 +10,11 @@ public class CookieUtil {
     public Cookie createCookie(String cookieName, String value){
         Cookie token = new Cookie(cookieName,value);
         token.setHttpOnly(true);
-        token.setMaxAge((int)JwtTokenProvider.accessTokenValidTime);
+        if (cookieName.equals(JwtTokenProvider.ACCESS_TOKEN_NAME)) {
+            token.setMaxAge((int)JwtTokenProvider.accessTokenValidTime);
+        }else{
+            token.setMaxAge((int)JwtTokenProvider.refreshTokenValidTime);
+        }
         token.setPath("/");
         return token;
     }

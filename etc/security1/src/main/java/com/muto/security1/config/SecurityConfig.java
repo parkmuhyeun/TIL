@@ -2,7 +2,6 @@ package com.muto.security1.config;
 
 import com.muto.security1.config.oauth.PrincipalOauth2UserService;
 import com.muto.security1.config.token.JwtAuthenticationFilter;
-import com.muto.security1.config.token.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +11,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -24,6 +22,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final PrincipalOauth2UserService principalOauth2UserService;
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
     @Override
     @Bean
@@ -43,16 +43,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/manager/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')")
                 .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
                 .anyRequest().permitAll()
-                .and()
-                .formLogin()
-                .loginPage("/loginForm")
-                .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/")
+
                 .and()
                 .oauth2Login()
                 .loginPage("/loginForm")
+                .defaultSuccessUrl("/")
                 .userInfoEndpoint()
-                .userService(principalOauth2UserService);//구글 로그인 후에 후 처리
+                .userService(principalOauth2UserService)//구글 로그인 후에 후 처리
+                .and()
+                .successHandler(oAuth2AuthenticationSuccessHandler)
+                .and()
+                .logout()
+                .logoutSuccessUrl("/");
                 //에러 처리시 authenticationEntryPoint
 
 

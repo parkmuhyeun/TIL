@@ -11,6 +11,7 @@ import com.nimbusds.oauth2.sdk.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,6 +38,7 @@ public class IndexController {
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisUtil redisUtil;
     private final PrincipalOauth2UserService principalOauth2UserService;
+    private final AuthenticationManager authenticationManager;
 
     @ResponseBody
     @GetMapping("/test/login")
@@ -64,22 +66,15 @@ public class IndexController {
     }
 
 
-    @PostMapping("/api/v1/auth/login")
-    public String login(@RequestBody String username,
-                        HttpServletRequest req,
-                        HttpServletResponse res) {
-        try {
-            System.out.println("prc");
-//            final String token = jwtTokenProvider.createAccessToken(userDetails.getUser().getUsername(), userDetails.getUser().getRole());
-//            final String refreshJwt = jwtTokenProvider.createRefreshToken(userDetails.getUser().getUsername(), userDetails.getUser().getRole());
-//            Cookie accessToken = cookieUtil.createCookie(JwtTokenProvider.ACCESS_TOKEN_NAME, token);
-//            Cookie refreshToken = cookieUtil.createCookie(JwtTokenProvider.REFRESH_TOKEN_NAME, refreshJwt);
-//            redisUtil.setDataExpire(refreshJwt, userDetails.getUser().getUsername(), JwtTokenProvider.refreshTokenValidTime);
-//            res.addCookie(accessToken);
-//            res.addCookie(refreshToken);
-        } catch (Exception e) {
-        }
+    @PostMapping("/login")
+    public String login() {
         return "/";
+    }
+
+    @ResponseBody
+    @PostMapping("/logoutpr")
+    public String logoutpr() {
+        return "redirect:/";
     }
 
     @GetMapping("/")
