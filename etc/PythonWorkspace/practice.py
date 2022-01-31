@@ -639,7 +639,6 @@
 
 # score_file.close()
 
-import pickle
 # profile_file = open("profile.pickle", "wb")
 # profile = {"이름":"박명수", "나이":30, "취미":["축구", "골프", "코딩"]}
 # print(profile)
@@ -827,30 +826,198 @@ import pickle
 
 # game_over()
 
-class House:
-    # 매물 초기화
-    def __init__(self, location, house_type, deal_type, price, completion_year):
-        self.location = location
-        self.house_type = house_type
-        self.deal_type = deal_type
-        self.price = price
-        self.completion_year = completion_year
+# class House:
+#     # 매물 초기화
+#     def __init__(self, location, house_type, deal_type, price, completion_year):
+#         self.location = location
+#         self.house_type = house_type
+#         self.deal_type = deal_type
+#         self.price = price
+#         self.completion_year = completion_year
 
-    # 매물 정보 표시
-    def show_detail(self):
-        print(self.location, self.house_type, self.deal_type\
-            ,self.price, self.completion_year)
+#     # 매물 정보 표시
+#     def show_detail(self):
+#         print(self.location, self.house_type, self.deal_type\
+#             ,self.price, self.completion_year)
 
 
-h1 = House("강남", "아파트", "매매", "10억", "2010년")
-h2 = House("마포", "오피스텔", "전세", "5억", "2007년")
-h3 = House("송파", "빌라", "월세", "500/50", "2000년")
+# h1 = House("강남", "아파트", "매매", "10억", "2010년")
+# h2 = House("마포", "오피스텔", "전세", "5억", "2007년")
+# h3 = House("송파", "빌라", "월세", "500/50", "2000년")
 
-home_list = []
-home_list.append(h1)
-home_list.append(h2)
-home_list.append(h3)
+# home_list = []
+# home_list.append(h1)
+# home_list.append(h2)
+# home_list.append(h3)
 
-print("총 {0}대의 매물이 있습니다.".format(len(home_list)))
-for home in home_list:
-    home.show_detail()
+# print("총 {0}대의 매물이 있습니다.".format(len(home_list)))
+# for home in home_list:
+#     home.show_detail()
+
+# error handling
+
+# try:
+#     print("나누기 전용 계산기입니다.")
+#     nums = []
+#     nums.append(int(input("첫 번째 숫자를 입력하세요 : ")))
+#     nums.append(int(input("두 번째 숫자를 입력하세요 : ")))
+#     nums.append(int(nums[0] / nums[1]))
+#     print("{0} / {1} = {2}".format(nums[0], nums[1], nums[2]))
+# except ValueError:
+#     print("에러! 잘못된 값을 입력하였습니다.")
+# except ZeroDivisionError as err:
+#     print(err)
+# except Exception as err:
+#     print(err)
+
+# class BigNumberError(Exception):
+#     def __init__(self, msg):
+#         self.msg = msg
+
+#     def __str__(self):
+#         return self.msg
+
+
+# try:
+#     print("한 자리 숫자 나누기 전용 계산기입니다.")
+#     num1 = int(input("첫 번째 숫자를 입력하세요: "))
+#     num2 = int(input("첫 번째 숫자를 입력하세요: "))
+#     if num1 >= 10 or num2 >= 10:
+#         raise BigNumberError("입력값 : {0}, {1}".format(num1, num2))
+#     print("{0} / {1} = {2}".format(num1, num2, int(num1 / num2)))
+# except ValueError:
+#     print("잘못된 값을 입력하였습니다. 한 자리 숫자만 입력하세요.")
+# except BigNumberError as err:
+#     print("에러가 발생하였습니다. 한 자리 숫자만 입력하세요.")
+#     print(err)
+# finally:
+#     print("계산기를 이용해 주셔서 감사합니다.")
+
+# class SoldOutError(Exception):
+#     def __init__(self, msg):
+#         self.msg = msg
+
+#     def __str__(self):
+#         return self.msg
+
+# chicken = 10
+# waiting = 1
+# while(True):
+#     print("[남은 치킨 : {0}]".format(chicken))
+
+#     try:
+#         if chicken == 0:
+#             raise SoldOutError("재고가 소진되어 더 이상 주문을 받지 않습니다.")
+#         order = int(input("치킨 몇 마리 주문하시겠습니까?"))
+#         if order < 1 :
+#             raise ValueError
+
+#         if order > chicken:
+#             print("재료가 부족합니다.")
+#         else:
+#             print("[대기번호 {0}] {1} 마리 주문이 완료되었씁니다." \
+#                 .format(waiting, order))
+#             waiting += 1
+#             chicken -= order
+#     except ValueError:
+#         print("잘못된 값을 입력하였습니다.")
+#     except SoldOutError as err:
+#         print(err)
+#         break
+        
+
+# module
+
+# import theater_module
+# theater_module.price(3)
+# theater_module.price_morning(4)
+# theater_module.price_soldier(5)
+
+# import theater_module as mv
+# mv.price(3)
+# mv.price_morning(4)
+# mv.price_soldier(5)
+
+# from theater_module import *
+# price(3)
+# price_morning(4)
+# price_soldier(5)
+
+# from theater_module import price, price_morning
+# price(5)
+# price_morning(6)
+
+# from theater_module import price_soldier as price
+# price(5)
+
+# import travel.thailand
+# trip_to = travel.thailand.ThailandPackage()
+# trip_to.detail()
+
+# from travel.thailand import ThailandPackage
+# trip_to = ThailandPackage()
+# trip_to.detail()
+
+# from travel import vietnam
+# trip_to = vietnam.VietnamPackage()
+# trip_to.detail()
+
+# from random import *
+# from travel import *
+# trip_to = vietnam.VietnamPackage()
+# trip_to.detail()
+
+# from travel import *
+# trip_to = thailand.ThailandPackage()
+# trip_to.detail()
+
+# import inspect
+# import random
+# print(inspect.getfile(random))
+# print(inspect.getfile(thailand))
+
+# 내장함수
+
+# language = input("무슨 언어를 좋아하세요?")
+# print("{0}은 아주 좋은 언어입니다!".format(language))
+
+# dir : 어떤 객체를 넘겨줬을 떄 그 객체가 어떤 변수와 함수를 가지고 있는지 표시
+# print(dir())
+# import random # 외장 함수
+# print(dir())
+# import pickle
+# print(dir())
+
+# print(dir(random))
+
+# lst = [1, 2, 3]
+# print(dir(lst))
+
+# glo : 경로 내의 폴더 / 파일 목록 조회 (윈도우 dir)
+# import glob
+# print(glob.glob("*.py"))
+
+# os : 운영체제에서 제공하는 기본 기능
+# import os
+# print(os.getcwd())
+
+# folder = "sample_dir"
+
+# if os.path.exists(folder):
+#     print("이미 존재하는 폴더입니다.")
+#     os.rmdir(folder)
+#     print(folder, "폴더를 삭제하였습니다.")
+# else:
+#     os.makedirs(folder) # 폴더 생성
+#     print(folder, "폴더를 생성하였습니다.")
+
+# 시간 관련 함수
+# import time
+# print(time.localtime())
+# print(time.strftime("%Y-%m-%d %H:%M:%S"))
+
+# import datetime
+# print("오늘 날짜는 ", datetime.date.today())
+
+import byme
+byme.sign("parkmuhyeun")
