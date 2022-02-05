@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>댓글 Test</title>
+    <style>
+        .indent_text {
+            text-indent: 50px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <form th:action="@{/comment}" method="post">
+        <input type="textarea" name="content" placeholder="댓글 입력">
+        <button type="submit">작성</button>
+    </form>
+</div>
+<div>
+    댓글창
+    <div th:each="comment : ${comments}">
+        <div th:if="${comment.getGroupOrder() > 0}" class="indent_text">
+            <div>
+                <span th:text="${comment.content}"></span>
+                <button id="btn_recomment" th:onclick="recomment_click([[${comment.id}]]);">대댓글</button>
+            </div>
+            <div th:text="${comment.createDateTime}"></div>
+            <div class="indent_text" th:id="${comment.id}" style="display: none">
+                <form th:action="@{/recomment(id=${comment.id})}" method="post">
+                    <input type="textarea" name="content" placeholder="대댓글 입력">
+                    <button type="submit">작성</button>
+                </form>
+            </div>
+        </div>
+        <div th:if="${comment.getGroupOrder() == 0}">
+            <div>
+                <span th:text="${comment.content}"></span>
+                <button id="btn_recomment" th:onclick="recomment_click([[${comment.id}]]);">대댓글</button>
+            </div>
+            <div th:text="${comment.createDateTime}"></div>
+            <div class="indent_text" th:id="${comment.id}" style="display: none">
+                <form th:action="@{/recomment(id=${comment.id})}" method="post">
+                    <input type="textarea" name="content" placeholder="대댓글 입력">
+                    <button type="submit">작성</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
+<script th:inline="javascript">
+    function recomment_click(id) {
+        if (document.getElementById(id).style.display == 'none') {
+            document.getElementById(id).style.display = 'block';
+        } else {
+            document.getElementById(id).style.display = 'none';
+        }
+    }
+</script>
