@@ -61,3 +61,71 @@ for h in range(n+1):
 
 print(cnt)
 ```
+
+```python
+input_data = input()
+
+x = int(input_data[1])
+y = ord(input_data[0])-96
+
+dx = [-1, 1, -2, -2, -1, 1, 2, 2]
+dy = [-2, -2, -1, 1, 2, 2, -1, 1]
+
+cnt = 0
+for i in range(8):
+  nx = x + dx[i]
+  ny = y + dy[i]
+  if nx >= 1 and ny >= 1 and nx <= 8 and ny <= 8:
+    cnt += 1
+
+print(cnt)
+```
+
+```python
+n, m = map(int, input().split())
+a, b, d = map(int, input().split())
+
+arr = [[0] * m for _ in range(n)]
+
+for i in range(n):
+  row = list(map(int, input().split()))
+  for j in range(m):
+    arr[i][j] = row[j]
+
+# 북, 동, 남, 서
+dx = [-1, 0, 1, 0]
+dy = [0, 1, 0, -1]
+
+res = 1
+x = a
+y = b
+ro = 0
+arr[x][y] = 2
+
+while True:
+  d = (d+3) % 4
+  nx = x + dx[d]
+  ny = y + dy[d]
+  if arr[nx][ny] != 0:
+    # 반시계 방향으로 방향만 회전
+    ro += 1
+  else:
+    # 반시계 방향으로 전진
+    res +=1
+    arr[nx][ny] = 2
+    x = nx
+    y = ny
+    ro = 0
+  if ro == 4:
+    # 뒤로
+    bx = x + dx[(d+2) % 4]
+    by = y + dy[(d+2) % 4]
+
+    if arr[bx][by] == 1:
+      break
+    x = bx
+    y = by
+    ro = 0
+
+print(res)
+```
