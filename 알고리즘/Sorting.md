@@ -91,3 +91,80 @@ def quick_sort(array):
 
 print(quick_sort(array)) # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 ```
+
+## 계수 정렬(Count Sort)
+계수 정렬 알고리즘은 특정한 조건이 부합할 때만 사용할 수 있지만 매우 빠른 정렬 알고리즘. 데이터의 개수가 N, 데이터 중 최댓값이 K일 때, 계수 정렬은 최악의 경우에도 수행 시간 O(N+K)를 보장한다. 계수 정렬을 이용할 때는 모든 범위를 담을 수 있는 크기의 리스트를 선언 해야 하기 때문에 가장 작은 데이터와 가장 큰 데이터의 차이가 너무 크다면 사용할 수 없다. 동작 방식은, 먼저 가장 큰 데이터와 가장 작은 데이터의 범위가 모두 담길 수 있도록 하나의 리스트를 생성한다. 그다음 데이터를 하나씩 확인하며 데이터의 값과 동일한 인덱스의 데이터를 1씩 증가시키면 계수정렬이 완료 된다.
+
+```python
+# 모든 원소의 값이 0보다 크거나 같다고 가정
+array = [7, 5, 9, 0, 3, 1, 6, 2, 9, 1, 4, 8, 0, 5, 2]
+
+# 모든 범위를 포함하는 리스트 선언(모든 값은 0으로 초기화)
+count = [0] * (max(array)+1)
+
+for i in range(len(array)):
+    count[array[i]] += 1 # 각 데이터에 해당하는 인덱스의 값 증가
+
+for i in range(len(count)):
+  for j in range(count[i]):
+    print(i, end=' ');
+```
+
+## 파이썬의 정렬 라이브러리
+파이썬은 기본 정렬 라이브러리인 sorted() 함수를 제공한다. sorted()는 퀵 정렬과 동작 방식이 비슷한 병합 정렬을 기반으로 만들어졌는데, 병합 정렬은 일반적으로 퀵 정렬보다 느리지만 최악의 경우에도 시간 복잡도 O(NlogN)을 보장한다는 특징이 있다.
+
+```python
+array = [7, 5, 9, 0, 3, 1, 6, 2, 4, 8]
+
+result =sorted(array)
+print(result) # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+```
+
+## 관련 문제
+
+```python
+n = int(input())
+
+array = []
+for i in range(n):
+  m = int(input())
+  array.append(m)
+
+array.sort(reverse = True)
+
+for i in array:
+  print(i, end = ' ')
+```
+
+```python
+n = int(input())
+
+array = []
+for i in range(n):
+  name, score = input().split()
+  array.append((name, int(score)))
+
+array.sort(key=lambda array:array[1])
+
+for student in array:
+  print(student[0], end = ' ')
+```
+
+```python
+n, k = map(int, input().split())
+
+a = list(map(int, input().split()))
+b = list(map(int, input().split()))
+
+a.sort()
+b.sort(reverse=True)
+
+for i in range(k):
+  if a[i] < b[i]:
+    a[i], b[i] = b[i], a[i]
+  else:
+    break
+
+print(sum(a))
+```
+
