@@ -89,3 +89,53 @@ input_data = sys.stdin.readline().rstrip() # Hello World
 print(input_data) # Hello World
 
 ```
+
+## 관련 문제
+
+```python
+n = int(input())
+narr = list(map(int, input().split()))
+narr.sort()
+m = int(input())
+marr = list(map(int, input().split()))
+
+def binary_search(arr, target, start, end):
+  while start <= end:
+    mid = (start + end) // 2
+    if arr[mid] == target:
+      return "yes"
+    elif arr[mid] > target:
+      end = mid -1
+    else:
+      start = mid +1
+  return "no"
+
+
+for i in range(len(marr)):
+  print(binary_search(narr, marr[i], 0, len(narr)-1), end=' ')
+```
+
+```python
+def binary_search(arr, target, start, end):
+  while start <= end:
+    sum = 0
+    mid = (start + end) // 2
+    for i in range(len(arr)):
+      if arr[i] > mid:
+        sum += arr[i] - mid
+    if sum == target:
+      return mid
+    elif sum > target:
+      start = mid + 1
+    else:
+      end = mid - 1
+
+n, m = map(int, input().split())
+arr = list(map(int, input().split()))
+
+max = max(arr)
+
+h = binary_search(arr, m, 0, max)
+
+print(h)
+```
