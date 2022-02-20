@@ -81,7 +81,7 @@ while x != 1:
 print(d[1])
 
 
----
+# ------------------
 
 x = int(input())
  
@@ -97,4 +97,57 @@ for i in range(2, x+1):
     d[i] = min(d[i], d[i//2] + 1)
 
 print(d[x])
+```
+
+```python
+x = int(input())
+ 
+arr = list(map(int, input().split()))
+d = [0] * x
+d[0] = arr[0]
+d[1] = max(arr[0], arr[1])
+
+for i in range(2, x):
+  d[i] = max(d[i-1], d[i-2] + arr[i])
+
+print(d[x-1])
+```
+
+```python
+x = int(input())
+ 
+d = [0] * (x+1)
+d[1] = 1
+d[2] = 3
+
+for i in range(3, x+1):
+  d[i] = (d[i-1] + 2 * d[i-2]) % 796796
+
+print(d[x]) 
+```
+
+```python
+n, m  = map(int, input().split())
+coin = []
+
+for i in range(n):
+  coin.append(int(input()))
+
+d = [-1] * (m+1)
+
+d[0] = 1
+for i in range(m+1):
+  for j in range(n):
+    if d[i] != -1:
+      if i+coin[j] > m:
+        continue
+      if d[i+coin[j]] == -1:
+        d[i+coin[j]] = d[i] + 1
+      else:
+        d[i+coin[j]] = min(d[i+coin[j]], d[i] + 1)
+
+if d[m] == -1:
+  print(d[m])
+else:
+  print(d[m]-1)
 ```
