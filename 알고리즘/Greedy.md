@@ -74,3 +74,38 @@ while True:
 
 print(count)
 ```
+
+```python
+n = int(input())
+mo = list(map(int, input().split()))
+mo.sort()
+
+res = 0
+group = 0
+go = 0
+
+for i in range(n):
+  group = mo[i]
+  go += 1
+
+  if group == go:
+    res += 1
+    go = 0
+
+print(res)
+```
+
+```python
+s = input()
+l = len(s)
+
+res = int(s[0])
+for i in range(1, l):
+  num = int(s[i])
+  if num <= 1 or res <= 1:
+    res += num
+  else:
+    res *= num
+
+print(res)
+```
