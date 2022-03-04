@@ -109,3 +109,43 @@ for i in range(1, l):
 
 print(res)
 ```
+
+```python
+s = input()
+
+pre1 = int(s[0])
+res1 = 0
+
+pre2 = int(s[0])
+res2 = 0
+for i in range(1, len(s)):
+  if pre1 == 1 and pre1 != int(s[i]):
+    res1 += 1
+  pre1 = int(s[i])
+  
+  if pre2 == 0 and pre2 != int(s[i]):
+    res2 += 1
+  pre2 = int(s[i])
+
+if int(s[len(s)-1]) == 1:
+  res1 += 1
+else:
+  res2 += 1
+
+print(min(res1, res2))
+```
+
+```python
+n = int(input())
+coins = list(map(int, input().split()))
+coins.sort()
+
+target = 1
+
+for coin in coins:
+  if target < coin:
+    break
+  target += coin
+
+print(target)
+```
