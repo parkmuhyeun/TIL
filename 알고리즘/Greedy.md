@@ -149,3 +149,109 @@ for coin in coins:
 
 print(target)
 ```
+
+```python
+n, m = map(int, input().split())
+
+balls = list(map(int, input().split()))
+
+res = 0
+for i in range(n):
+  for j in range(i+1, n):
+    if balls[i] != balls[j]:
+      res += 1
+
+print(res)
+```
+
+```python
+import heapq
+
+def solution(food_times, k):   
+    
+    if k >= sum(food_times):
+        return -1
+    
+    q = []
+    for i in range(len(food_times)):
+        heapq.heappush(q, (food_times[i], i+1))
+        
+    sum_value = 0
+    previous = 0
+    length = len(food_times)
+    
+    while sum_value + ((q[0][0] - previous) * length) <= k:
+        now = heapq.heappop(q)[0]
+        sum_value += (now - previous) * length
+        length -= 1
+        previous = now
+        
+    result = sorted(q, key = lambda x:x[1])
+    return result[(k-sum_value) % length][1]
+```
+
+```python
+n = int(input())
+
+res = 0
+
+while n >= 0:
+  if n % 5 == 0:
+    res += (n // 5)
+    print(res)
+    break
+  n -= 3
+  res += 1
+else:
+  print(-1)
+```
+
+```python
+n = int(input())
+line = list(map(int, input().split()))
+
+line.sort()
+
+cur = 0
+sum = 0
+for x in line:
+  cur += x
+  sum += cur
+print(sum)
+
+---
+
+n = int(input())
+line = list(map(int, input().split()))
+
+line.sort()
+
+sum = 0
+for i in range(n):
+  for j in range(i+1):
+    sum += line[j]
+print(sum)
+```
+
+```python
+n, k = map(int, input().split())
+coins = []
+for _ in range(n):
+  coin = int(input())
+  coins.append(coin)
+
+coins.sort(reverse = True)
+
+res = 0
+
+for x in coins:
+  if k == 0:
+    break
+  if x > k:
+    continue
+  cnt = k // x
+  res += cnt
+  k -= cnt * x
+
+print(res)
+```
