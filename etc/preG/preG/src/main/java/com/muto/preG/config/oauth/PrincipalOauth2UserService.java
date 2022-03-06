@@ -28,7 +28,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         OAuth2UserInfo oAuth2UserInfo = null;
 
         String FlatForm = userRequest.getClientRegistration().getRegistrationId();
-        classifyFlatForm(oAuth2User, FlatForm);
+        oAuth2UserInfo = classifyFlatForm(oAuth2User, FlatForm);
 
         Account account = getAccount(oAuth2UserInfo);
 
@@ -56,14 +56,15 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         return account;
     }
 
-    private void classifyFlatForm(OAuth2User oAuth2User, String FlatForm) {
-        OAuth2UserInfo oAuth2UserInfo;
+    private OAuth2UserInfo classifyFlatForm(OAuth2User oAuth2User, String FlatForm) {
         if (FlatForm.equals("google")) {
-            oAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
+            return new GoogleUserInfo(oAuth2User.getAttributes());
         } else if (FlatForm.equals("naver")) {
-            oAuth2UserInfo = new NaverUserInfo((Map) oAuth2User.getAttributes().get("response"));
+            return new NaverUserInfo((Map) oAuth2User.getAttributes().get("response"));
         } else if (FlatForm.equals("kakao")) {
-            oAuth2UserInfo = new KakaoUserInfo(oAuth2User.getAttributes());
+            return new KakaoUserInfo(oAuth2User.getAttributes());
         }
+        // TODO 에러처리
+        return null;
     }
 }

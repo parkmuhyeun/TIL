@@ -1,5 +1,6 @@
 package com.muto.preG.account;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Builder @Getter
-@NoArgsConstructor
+@NoArgsConstructor @AllArgsConstructor
 public class Account {
 
     @Id @GeneratedValue
