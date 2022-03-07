@@ -255,3 +255,66 @@ for x in coins:
 
 print(res)
 ```
+
+```python
+n = int(input())
+room = []
+for i in range(n):
+	s, e = map(int, input().split())
+	room.append((s, e))
+room.sort(key=lambda x: (x[1], x[0]))
+res = end = 0
+for s, e in room:
+	if s >= end:
+		res += 1
+		end = e
+print(res)
+```
+
+```python
+s = input().split("-")
+num = []
+for i in s:
+  sum = 0
+  arr = i.split("+")
+  for j in arr:
+    sum += int(j)
+  num.append(sum)
+res = num[0]
+for i in range(1, len(num)):
+  res -= num[i]
+print(res)
+```
+
+```python
+money = 1000 - int(input())
+arr = [500, 100, 50, 10, 5, 1]
+res = 0
+for i in arr:
+  if money == 0:
+    break
+  if money < i:
+    continue
+  n = money // i
+  money -= i * n
+  res += n
+print(res)
+```
+
+```python
+n = int(input())
+rope = []
+for _ in range(n):
+  l = int(input())
+  rope.append(l)
+rope.sort(reverse = True)
+
+res = 0
+cnt = 0
+for i in rope:
+  cnt += 1
+  val = i * cnt
+  if res < val:
+    res = val
+print(res)
+```
