@@ -2,6 +2,8 @@ package com.muto.preG.config;
 
 import com.muto.preG.account.PrincipalDetails;
 import com.muto.preG.token.CookieService;
+import com.muto.preG.token.RefreshToken;
+import com.muto.preG.token.TokenRepository;
 import com.muto.preG.token.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -18,6 +20,8 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
+    private final AES256 aes256;
+    private final TokenRepository tokenRepository;
     private final TokenService tokenService;
     private final CookieService cookieService;
 
@@ -27,10 +31,18 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         final String token = tokenService.createAccessToken(userDetails.getAccount().getUsername(), "ROLE_USER");
         final String refreshJwt = tokenService.createRefreshToken(userDetails.getAccount().getUsername(), "ROLE_USER");
-        Cookie accessToken = cookieService.createCookie(TokenService.ACCESS_TOKEN_NAME, token);
-        Cookie refreshToken = cookieService.createCookie(TokenService.REFRESH_TOKEN_NAME, refreshJwt);
-        //TODO DB에 refreshToken 저장
-        response.addCookie(accessToken);
-        response.addCookie(refreshToken);
+        RefreshToken refreshToken = RefreshToken.builder()
+                .token(refreshJwt)
+                .build();
+        Long refreshTokenId = tokenRepository.save(refreshToken).getId();
+        try {
+            String encodedId = aes256.encrypt(refreshTokenId.toString());
+            Cookie accessToken = cookieService.createCookie(TokenService.ACCESS_TOKEN_NAME, token);
+            Cookie encodedIdToken = cookieService.createCookie(TokenService.REFRESH_TOKEN_NAME, encodedId);
+            //TODO DB에 refreshToken 저장
+            response.addCookie(accessToken);
+            response.addCookie(encodedIdToken);
+        } catch (Exception e) {
+        }
     }
 }

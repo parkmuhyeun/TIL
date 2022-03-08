@@ -22,6 +22,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends GenericFilterBean {
 
+    private final
     private final CookieService cookieService;
     private final TokenService tokenService;
 

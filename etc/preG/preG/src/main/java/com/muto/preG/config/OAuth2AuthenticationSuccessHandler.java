@@ -18,6 +18,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
+    private final
     private final TokenService tokenService;
     private final CookieService cookieService;
 
