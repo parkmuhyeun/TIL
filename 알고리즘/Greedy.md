@@ -318,3 +318,53 @@ for i in rope:
     res = val
 print(res)
 ```
+
+```python
+n = list(input())
+n.sort(reverse = True)
+sum = 0
+
+if '0' not in n:
+  print(-1) 
+else:  
+  for i in n:
+    sum += int(i)
+  if sum % 3 != 0:
+    print(-1)
+  else:
+    print(''.join(n))
+```
+
+```python
+n = int(input())
+i = 1
+res = 0
+while True:
+  if n - i >= 0:
+    n = n - i
+    res += 1
+  else:
+    break
+  i += 1
+print(res)
+```
+
+```python
+import sys
+
+t = int(input())
+for _ in range(t):
+  test = []
+  cnt = 1
+  n = int(input())
+  for _ in range(n):
+    s, m = map(int, sys.stdin.readline().split())
+    test.append((s, m))
+  test.sort()
+  max = test[0][1]
+  for i in range(1, n):
+    if max > test[i][1]:
+      cnt += 1
+      max = test[i][1]
+  print(cnt)
+```
