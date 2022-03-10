@@ -368,3 +368,83 @@ for _ in range(t):
       max = test[i][1]
   print(cnt)
 ```
+
+```python
+n = int(input())
+words = []
+for _ in range(n):
+  word = input()
+  words.append(word)
+
+cnt = 9
+num_dict = {}
+
+for i in range(n):
+  for j in range(len(words[i])):
+    if words[i][j] in num_dict:
+      num_dict[words[i][j]] += 10 ** (len(words[i]) - j - 1)
+    else:
+      num_dict[words[i][j]] = 10 ** (len(words[i]) - j - 1)
+
+num_list = list(num_dict.values())
+num_list.sort(reverse = True)
+
+sum = 0
+cnt = 9
+for x in num_list:
+  sum += cnt * x
+  cnt -= 1
+print(sum)
+```
+
+```python
+import heapq
+
+n = int(input())
+card = []
+
+for _ in range(n):
+  size = int(input())
+  card.append(size)
+
+heapq.heapify(card)
+
+answer = 0
+
+if len(card) == 1:
+  print(0)
+else:
+  while True:
+    if len(card) == 1:
+      break
+    sum = heapq.heappop(card) + heapq.heappop(card)
+    answer += sum
+    heapq.heappush(card, sum)
+  print(answer)
+```
+
+```python
+a, b = map(int, input().split())
+res = 1
+flag = False
+while b > a:
+  if a == b:
+    break
+  if b % 2 == 0:
+    b = b // 2
+    res += 1
+  else:
+    val = str(b)
+    if val[len(val)-1] == '1':
+      val = val[:-1]
+      b = int(val)
+      res += 1
+    else:
+      flag = True
+      break
+
+if b < a or flag == True:
+  print(-1)
+else:
+  print(res)
+```
