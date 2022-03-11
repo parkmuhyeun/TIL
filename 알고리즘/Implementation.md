@@ -129,3 +129,66 @@ while True:
 
 print(res)
 ```
+
+```python
+n = input()
+l = len(n)
+left = 0
+right = 0
+
+for i in range(l//2):
+  left += int(n[i])
+for i in range(l//2, l):
+  right += int(n[i])
+
+if left == right:
+  print("LUCKY")
+else:
+  print("READY")
+```
+
+```python
+s = input()
+num = 0
+res = []
+for i in s:
+  if 65 <= ord(i) <= 90:
+    res.append(i)
+  else:
+    num += int(i)
+res.sort()
+print(''.join(res), end='')
+if num != 0:
+  print(num)
+```
+
+```python
+def solution(s):
+    l = len(s)
+    
+    answer = l
+    pre = ''
+    slice = 1
+    while slice <= l//2:
+        cnt = 1
+        res = ""
+        pre = s[0:slice]
+        for j in range(slice, l, slice):
+            if pre == s[j:j+slice]:
+                cnt += 1
+            else:
+                if cnt == 1:
+                    res += pre
+                else:
+                    res += str(cnt) + pre
+                    cnt = 1
+                pre = s[j:j+slice]
+        if cnt == 1:
+            res += pre
+        else:
+            res += str(cnt) + pre
+        answer = min(answer, len(res))
+        slice += 1
+        
+    return answer
+```
