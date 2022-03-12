@@ -192,3 +192,48 @@ def solution(s):
         
     return answer
 ```
+
+```python
+import copy
+
+def solution(key, lock):
+  board = [[0] * (len(lock) * 3) for _ in range(len(lock) * 3)]
+  for i in range(len(lock)):
+    for j in range(len(lock)):
+      board[len(lock) + i][len(lock) + j] = lock[i][j]
+  start = len(lock) - len(key) + 1
+  search = len(lock) + len(key) - 1
+  for _ in range(4):
+    key = rotate(key)
+    for i in range(search):
+      for j in range(search):
+        if moveKey(start + i, start + j, key, lock, board):
+          return True
+  return False
+
+def moveKey(x, y, key, lock, board):
+  board_copy = copy.deepcopy(board)
+  for i in range(len(key)):
+    for j in range(len(key)):
+      board_copy[x+i][y+j] += key[i][j]
+  return checkLock(board_copy, lock)
+  
+def checkLock(board, lock):
+  start = len(board) // 3
+  for i in range(len(lock)):
+    for j in range(len(lock)):
+      if board[start+i][start+j] != 1:
+        return False
+  return True
+
+def rotate(key):
+  rotate_key = [[0] * len(key) for _ in range(len(key))]
+  for i in range(len(key)):
+    for j in range(len(key)):
+      rotate_key[j][len(key)-i-1] = key[i][j]
+  return rotate_key
+
+key = [[0, 0, 0], [1, 0, 0], [0, 1, 1]]
+lock = [[1, 1, 1], [1, 1, 0], [1, 0, 1]]
+print(solution(key, lock))
+```
