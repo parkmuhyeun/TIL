@@ -30,7 +30,7 @@
     - Cllient host requests, receives service from always-on server
     - e.g. Web browser/server; email client/server
 
-## Internet Services Modells
+## Internet Services Models
 - Connection-oriented Service
 - Connectionless service
 
@@ -114,3 +114,9 @@
     - propagation delay = d/s
 
 1,3 번은 돈주고 좋은 기계로 바꾸면 개선가능하고, 2, 4번은 힘듬
+
+## IP: Internet Protocol
+- Global delivery of packet through routers in networks
+    - IP Addressing: globally unique address for each routable device
+- IP routing
+    - Network-wide process determining "good" end-to-end path
