@@ -237,3 +237,105 @@ key = [[0, 0, 0], [1, 0, 0], [0, 1, 1]]
 lock = [[1, 1, 1], [1, 1, 0], [1, 0, 1]]
 print(solution(key, lock))
 ```
+
+```python
+n = int(input())
+board = [[0] * (n+1) for _ in range(n+1)]
+apple = [[0] * (n+1) for _ in range(n+1)]
+k = int(input())
+for _ in range(k):
+  x, y = map(int, input().split())
+  apple[x][y] = 1
+L = int(input())
+change = []
+for _ in range(L):
+  t, c = input().split()
+  change.append((int(t), c))
+
+time = 1
+step = 0
+dx = [0, 1, 0, -1]
+dy = [1, 0, -1, 0]
+board[1][1] = 1
+startx = 1
+starty = 1
+nextt = change[0][0]
+nextr = change[0][1]
+move = 0
+
+while True:
+  startx += dx[step]
+  starty += dy[step]
+  # 벽에 부딪히거나 몸에 부딪힐 때 까지
+  if 1 > startx or startx > n or 1 > starty or starty > n or board[startx][starty] != 0:
+    break
+  # 사과있으면 머리부분 +1, 없으면 꼬리부분 삭제
+  if apple[startx][starty] == 1:
+    board[startx][starty] = board[startx-dx[step]][starty-dy[step]] + 1
+    apple[startx][starty] = 0
+  else:
+    board[startx][starty] = board[startx-dx[step]][starty-dy[step]] + 1
+    for i in range(1, n+1):
+      for j in range(1, n+1):
+        if board[i][j] == 1:
+          board[i][j] = 0
+        if board[i][j] > 1:
+          board[i][j] -= 1
+  if nextt == time:
+    if nextr == 'D':
+      step = (step + 1) % 4
+    else:
+      step -= 1
+      if step == -1:
+        step = 3
+
+    if move < L-1:
+      move += 1
+      nextt = change[move][0]
+      nextr = change[move][1]
+  time += 1
+print(time)
+```
+
+```python
+def solution(n, build_frame): 
+  answer = []
+
+  for f in build_frame:
+    x, y, what, how = f
+
+    #설치
+    if how == 1:
+      answer.append([x, y, what])
+      if possible(answer) is False:
+        answer.remove([x, y, what])
+    # 삭제
+    else:
+      answer.remove([x, y, what])
+      if possible(answer) is False:
+        answer.append([x, y, what])
+
+  answer.sort()
+  return answer
+
+def possible(ans):
+  for x, y, what in ans:
+    # 기둥
+    # 기둥위 기둥
+    # 보의 한쪽 끝 부분 위 기둥
+    # 바닥위 기둥
+    if what == 0:
+      if y == 0 or [x-1, y, 1] in ans or [x, y, 1] in ans or [x, y-1, 0] in ans:
+        continue
+      else:
+        return False
+    # 보
+    # 기둥 위 보
+    # 왼쪽 보 오른쪽 보 사이
+    elif what == 1:
+      if [x, y-1, 0] in ans or [x+1, y-1, 0] in ans or ([x-1, y, 1] in ans and [x+1, y, 1] in ans):
+        continue
+      else:
+        return False
+  return True
+```
