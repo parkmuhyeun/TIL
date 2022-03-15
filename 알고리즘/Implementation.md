@@ -339,3 +339,35 @@ def possible(ans):
         return False
   return True
 ```
+
+```pyhton
+import sys
+from itertools import combinations
+
+n, m = map(int, input().split())
+city = [[0] * (n+1) for _ in range(n+1)]
+dis = [[0] * (n+1) for _ in range(n+1)]
+chi = []
+home = []
+for i in range(1, n+1):
+  row = list(map(int, sys.stdin.readline().rstrip().split()))
+  for j in range(1, n+1):
+    city[i][j] = row[j-1]
+    if row[j-1] == 2:
+      chi.append((i, j))
+    elif row[j-1] == 1:
+      home.append((i, j))
+
+comb = list(combinations(chi, m))
+
+result = 1e9
+for co in comb:
+  sum = 0
+  for h in home:
+    d = 1e9
+    for c in co:
+      d = min(d, abs(h[0] - c[0]) + abs(h[1] - c[1]))
+    sum += d
+  result = min(result, sum)
+print(result)
+```
