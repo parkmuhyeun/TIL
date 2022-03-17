@@ -371,3 +371,28 @@ for co in comb:
   result = min(result, sum)
 print(result)
 ```
+
+```python
+from itertools import permutations
+
+def solution(n, weak, dist):
+    length = len(weak)
+    for i in range(length):
+        weak.append(weak[i] + n)
+
+    result = len(dist) + 1
+    for start in range(length):
+        for pe in list(permutations(dist, len(dist))):
+            cnt = 1
+            end = weak[start] + pe[cnt - 1]
+            for i in range(start, start + length):
+                if weak[i] > end:
+                    cnt += 1
+                    if cnt > len(dist):
+                        break    
+                    end = weak[i] + pe[cnt - 1]
+            result = min(result, cnt)
+    if result > len(dist):
+        return -1
+    return result
+```
