@@ -396,3 +396,77 @@ def solution(n, weak, dist):
         return -1
     return result
 ```
+
+```python
+ans = []
+pa = []
+for i in range(1, 10001):
+  val = i
+  if i not in pa:
+    ans.append(i)
+  pos = len(str(i))
+  temp = i
+  while pos:
+    n = temp // (10 ** (pos-1))
+    val += n
+    temp -= n * (10 ** (pos-1))
+    pos -= 1
+  pa.append(val)
+  
+for i in range(len(ans)):
+  print(ans[i])
+```
+
+```python
+n = int(input())
+words = []
+for i in range(n):
+  word = input()
+  words.append(list(word))
+
+ans = 0
+for word in words:
+  exist = []
+  pre = word[0]
+  for i in range(1, len(word)):
+    now = word[i]
+    if pre != now:
+      if now in exist:
+        break
+      exist.append(pre)
+      pre = now
+    if i == len(word)-1:
+      ans += 1
+  if len(word) == 1:
+    ans += 1
+print(ans)
+```
+
+```python
+word = list(input())
+
+res = 0
+i = 0
+while i < len(word):
+  if word[i] == '=' or word[i] == '-':
+    i += 1
+    continue
+  if word[i] == 'd' and i+2 < len(word):
+    if word[i+1] == 'z' and word[i+2] == '=':
+      res += 1
+      i += 3
+      continue
+  if word[i] == 'l' and i+1 < len(word):
+    if word[i+1] == 'j':
+      res += 1
+      i += 2
+      continue
+  if word[i] == 'n' and i+1 < len(word):
+    if word[i+1] == 'j':
+      res += 1
+      i += 2
+      continue
+  res += 1
+  i += 1
+print(res)
+```
