@@ -470,3 +470,67 @@ while i < len(word):
   i += 1
 print(res)
 ```
+
+```python
+import copy
+
+s = list(input())
+copys = copy.deepcopy(s)
+st = []
+cst = []
+flag = False
+ans = 0
+
+if len(s) == 1 or s[len(s)-1] == '(' or s[len(s)-1] == '[':
+  print(ans)
+else:
+  while s:
+    sp = s.pop()
+    if sp == ')' or sp == ']':
+      st.append(sp)
+    elif sp =='(':
+      if len(st) == 0 or st[len(st)-1] != ')':
+        flag = True
+        break
+      st.pop()
+    else:
+      if len(st) == 0 or st[len(st)-1] != ']':
+        flag = True
+        break
+      st.pop()
+
+  if flag or st:
+    print(ans)
+  else:
+    while copys:
+      sp = copys.pop()
+      if sp == ')' or sp == ']':
+        cst.append(sp)
+      elif sp == '(':
+        cstp = cst[len(cst)-1]
+        if cstp == ')':
+          cst.pop()
+          cst.append(2)
+        else:
+          val = 0
+          while cstp != ')':
+            val += cst.pop()
+            cstp = cst[len(cst)-1]
+          cst.pop()
+          val *= 2
+          cst.append(val)
+      else:
+        cstp = cst[len(cst)-1]
+        if cstp == ']':
+          cst.pop()
+          cst.append(3)
+        else:
+          val = 0
+          while cstp != ']':
+            val += cst.pop()
+            cstp = cst[len(cst)-1]
+          cst.pop()
+          val *= 3
+          cst.append(val)
+    print(sum(cst))
+```
