@@ -31,16 +31,15 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         final String token = tokenService.createAccessToken(userDetails.getAccount().getUsername(), "ROLE_USER");
         final String refreshJwt = tokenService.createRefreshToken(userDetails.getAccount().getUsername(), "ROLE_USER");
-        //refresh token 저장후 index를 해시화 해서 cookie에 추가
         RefreshToken refreshToken = RefreshToken.builder()
                 .token(refreshJwt)
                 .build();
         Long refreshTokenId = tokenRepository.save(refreshToken).getId();
-
         try {
             String encodedId = aes256.encrypt(refreshTokenId.toString());
             Cookie accessToken = cookieService.createCookie(TokenService.ACCESS_TOKEN_NAME, token);
             Cookie encodedIdToken = cookieService.createCookie(TokenService.REFRESH_TOKEN_NAME, encodedId);
+            //TODO DB에 refreshToken 저장
             response.addCookie(accessToken);
             response.addCookie(encodedIdToken);
         } catch (Exception e) {
