@@ -534,3 +534,46 @@ else:
           cst.append(val)
     print(sum(cst))
 ```
+
+```python
+n, m = map(int, input().split())
+r, c, d = map(int, input().split())
+floor = [[0] * (m) for _ in range(n)]
+for i in range(n):
+  row = list(map(int, input().split()))
+  for j in range(m):
+    floor[i][j] = row[j]
+
+x = r
+y = c
+dx = [-1, 0, 1, 0]
+dy = [0, 1, 0, -1]
+
+flag = False
+floor[x][y] = 2
+ans = 1
+while True:
+  for i in range(4):
+    d -= 1
+    if d == -1:
+      d = 3
+    nx = x + dx[d]
+    ny = y + dy[d]
+    if nx < 0 or nx > n-1 or ny < 0 or ny > m-1 or floor[nx][ny] != 0:
+      if i == 3:
+        back = (d + 2) % 4
+        if floor[x+dx[back]][y+dy[back]] == 1:
+          flag = True
+        x = x + dx[back]
+        y = y + dy[back]
+      continue
+    else:
+        x = nx
+        y = ny
+        floor[x][y] = 2
+        ans += 1
+        break
+  if flag:
+    break
+print(ans)
+```
