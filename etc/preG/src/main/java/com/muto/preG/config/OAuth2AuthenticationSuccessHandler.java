@@ -42,6 +42,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             //TODO DB에 refreshToken 저장
             response.addCookie(accessToken);
             response.addCookie(encodedIdToken);
+            getRedirectStrategy().sendRedirect(request, response, "http://127.0.0.1:5500/home.html");
         } catch (Exception e) {
         }
     }
