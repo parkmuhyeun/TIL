@@ -577,3 +577,52 @@ while True:
     break
 print(ans)
 ```
+
+```python
+from itertools import permutations
+
+def solution(n, weak, dist):
+  tweak = weak + [n+x for x in weak]
+  wlen = len(weak)
+  dlen = len(dist)
+  ans = dlen + 1
+  
+  for i in range(wlen):
+    for perm in permutations(dist, dlen):
+      cnt = 1
+      start = tweak[i] + perm[0]
+      for j in range(i, i + wlen):
+        if tweak[j] > start:
+          cnt += 1
+          if cnt > dlen:
+            break
+          start = tweak[j] + perm[cnt-1]
+      ans = min(ans, cnt)
+
+      # cnt = 0
+      # start = tweak[i]
+      # m = 0
+      # c = 0
+      # next = 0
+      # for j in range(len(perm)):
+      #   for k in tweak:
+      #     if start <= k <= start + perm[j]:
+      #       m += 1
+      #       c = 1
+      #     elif k > start + perm[j]:
+      #       next = k
+      #       break
+      #   if c == 1:
+      #     cnt += 1
+      #   start = next
+      #   if m >= wlen:
+      #     ans = min(ans, cnt)
+          
+  if ans == dlen + 1:
+    print(-1)
+  else:
+    print(ans)
+
+solution(12, [1, 5, 6, 10], [1, 2, 3, 4])
+solution(12, [1, 3, 4, 9, 10], [3, 5, 7])
+```
