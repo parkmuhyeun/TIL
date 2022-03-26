@@ -626,3 +626,75 @@ def solution(n, weak, dist):
 solution(12, [1, 5, 6, 10], [1, 2, 3, 4])
 solution(12, [1, 3, 4, 9, 10], [3, 5, 7])
 ```
+
+```python
+def ins(dice, num1, num2, num3, num4):
+  temp1 = dice[num1]
+  dice[num1] = dice[num2]
+  temp2 = dice[num3]
+  dice[num3] = temp1
+  temp3 = dice[num4]
+  dice[num4] = temp2
+  dice[num2] = temp3
+
+def check(board, dice, x, y):
+  if board[x][y] != 0:
+    dice[0] = board[x][y]
+    board[x][y] = 0
+  else:
+    board[x][y] = dice[0]
+
+n, m, x, y, k = map(int, input().split())
+board = [[0] *  m for _ in range(n)]
+dice = [0] * 6
+for i in range(n):
+  col = list(map(int, input().split()))
+  for j in range(m):
+    board[i][j] = col[j]
+move = list(map(int, input().split()))
+
+temp1 = 0
+temp2 = 0
+temp3 = 0
+res = []
+
+if not (n == 1 and m == 1):
+  for i in range(k):
+    # 동쪽
+    if move[i] == 1:
+      y += 1
+      if x < 0 or x > n-1 or y < 0 or y > m-1:
+        y -= 1
+        continue
+      ins(dice, 5, 2, 1, 0)
+      check(board, dice, x, y)
+    # 서쪽
+      res.append(dice[5])
+    elif move[i] == 2:
+      y -= 1
+      if x < 0 or x > n-1 or y < 0 or y > m-1:
+        y += 1
+        continue
+      ins(dice, 1, 0, 5, 2)
+      check(board, dice, x, y)
+      res.append(dice[5])
+    elif move[i] == 3:
+      x -= 1
+      if x < 0 or x > n-1 or y < 0 or y > m-1:
+        x += 1
+        continue
+      ins(dice, 0, 3, 4, 5)
+      check(board, dice, x, y)
+      res.append(dice[5])
+    else:
+      x += 1
+      if x < 0 or x > n-1 or y < 0 or y > m-1:
+        x -= 1
+        continue
+      ins(dice, 5, 3, 4, 0)
+      check(board, dice, x, y)
+      res.append(dice[5])
+
+for x in res:
+  print(x)
+```
