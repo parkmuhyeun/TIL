@@ -122,3 +122,42 @@ def bfs(x, y):
 
 print(bfs(0,0))
 ```
+
+```python
+from collections import deque
+import sys
+input = sys.stdin.readline
+
+def bfs(graph, start, visited):
+  queue = deque()
+  queue.append(start)
+  visited[start] = True
+  dis[start] = 0
+  while queue:
+    v = queue.popleft()
+    if dis[v] == k:
+      result.append(v)
+    for x in graph[v]:
+      if not visited[x]:
+        visited[x] = True
+        queue.append(x)
+        dis[x] = dis[v]+1
+
+n, m, k, x = map(int, input().split())
+graph = [[] for _ in range(n+1)]
+for i in range(m):
+  a, b = map(int, input().split())
+  graph[a].append(b)
+
+visited = [False] * (n+1)
+dis = [-1] * (n+1)
+result = []
+bfs(graph, x, visited)
+
+if len(result) == 0:
+  print(-1)
+else:
+  result.sort()
+  for x in result:
+    print(x)
+```
