@@ -161,3 +161,102 @@ else:
   for x in result:
     print(x)
 ```
+
+```python
+from itertools import combinations
+import copy
+from collections import deque
+
+def bfs(x, y):
+  queue = deque()
+  queue.append((x, y))
+
+  while queue:
+    x, y = queue.popleft()
+    for i in range(4):
+      nx = x + dx[i]
+      ny = y + dy[i]
+      if 0 <= nx < n and 0 <= ny < m:
+        if cboard[nx][ny] == 0:
+          cboard[nx][ny] = 2
+          queue.append((nx, ny))
+
+dx = [0, 0, 1, -1]
+dy = [1, -1, 0 ,0]
+
+n, m = map(int, input().split())
+board = []
+for _ in range(n):
+  board.append(list(map(int, input().split())))
+walls = []
+for i in range(n):
+  for j in range(m):
+    walls.append((i, j))
+virus = []
+for i in range(n):
+  for j in range(m):
+    if board[i][j] == 2:
+      virus.append((i,j))
+
+res = 0
+for wall in list(combinations(walls, 3)):
+  flag = False
+  cboard = copy.deepcopy(board)
+  cnt = 0
+  for i in range(3):
+    x = wall[i][0]
+    y = wall[i][1]
+    if cboard[x][y] == 0:
+      cboard[x][y] = 1
+    else:
+      flag = True
+      break
+  if flag:
+    continue
+  for i in range(len(virus)):
+    bfs(virus[i][0], virus[i][1])
+  for i in range(n):
+    for j in range(m):
+      if cboard[i][j] == 0:
+        cnt += 1
+  res = max(res, cnt)
+print(res)
+```
+
+```python
+import sys
+import copy
+input = sys.stdin.readline
+
+n, k = map(int, input().split())
+board = [[0] * (n+1) for _ in range(n+1)]
+pos = [[] for _ in range(k+1)]
+for i in range(1, n+1):
+  row = list(map(int, input().split()))
+  for j in range(1, n+1):
+    board[i][j] = row[j-1]
+    pos[row[j-1]].append((i, j))
+s, a, b = map(int, input().split())
+
+dx = [0, 0, -1, 1]
+dy = [1, -1, 0, 0]
+
+def infect(x, y, num):
+  for i in range(4):
+    nx = x + dx[i]
+    ny = y + dy[i]
+    if 1 <= nx <= n and 1 <= ny <= n:
+      if board[nx][ny] == 0:
+        board[nx][ny] = num
+        next.append((nx, ny))
+        
+cnt = 1
+while cnt <= s:
+  for i in range(1, len(pos)):
+    next = []  
+    for j in range(len(pos[i])):
+      infect(pos[i][j][0], pos[i][j][1], i)
+    pos[i] = copy.deepcopy(next)
+  cnt += 1
+print(board[a][b])
+```
