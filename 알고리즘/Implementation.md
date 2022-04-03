@@ -698,3 +698,110 @@ if not (n == 1 and m == 1):
 for x in res:
   print(x)
 ```
+
+```python
+from collections import deque
+
+def solution(p):
+    u = []
+    v = []
+    if p == '':
+        return '';
+    if perfect(p):
+        return p    
+    
+    return recur(p)
+
+def recur(start):
+    if len(start) == 0:
+        return ""
+    u = deque()
+    v = deque()
+    u = balance(start)
+    for i in range(len(u), len(start)):
+        v.append(start[i])
+    if perfect(u):
+        return "".join(u) + recur(v)
+    else:
+        return "(" + recur(v) + ")" + "".join(trans(u))
+
+def trans(arr):
+    arr.popleft()
+    arr.pop()
+    rarr = []
+    for i in range(len(arr)):
+        if arr[i] == '(':
+            rarr.append(')')
+        else:
+            rarr.append('(')
+    return rarr            
+    
+def perfect(arr):
+    st = []
+    for i in range(len(arr)):
+        if arr[i] == '(':
+            st.append(arr[i])
+        else:
+            if len(st) == 0:
+                return False
+            c = st.pop()
+            if c != '(':
+                return False
+    return True
+
+def balance(array):
+    cnt1 = 0
+    cnt2 = 0
+    rarray = deque()
+    for i in range(len(array)):
+        if array[i] == '(':
+            cnt1 += 1
+            rarray.append('(')
+        else:
+            cnt2 += 1
+            rarray.append(')')
+        if cnt1 == cnt2:
+            break
+    return rarray
+```
+
+```python
+from itertools import permutations
+
+n = int(input())
+arr = list(map(int, input().split()))
+pl, mi, mu, di = map(int, input().split())
+mark = []
+for i in range(pl):
+  mark.append("+")
+for i in range(mi):
+  mark.append("-")
+for i in range(mu):
+  mark.append("*")
+for i in range(di):
+  mark.append("/")
+  
+maxres = -1e9
+minres = 1e9
+
+for perm in permutations(mark, len(mark)):
+  res = arr[0]
+  for i in range(1, len(arr)):
+    if perm[i-1] == '+':
+      res += arr[i]
+    elif perm[i-1] == '-':
+      res -= arr[i]
+    elif perm[i-1] == '*':
+      res *= arr[i]
+    else:
+      if res < 0:
+        res *= -1
+        res //= arr[i]
+        res *= -1
+      else:
+        res //= arr[i]
+  maxres = max(maxres, res)
+  minres = min(minres, res)
+print(maxres)
+print(minres)
+```
