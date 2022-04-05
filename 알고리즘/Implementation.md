@@ -805,3 +805,70 @@ for perm in permutations(mark, len(mark)):
 print(maxres)
 print(minres)
 ```
+
+```python
+from itertools import permutations
+
+n = int(input())
+board = [['X'] * (n+1) for _ in range(n+1)]
+obs = []
+t = []
+for i in range(1, n+1):
+  row = list(input().split())
+  for j in range(1, n+1):
+    board[i][j] = row[j-1]
+    obs.append((i, j))
+    if board[i][j] == 'T':
+      t.append((i, j))
+
+dx = [0, 0, -1, 1]
+dy = [1, -1, 0, 0]
+
+flag = True
+for perm in permutations(obs, 3):
+  imp = True
+  for x in perm:
+    if board[x[0]][x[1]] == 'X':
+      board[x[0]][x[1]] = 'O'
+    else:
+      for x in perm:
+        if board[x[0]][x[1]] == 'O':
+          board[x[0]][x[1]] = 'X'
+      imp = False
+      break
+  if not imp:
+    continue
+  flag = True
+  for pos in t:
+    for dir in range(4):
+      x = pos[0]
+      y = pos[1]
+      while True:
+        nx = x + dx[dir]
+        ny = y + dy[dir]
+        if nx < 1 or n < nx or ny < 1 or n < ny:
+          break
+        else:
+          if board[nx][ny] == 'O':
+            break
+          elif board[nx][ny] == 'S':
+            flag = False
+            break
+          else:
+            x = nx
+            y = ny
+      if not flag:
+        break
+    if not flag:
+      break
+  if flag:
+    break
+  else:
+    for x in perm:
+      board[x[0]][x[1]] = 'X'
+
+if flag:
+  print("YES")
+else:
+  print("NO")
+```
