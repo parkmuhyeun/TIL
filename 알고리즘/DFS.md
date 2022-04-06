@@ -39,3 +39,51 @@ visited = [False] * 9
 # 정의된 DFS 함수 호출
 dfs(graph, 1, visited)
 ```
+
+```python
+import sys
+input = sys.stdin.readline
+
+n, l, r = map(int, input().split())
+country = [[0] * (n+1) for _ in range(n+1)]
+team = [[0] * (n+1) for _ in range(n+1)]
+count = [[0] * 2 for _ in range((n*n)+1)]
+for i in range(1, n+1):
+  row = list(map(int, input().split()))
+  for j in range(1, n+1):
+    country[i][j] = row[j-1]
+
+dx = [0, 0, 1, -1]
+dy = [1, -1, 0, 0]
+
+def dfs(x, y, team, cnt):
+  team[x][y] = cnt
+  count[cnt][0] += country[x][y]
+  count[cnt][1] += 1
+  for i in range(4):
+    nx = x + dx[i]
+    ny = y + dy[i]
+    if 1 <= nx <= n and 1 <= ny <= n and team[nx][ny] == 0:
+      dif = abs(country[nx][ny] - country[x][y])
+      if l <= dif <= r:
+        dfs(nx, ny, team, cnt)
+
+ans = 0
+while True:
+  cnt = 1
+  for i in range(1, n+1):
+    for j in range(1, n+1):
+      if team[i][j] == 0:
+        dfs(i, j, team, cnt)
+        cnt += 1
+  if cnt == (n * n) + 1:
+    break
+  for i in range(1, n+1):
+    for j in range(1, n+1):
+      t = team[i][j]
+      country[i][j] = count[t][0] // count[t][1]
+  team = [[0] * (n+1) for _ in range(n+1)]
+  count = [[0] * 2 for _ in range((n*n)+1)]
+  ans += 1
+print(ans)
+```
