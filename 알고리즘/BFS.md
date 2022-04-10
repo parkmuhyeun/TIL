@@ -260,3 +260,61 @@ while cnt <= s:
   cnt += 1
 print(board[a][b])
 ```
+
+``python
+from collections import deque
+
+def solution(board):
+    n = len(board)
+    visit = []
+    pos = [(0, 0), (0, 1)]
+    q = deque()
+    q.append((pos, 0))
+    visit.append(pos)
+    
+    while q:
+        pos, cost = q.popleft()
+        if (n-1, n-1) in pos:
+            return cost
+        for next_pos in get_next_pos(pos, board):
+            if not next_pos in visit:
+                q.append((next_pos, cost + 1))
+                visit.append(next_pos)
+    return 0
+
+
+def get_next_pos(pos, board):
+    next = []
+    n = len(board)
+    pos = list(pos)
+    pos1_x, pos1_y, pos2_x, pos2_y = pos[0][0], pos[0][1], pos[1][0], pos[1][1]
+    
+    dx = [-1, 1, 0, 0]
+    dy = [0, 0, -1, 1]
+    
+    # 상하좌우
+    for i in range(4):
+        pos1_next_x, pos1_next_y, pos2_next_x, pos2_next_y = pos1_x + dx[i], pos1_y + dy[i], pos2_x + dx[i], pos2_y + dy[i]
+        if 0 <= pos1_next_x < n and 0 <= pos1_next_y < n and 0 <= pos2_next_x < n and 0 <= pos2_next_y < n:
+            if board[pos1_next_x][pos1_next_y] == 0 and board[pos2_next_x][pos2_next_y] == 0:
+                next.append({(pos1_next_x, pos1_next_y), (pos2_next_x, pos2_next_y)})
+    
+    # 회전 (가로, 세로)
+    if pos1_x == pos2_x:
+        for i in [-1, 1]:
+            pos1_next_x = pos1_x + i
+            pos2_next_x = pos2_x + i
+            if 0 <= pos1_next_x < n and 0 <= pos2_next_x < n:
+                if board[pos1_next_x][pos1_y] == 0 and board[pos2_next_x][pos2_y] == 0:
+                    next.append({(pos1_x, pos1_y), (pos1_next_x, pos1_y)})
+                    next.append({(pos2_x, pos2_y), (pos2_next_x, pos2_y)})
+    elif pos1_y == pos2_y:
+        for i in [-1, 1]:
+            pos1_next_y = pos1_y + i
+            pos2_next_y = pos2_y + i
+            if 0 <= pos1_next_y < n and 0 <= pos2_next_y < n:
+                if board[pos1_x][pos1_next_y] == 0 and board[pos2_x][pos2_next_y] == 0:
+                    next.append({(pos1_x, pos1_y), (pos1_x, pos1_next_y)})
+                    next.append({(pos2_x, pos2_y), (pos2_x, pos2_next_y)})
+    return next
+```
