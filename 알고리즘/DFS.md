@@ -87,3 +87,59 @@ while True:
   ans += 1
 print(ans)
 ```
+
+```python
+n = int(input())
+m = int(input())
+graph = [[] for _ in range(n+1)]
+visit = [0] * (n+1)
+for i in range(m):
+  x, y = map(int, input().split())
+  graph[x].append(y)
+  graph[y].append(x)
+
+def dfs(start):
+  visit[start] = 1
+  for i in graph[start]:
+    if visit[i] == 0:
+      dfs(i)
+
+dfs(1)
+ans = 0
+for i in range(2, n+1):
+  if visit[i] == 1:
+    ans += 1
+print(ans)
+```
+
+```python
+import sys
+sys.setrecursionlimit(10000)
+
+t = int(input())
+
+dx = [0, 0, 1, -1]
+dy = [1, -1, 0, 0]
+
+def dfs(x, y):
+  board[x][y] = 0
+  for i in range(4):
+    nx = x + dx[i]
+    ny = y + dy[i]
+    if 0 <= nx < m and 0 <= ny < n and board[nx][ny] == 1:
+        dfs(nx, ny)
+
+for case in range(t):
+  m, n, k  = map(int, input().split())
+  board = [[0] * n for _ in range(m)]
+  for i in range(k):
+    x, y = map(int, input().split())
+    board[x][y] = 1
+  ans = 0
+  for i in range(m):
+    for j in range(n):
+      if board[i][j] == 1:
+        dfs(i, j)
+        ans += 1
+  print(ans)
+```
