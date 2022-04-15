@@ -168,3 +168,26 @@ for i in range(k):
 print(sum(a))
 ```
 
+```python
+n = int(input())
+grade = []
+
+for _ in range(n):
+  name, k, e, m = input().split()
+  grade.append((name, int(k), int(e), int(m)))
+
+grade.sort(key = lambda x: (-x[1], x[2], -x[3], x[0]))
+
+for i in range(n):
+  print(grade[i][0])
+```
+
+```python
+import sys
+input = sys.stdin.readline
+
+n = int(input())
+pos = list(map(int, input().split()))
+pos.sort()
+print(pos[(n - 1) // 2])
+```
