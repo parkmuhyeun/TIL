@@ -77,3 +77,51 @@ CMD ["executable"]
 - 이름 주는 build docker build -t 이름 .
     - (이름: 나의 도커 아이디/저장소, 프로젝트 이름 : 버전)
     - ex) pjhg410/hello:latest
+
+## 생성한 이미지로 어플리케이션 실행 시 접근이 안되는 이유
+- 포트 매핑을 시켜줘야됨
+- docker run -p localhost port : container port 이미지 이름
+- ex) docker run -p 8080:8080 이미지 이름
+
+## working 디렉토리 생성 이유
+1. 원래 이미지에 있던 파일과 copy하는 파일중 같은 이름이 있으면 덮여쓰여짐.
+2. 깔금하게 정리 
+
+
+## 재빌드 효율적으로 하기 
+```docker
+COPY ./ ./
+
+RUN npm install
+```
+소스만 변경했을 때 -> 재빌드를 효율적으로 하기위해 개선(캐시 사용)
+```docker
+COPY package.json ./
+
+RUN npm install
+
+COPY ./ ./
+```
+
+## Docker Volume
+로컬에 있는걸 계속 참조
+- docker run -p 5050:8080 -v /usr/src/app/node_modules -v $(pwd):/usr/src/app 이미지 아이디
+- 맥: $(pwd)
+- 윈도우: %cd%
+
+---
+## Docker Compsose
+```docker compose
+version: '3'            # 도커 컴포즈의 버전
+services:               # 이곳에 실행하려는 컨테이너들
+  redis-server:         # 컨테이너 이름
+    image: "redis"      # 컨테이너에서 사용하는 이미지
+  node-app:             # 컨테이너 이름
+    build: .            # 현 디렉토리에 있는 Dockerfile
+    ports:              # 포트맵핑 로컬포트 : 컨테이너 포트
+     - "5000:8080" 
+```
+- compose 실행: docker-compose up (백그라운드 실행 docker-compose up -d)
+- docker-compose up 이미지가 없을 때 이미지를 빌드하고 컨테이너 시작
+- docker-compose up --build 이미지가 있든 없든 이미지를 빌드하고 컨테이너 시작
+- docker compose 로 컨테이너 멈추기: docker compose down
