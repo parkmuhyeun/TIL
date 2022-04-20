@@ -109,6 +109,28 @@ COPY ./ ./
 - 맥: $(pwd)
 - 윈도우: %cd%
 
+또는 docker compose에서 volume 작성
+```docker-compose
+version: "3"
+services:
+  react:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /usr/src/app/node_modules
+      - ./:/usr/src/app
+    stdin_open: true
+```
+
+## 임의의 이름을 가진 도커파일 빌드
+docker build -f Dockerfile.dev ./
+
+## 도커를 이용한 리액트 앱 테스트 하기
+docker run -it pjhg410/docker-react-app npm run test
+
 ---
 ## Docker Compsose
 ```docker compose
@@ -125,3 +147,24 @@ services:               # 이곳에 실행하려는 컨테이너들
 - docker-compose up 이미지가 없을 때 이미지를 빌드하고 컨테이너 시작
 - docker-compose up --build 이미지가 있든 없든 이미지를 빌드하고 컨테이너 시작
 - docker compose 로 컨테이너 멈추기: docker compose down
+
+---
+## Nginx로 운영환경 도커 이미지 생성
+1. 빌드 단계
+2. 실행 단계
+
+```dockerfile
+# 1. build
+FROM node:alpine as builder
+WORKDIR /usr/src/app
+COPY package.json ./
+RUN npm install
+COPY ./ ./
+CMD ["npm", "run", "build"]
+
+# 2. run
+FROM nginx
+COPY --from=builder /usr/src/app/build /usr/share/nginx/html
+```
+
+- docker run -p 8080:80 이미지 이름 (Nginx의 기본 사용포트는 8080)
