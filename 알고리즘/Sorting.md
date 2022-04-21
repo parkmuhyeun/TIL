@@ -191,3 +191,42 @@ pos = list(map(int, input().split()))
 pos.sort()
 print(pos[(n - 1) // 2])
 ```
+
+```python
+def solution(N, stages):
+    clear = [0] * (N+1)
+    reach = [0] * (N+1)
+    num = [0] * (N+2)
+    
+    for i in range(len(stages)):
+        stage = stages[i]
+        num[stage] += 1
+    
+    for _ in range(num[1]):
+        reach[1] += 1
+    
+    for i in range(2, N+1):
+        cnt = num[i]
+        if cnt == 0:
+            continue
+        for j in range(1, i):
+            clear[j] += cnt
+            reach[j] += cnt
+        reach[i] += cnt
+    
+    for i in range(1, N+1):
+        clear[i] += num[N+1]
+        reach[i] += num[N+1]
+    
+    answer = []
+    for i in range(1, N+1):
+        if reach[i] == 0:
+            answer.append((0, i))
+        else:
+            answer.append(((reach[i]-clear[i])/reach[i], i))
+    answer.sort(key = lambda x: (-x[0], x[1]))
+    res = []
+    for i in range(N):
+        res.append(answer[i][1])
+    return res
+```
