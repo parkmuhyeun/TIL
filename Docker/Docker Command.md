@@ -168,3 +168,26 @@ COPY --from=builder /usr/src/app/build /usr/share/nginx/html
 ```
 
 - docker run -p 8080:80 이미지 이름 (Nginx의 기본 사용포트는 8080)
+
+
+---
+## travis.yml (테스트) (CI/CD)
+
+```js
+sudo: required // 관리자 권한갖기
+
+language: generic //언어(플랫폼)을 선택
+
+services:
+  - docker  // 도커 환경 구성
+
+before_install:   //스크립트를 실행할 수 있는 환경 구성
+  - echo "start Creating an image with dockerfile"
+  - docker build -t dockerimage_name -f Dockerfile.dev .
+
+script:   // 실행할 스크립트(테스트 실행)
+  - docker run -e CI=true dockerimage_name npm run test -- --coverage
+
+after_succes:  // 테스트 성공 후 할일
+  - echo "Test Success"
+```
