@@ -230,3 +230,21 @@ def solution(N, stages):
         res.append(answer[i][1])
     return res
 ```
+
+```python
+import heapq
+
+n = int(input())
+h = []
+for _ in range(n):
+  num = int(input())
+  heapq.heappush(h, num)
+
+res = 0
+while len(h) != 1:
+  x = heapq.heappop(h)
+  y = heapq.heappop(h)
+  res += x+y
+  heapq.heappush(h, x+y)
+print(res)
+```
