@@ -20,7 +20,17 @@ Routing protocol goal: determine "good" paths from sending hosts to receiving ho
     - Based on bellman-ford equation
      ![](./img/ra_3.PNG)
 
+## Dijkstra's link-state routing algorithm
+
+![](./img/ra_6.PNG)
+
 ## Dijkstra's algorithm: oscillations possible
 - When link costs depend on traffic volume, route oscillations possible
 
 ![](./img/ra_4.PNG)
+
+## Distance Vector Algorithm
+Bellman-Ford equation
+
+![](./img/ra_5.PNG)
+
