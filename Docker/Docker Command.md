@@ -164,6 +164,7 @@ CMD ["npm", "run", "build"]
 
 # 2. run
 FROM nginx
+EXPOSE 80
 COPY --from=builder /usr/src/app/build /usr/share/nginx/html
 ```
 
@@ -171,7 +172,7 @@ COPY --from=builder /usr/src/app/build /usr/share/nginx/html
 
 
 ---
-## travis.yml (테스트) (CI/CD)
+## travis.yml (테스트 + 배포) (CI/CD)
 
 ```js
 sudo: required // 관리자 권한갖기
@@ -188,6 +189,17 @@ before_install:   //스크립트를 실행할 수 있는 환경 구성
 script:   // 실행할 스크립트(테스트 실행)
   - docker run -e CI=true dockerimage_name npm run test -- --coverage
 
-after_succes:  // 테스트 성공 후 할일
-  - echo "Test Success"
+deploy:
+  provider: elasticbeanstalk      //외부 서비스 표시
+  region: "ap-northeast-2"        //현재 사용하고 있는 AWS의 물리적 장소
+  app: "docker-react-app"         //생성한 애플리케이션의 이름
+  env: "DockerReactApp-env"
+  bucket_name: "bucket-name"      //해당 일래스틱 빈스톡을 위한 s3버킷이름
+  bucket_path: "docker-react-app" //애플리케이션의 이름과 동일
+  on:
+    branch: master                //어떤 브랜치에 푸시할 때 AWS에 배포할 것인지 설정
+
+    
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_ACCESS_KEY
 ```
