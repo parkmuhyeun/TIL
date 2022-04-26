@@ -139,3 +139,44 @@ h = binary_search(arr, m, 0, max)
 
 print(h)
 ```
+
+```python
+import sys
+from bisect import bisect_left, bisect_right
+input = sys.stdin.readline
+
+n, x = map(int, input().split())
+arr = list(map(int, input().split()))
+
+left = bisect_left(arr, x)
+right = bisect_right(arr, x)
+
+if left-right == 0:
+  print("-1")
+else:
+  print(right-left)
+```
+
+```python
+import sys
+input = sys.stdin.readline
+
+def binary_search(start, end):
+  if start > end:
+    return None
+  mid = (start + end) // 2
+  if arr[mid] == mid:
+    return mid
+  elif arr[mid] < mid:
+    return binary_search(mid+1, end)
+  else:
+    return binary_search(start, mid-1)
+
+n = int(input())
+arr = list(map(int, input().split()))
+res = binary_search(0, n-1)
+if res == None:
+  print("-1")
+else:
+  print(res)
+```
