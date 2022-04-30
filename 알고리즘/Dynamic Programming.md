@@ -151,3 +151,48 @@ if d[m] == -1:
 else:
   print(d[m]-1)
 ```
+
+```python
+import sys
+input = sys.stdin.readline
+
+t = int(input())
+
+res = []
+for _ in range(t):
+  n, m = map(int, input().split())
+  arr = list(map(int, input().split()))
+  board = [[0] * (m+1) for _ in range(n+1)]
+  cnt = 0
+  for i in range(1, n+1):
+    for j in range(1, m+1):
+      board[i][j] = arr[cnt]
+      cnt += 1
+      
+  # 2차원 테이블 초기화 다른방법
+  # board = []
+  # index = 0
+  # for i in range(n):
+  #   board.append(arr[index:index+m])
+  #   index += m
+
+  d = [[0] * (m+1) for _ in range(n+1)]
+  for i in range(1, n+1):
+    d[i][1] = board[i][1]
+    
+  for i in range(2, m+1):
+    for j in range(1, n+1):
+      if 1 <= j-1 <= n and 1 <= i-1 <= m:
+        d[j][i] = max(d[j][i], d[j-1][i-1] + board[j][i])
+      if 1 <= i-1 <= m:
+        d[j][i] = max(d[j][i], d[j][i-1] + board[j][i])
+      if 1 <= j+1 <= n and 1 <= i-1 <= m:
+        d[j][i] = max(d[j][i], d[j+1][i-1] + board[j][i])
+
+  mval = 0
+  for i in range(1, n+1):
+    mval = max(mval, d[i][m])
+  res.append(mval)
+for i in range(t):
+  print(res[i])
+```
