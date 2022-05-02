@@ -196,3 +196,47 @@ for _ in range(t):
 for i in range(t):
   print(res[i])
 ```
+
+```python
+n = int(input())
+d = []
+for _ in range(n):
+  d.append(list(map(int, input().split())))
+
+for i in range(1, n):
+  for j in range(i+1):
+    if 0 <= i-1 and 0 <= j-1:
+      up_left = d[i-1][j-1]
+    else:
+      up_left = 0
+    if 0 <= i-1 and j <= i-1:
+      up_right = d[i-1][j]
+    else:
+      up_right = 0
+    d[i][j] = d[i][j] + max(up_left, up_right)
+
+res = 0
+for i in range(n):
+  res = max(res, d[n-1][i])
+print(res)
+```
+
+```python
+n = int(input())
+bs = []
+for _ in range(n):
+  t, p = map(int, input().split())
+  bs.append((t, p))
+
+mval = 0
+d = [0] * (n+1)
+for i in range(n-1, -1, -1):
+  time = i + bs[i][0]
+  if time <= n:
+    d[i] = max(bs[i][1] + d[time], mval)
+    mval = d[i]
+  else:
+      d[i] = mval
+
+print(mval)
+```
