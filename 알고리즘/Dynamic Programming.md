@@ -254,3 +254,48 @@ for i in range(1, n):
       
 print(n-max(dp))
 ```
+
+```python
+n = int(input())
+
+d = [0] * n
+n2 = n3 = n5 = 0
+d[0] = 1
+next2, next3, next5 = 2, 3, 5
+
+for i in range(1, n):
+  d[i] = min(next2, next3, next5)
+  if d[i] == next2:
+    n2 += 1
+    next2 = d[n2] * 2
+  if d[i] == next3:
+    n3 += 1
+    next3 = d[n3] * 3
+  if d[i] == next5:
+    n5 += 1
+    next5 = d[n5] * 5
+print(d[n-1])
+```
+
+```python
+a = input()
+b = input()
+
+la = len(a)
+lb = len(b)
+d = [[0] * (lb+1) for _ in range(la+1)]
+
+for i in range(lb + 1):
+  d[0][i] = i
+for i in range(la + 1):
+  d[i][0] = i
+
+for i in range(1, la+1):
+  for j in range(1, lb+1):
+    if a[i-1] == b[j-1]:
+      d[i][j] = d[i-1][j-1]
+    else:
+      d[i][j] = 1 + min(d[i][j-1], d[i-1][j-1], d[i-1][j-1])
+
+print(d[la][lb])
+```
