@@ -299,3 +299,46 @@ for i in range(1, la+1):
 
 print(d[la][lb])
 ```
+
+```python
+t = int(input())
+res = []
+for _ in range(t):
+  n = int(input())
+  d = [[0] * 2 for _ in range(n+1)]
+  if n == 0:
+    res.append((1, 0))
+  elif n == 1:
+    res.append((0, 1))
+  else:
+    d[0][0] = 1
+    d[0][1] = 0
+    d[1][0] = 0
+    d[1][1] = 1
+    for i in range(2, n+1):
+      d[i][0] = d[i-1][0] + d[i-2][0]
+      d[i][1] = d[i-1][1] + d[i-2][1]
+    res.append((d[n][0], d[n][1]))
+for i in range(len(res)):
+  print(res[i][0], res[i][1])
+```
+
+```python
+n = int(input())
+arr = []
+for _ in range(n):
+  s = int(input())
+  arr.append(s)
+d = [0] * n
+
+if n == 1:
+  print(arr[0])
+elif n == 2:
+  print(arr[0] + arr[1])
+else:
+  d[0] = arr[0]
+  d[1] = arr[0] + arr[1]
+  for i in range(2, n):
+    d[i] = arr[i] + max(arr[i-1] + d[i-3], d[i-2])
+  print(d[n-1])
+```
