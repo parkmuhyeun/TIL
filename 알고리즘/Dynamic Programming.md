@@ -342,3 +342,41 @@ else:
     d[i] = arr[i] + max(arr[i-1] + d[i-3], d[i-2])
   print(d[n-1])
 ```
+
+```python
+t = int(input())
+res = []
+for _ in range(t):
+  n = int(input())
+
+  if n == 1 or n == 2  or n == 3:
+    res.append(1)
+  elif n == 4 or n == 5:
+    res.append(2)
+  else:
+    d = [0] * n
+    d[0] = d[1] = d[2] = 1
+    d[3] = d[4] = 2
+    for i in range(5, n):
+      d[i] = d[i-5] + d[i-1]
+    res.append(d[n-1])
+for i in range(len(res)):
+  print(res[i])
+```
+
+```python
+t = int(input())
+res = []
+for _ in range(t):
+  n, m = map(int, input().split())
+  dp = [[0] * (m+1) for _ in range(n+1)]
+  for i in range(1, m+1):
+    dp[1][i] = i
+  for i in range(2, n+1):
+    for j in range(i, m+1):
+      for k in range(j-1, i-2, -1):
+        dp[i][j] += dp[i-1][k]
+  res.append(dp[n][m])
+for i in range(len(res)):
+  print(res[i])
+```
