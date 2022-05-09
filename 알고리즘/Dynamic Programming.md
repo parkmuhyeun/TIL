@@ -414,3 +414,49 @@ for i in range(1, n+1):
 
 print(d[n][k])
 ```
+
+```python
+n, k = map(int, input().split())
+coins = [0]
+for _ in range(n):
+  coin = int(input())
+  coins.append(coin)
+
+# 2차원(메모리초과)
+# d = [[0] * (k+1) for _ in range(n+1)]
+# for i in range(1, n+1):
+#   for j in range(1, k+1):
+#     if coins[i] > j:
+#       d[i][j] = d[i-1][j]
+#     else:
+#       d[i][j] = d[i-1][j] + d[i][j-coins[i]]
+#       if j == coins[i]:
+#         d[i][j] += 1
+# print(d[n][k])
+
+# 1차원으로 변경
+d = [0] * (k+1)
+for i in range(1, n+1):
+  for j in range(1, k+1):
+    if coins[i] <= j:
+      d[j] += d[j-coins[i]]
+      if j == coins[i]:
+        d[j] += 1
+print(d[k])
+```
+
+```python
+n = int(input())
+line = [(0,0)]
+for _ in range(n):
+  left, right = map(int, input().split())
+  line.append((left, right))
+line.sort()
+d = [1] * (n+1)
+
+for i in range(2, n+1):
+  for j in range(1, i):
+    if line[j][1] < line[i][1]:
+      d[i] = max(d[i], d[j]+1)
+print(n - max(d))
+```
