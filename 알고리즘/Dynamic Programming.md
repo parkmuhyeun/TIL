@@ -460,3 +460,37 @@ for i in range(2, n+1):
       d[i] = max(d[i], d[j]+1)
 print(n - max(d))
 ```
+
+```python
+n, m = map(int ,input().split())
+d = [[0] * (m+1) for _ in range(n+1)]
+for i in range(1, n+1):
+  row = list(map(int, input().split()))
+  for j in range(1, m+1):
+    d[i][j] = row[j-1]
+
+for i in range(1, n+1):
+  for j in range(1, m+1):
+    d[i][j] = d[i][j] + max(d[i-1][j], d[i-1][j-1], d[i][j-1])
+
+print(d[n][m])
+```
+
+```python
+import math
+n, k = map(int ,input().split())
+print(math.factorial(n) // (math.factorial(k) * math.factorial(n - k)) % 10007)
+```
+
+```python
+n = int(input())
+box = list(map(int, input().split()))
+
+d = [1] * n
+
+for i in range(1, n):
+  for j in range(i):
+    if box[i] > box[j]:
+      d[i] = max(d[i], d[j] + 1)
+print(max(d))
+```
