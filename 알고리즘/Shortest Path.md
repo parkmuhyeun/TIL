@@ -312,3 +312,73 @@ for i in range(1, n+1):
       result += 1
 print(result)
 ```
+
+```python
+import heapq
+INF = int(1e9)
+
+dx = [0, 0, -1, 1]
+dy = [1, -1, 0, 0]
+
+t = int(input())
+for _ in range(t):
+  n = int(input())
+  cost = []
+  for _ in range(n):
+    row = list(map(int, input().split()))
+    cost.append(row)
+  d = [[INF] * n for _ in range(n)]
+
+  x, y = 0, 0
+  q = []
+  heapq.heappush(q, (cost[x][y], x, y))
+  d[x][y] = cost[x][y]
+  
+  while q:
+    dist, x, y = heapq.heappop(q)
+    if d[x][y] < dist:
+      continue
+    for i in range(4):
+      nx = x + dx[i]
+      ny = y + dy[i]
+      if nx < 0 or n <= nx or ny < 0 or n <= ny:
+        continue
+      val = dist + cost[nx][ny]
+      if d[nx][ny] > val:
+        d[nx][ny] = val
+        heapq.heappush(q, (val, nx, ny))
+  print(d[n-1][n-1])
+```
+
+```python
+import heapq
+INF = int(1e9)
+
+n, m = map(int, input().split())
+graph = [[] for _ in range(n+1)]
+for _ in range(m):
+  a, b = map(int, input().split())
+  graph[a].append(b)
+  graph[b].append(a)
+
+distance = [INF] * (n+1)
+
+q = []
+heapq.heappush(q, (0, 1))
+distance[1] = 0
+
+while q:
+  dist, now = heapq.heappop(q)
+  if distance[now] < dist:
+    continue
+  for i in graph[now]:
+    cost = dist + 1
+    if distance[i] > cost:
+      distance[i] = cost
+      heapq.heappush(q, (cost, i))
+distance[0] = -1
+res = max(distance)
+cnt = distance.count(res)
+idx = distance.index(res)
+print(idx, res, cnt)
+```
