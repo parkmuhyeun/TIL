@@ -382,3 +382,63 @@ cnt = distance.count(res)
 idx = distance.index(res)
 print(idx, res, cnt)
 ```
+
+```python
+import heapq
+INF = int(1e9)
+
+v, e = map(int, input().split())
+k = int(input())
+graph = [[] for _ in range(v+1)]
+for _ in range(e):
+  a, b, w = map(int, input().split())
+  graph[a].append((b, w))
+distance = [INF] * (v+1)
+
+q = []
+heapq.heappush(q, (0, k))
+distance[k] = 0
+
+while q:
+  dist, now = heapq.heappop(q)
+  if distance[now] < dist:
+    continue
+  for i in graph[now]:
+    cost = dist + i[1]
+    if distance[i[0]] > cost:
+      distance[i[0]] = cost
+      heapq.heappush(q, (cost, i[0]))
+
+for i in range(1, v+1):
+  if distance[i] == INF:
+    print("INF")
+  else:
+    print(distance[i])
+```
+
+```python
+INF = int(1e9)
+
+n = int(input())
+graph = [[INF] * n for _ in range(n)]
+for i in range(n):
+  row = list(map(int, input().split()))
+  for j in range(n):
+    if row[j] == 1:
+      graph[i][j] = 1
+
+for k in range(n):
+  for i in range(n):
+    for j in range(n):
+      graph[i][j] = min(graph[i][j], graph[i][k] + graph[k][j])
+
+for i in range(n):
+  for j in range(n):
+    if graph[i][j] == INF:
+      print(0, end='')
+    else:
+      print(1, end='')
+    if j != n-1:
+      print(end=' ')
+  print()
+```
