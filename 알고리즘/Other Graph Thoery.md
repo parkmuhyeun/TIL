@@ -355,3 +355,52 @@ def topology_sort():
 
 topology_sort()
 ```
+
+```python
+n, m = map(int, input().split())
+trip = [[0] * (n+1) for _ in range(n+1)]
+for i in range(1, n+1):
+  road = list(map(int, input().split()))
+  for j in range(1, n+1):
+    trip[i][j] = road[j-1]
+
+want_list = list(map(int, input().split()))
+want = []
+for x in want_list:
+  if x not in want:
+    want.append(x)
+
+parent = [0] * (n+1)
+
+for i in range(1, n+1):
+  parent[i] = i
+  
+def find_parent(parent, x):
+  if parent[x] != x:
+    parent[x] = find_parent(parent, parent[x])
+  return parent[x]
+
+def union_parent(parent, a, b):
+  a = find_parent(parent, a)
+  b = find_parent(parent, b)
+  if a < b:
+    parent[b] = a
+  else:
+    parent[a] = b
+
+for i in range(1, n+1):
+  for j in range(1, n+1):
+    if trip[i][j] == 1:
+      union_parent(parent, i, j)
+
+flag = True
+val = parent[want[0]]
+for i in range(1, len(want)):
+  if parent[want[i]] != val:
+    flag = False
+
+if flag == True:
+  print("YES")
+else:
+  print("NO")
+```
