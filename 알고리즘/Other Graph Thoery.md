@@ -404,3 +404,120 @@ if flag == True:
 else:
   print("NO")
 ```
+
+```python
+def find_parent(parent, x):
+  if parent[x] != x:
+    parent[x] = find_parent(parent, parent[x])
+  return parent[x]
+
+def union_parent(parent, a, b):
+  a = find_parent(parent, a)
+  b = find_parent(parent, b)
+  if a < b:
+    parent[b] = a
+  else:
+    parent[a] = b
+
+g = int(input())
+p = int(input())
+
+parent = [0] * (g+1)
+
+for i in range(g+1):
+  parent[i] = i
+
+res = 0
+for _ in range(p):
+  d = int(input())
+  next = find_parent(parent, d)
+  if next != 0:
+    union_parent(parent, next, next-1)
+    res += 1
+  else:
+    break
+print(res)
+```
+
+```python
+def find_parent(parent, x):
+  if parent[x] != x:
+    parent[x] = find_parent(parent, parent[x])
+  return parent[x]
+
+def union_parent(parent, a, b):
+  a = find_parent(parent, a)
+  b = find_parent(parent, b)
+  if a < b:
+    parent[b] = a
+  else:
+    parent[a] = b
+
+n, m = map(int, input().split())
+parent = [0] * n
+for i in range(n):
+  parent[i] = i
+edges = []
+first_res = 0
+for _ in range(m):
+  x, y, cost = map(int, input().split())
+  edges.append((cost, x, y))
+  first_res += cost
+edges.sort()
+last_res = 0
+
+for edge in edges:
+  cost, a, b = edge
+  if find_parent(parent, a) != find_parent(parent, b):
+    union_parent(parent, a, b)
+    last_res += cost
+
+print(first_res - last_res)
+```
+
+```python
+def find_parent(parent, x):
+  if parent[x] != x:
+    parent[x] = find_parent(parent, parent[x])
+  return parent[x]
+
+def union_parent(parent, a, b):
+  a = find_parent(parent, a)
+  b = find_parent(parent, b)
+  if a < b:
+    parent[b] = a
+  else:
+    parent[a] = b
+
+n = int(input())
+parent = [0] * (n+1)
+for i in range(1, n+1):
+  parent[i] = i
+xEdges = []
+yEdges = []
+zEdges = []
+edges = []
+for i in range(1, n + 1):
+  x, y, z = map(int, input().split())
+  xEdges.append((x, i))
+  yEdges.append((y, i))
+  zEdges.append((z, i))
+xEdges.sort()
+yEdges.sort()
+zEdges.sort()
+for i in range(1, n):
+  edges.append((abs(xEdges[i][0] - xEdges[i-1][0]), xEdges[i-1][1], xEdges[i][1]))
+  edges.append((abs(yEdges[i][0] - yEdges[i-1][0]), yEdges[i-1][1], yEdges[i][1]))
+  edges.append((abs(zEdges[i][0] - zEdges[i-1][0]), zEdges[i-1][1], zEdges[i][1]))
+edges.sort()
+res = 0
+cnt = 0
+for edge in edges:
+  cost, a, b = edge
+  if find_parent(parent, a) != find_parent(parent, b):
+    union_parent(parent, a, b)
+    res += cost
+  if cnt == n-1:
+    break
+print(res)
+```
