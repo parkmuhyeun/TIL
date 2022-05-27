@@ -448,3 +448,50 @@ if b < a or flag == True:
 else:
   print(res)
 ```
+
+```python
+def solution(n, lost, reserve):
+    lost.sort()
+    reserve.sort()
+    visit = [False] * (n+2)
+    res = 0
+    rlost = []
+    for x in lost:
+        if x not in reserve:
+            rlost.append(x)
+    res = n - len(rlost)
+    for x in lost:
+        if x in rlost:
+            if existInReserve(x-1, reserve) and not existInLost(x-1, lost) and not visit[x-1]:
+                res += 1
+                visit[x-1] = True
+            elif existInReserve(x+1, reserve) and not existInLost(x+1, lost) and not visit[x+1]:
+                res += 1
+                visit[x+1] = True
+    return res
+
+def existInReserve(num, reserve):
+    if num in reserve:
+        return True
+    return False
+
+def existInLost(num, lost):
+    if num in lost:
+        return True
+    return False
+
+# 정리
+def solution(n, lost, reserve):
+    lost.sort()
+    reserve.sort()
+    _reserve = [r for r in reserve if r not in lost]
+    _lost = [l for l in lost if l not in reserve]
+    for l in _reserve:
+        f = l - 1
+        b = l + 1
+        if f in _lost:
+            _lost.remove(f)
+        elif b in _lost:
+            _lost.remove(b)
+    return n - len(_lost)
+```
