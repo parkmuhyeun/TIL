@@ -495,3 +495,81 @@ def solution(n, lost, reserve):
             _lost.remove(b)
     return n - len(_lost)
 ```
+
+```python
+def solution(name):
+    length = len(name)
+    min_move = length-1
+    res = 0
+    next = 0
+    
+    while name[min_move] == "A" and min_move >0:
+        min_move -= 1
+    if min_move < 0:
+        return res
+        
+    for i in range(length):
+        res += min(ord(name[i]) - ord("A"), ord("Z") - ord(name[i]) + 1)
+        next = i+1
+        
+        while next < length and name[next] == "A":
+            next += 1
+        
+        min_move = min(min_move, (2 * i) + length - next)
+        min_move = min(min_move, 2 * (length - next) + i)
+    res += min_move
+    return res
+
+# def solution(name):
+#     length = len(name)
+#     front = 0
+#     back = 0
+#     s = "A" * length
+#     cnt = 0
+    
+#     for i in range(length):
+#         if name[i] != "A":
+#             cnt += 1
+#     for i in range(1, length):
+#         if name[i] != "A":
+#             front = i
+#             break
+#     for i in range(length-1, 0, -1):
+#         if name[i] != "A":
+#             back = length - i
+#             break
+            
+#     res = 0  
+#     if cnt == 0:
+#         return 0
+#     elif length == 1:
+#         res += change(0, name, s)
+#         return res
+#     else:
+#         res += change(0, name, s)
+#         if front < back:
+#             for i in range(1, length):
+#                 res += change(i, name, s)
+#                 cnt -= 1
+#                 if cnt == 0:
+#                     break
+#                 res += 1
+#         else:
+#             for i in range(length-1, 0, -1):
+#                 res += change(i, name, s)
+#                 cnt -= 1
+#                 if cnt == 0:
+#                     break
+#                 res += 1
+        
+#     return res
+
+# def change(i, name, s):
+#     val = 0
+#     if name[i] != s[i]:
+#         if ord(name[i]) <= ord("N"):
+#             val =  ord(name[i]) - ord("A")
+#         else:
+#             val =  abs(ord(name[i]) - (ord("Z") + 1))
+#     return val
+```
