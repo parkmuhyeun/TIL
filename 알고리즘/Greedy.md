@@ -573,3 +573,145 @@ def solution(name):
 #             val =  abs(ord(name[i]) - (ord("Z") + 1))
 #     return val
 ```
+
+```python
+def solution(number, k):
+    max_val = -1
+    answer = []
+    start = 0
+    remain = len(number) - k
+    end = len(number) - remain + 1
+    
+    while len(answer) < len(number) - k:
+        max_val = -1
+        temp_s = start
+        temp_e = end
+        remain = len(number) - k - len(answer)
+        for i in range(temp_s, temp_e):
+            if int(number[i]) > max_val:
+                start = i + 1
+                end = len(number) - remain + 2
+                max_val = int(number[i])
+                
+            if max_val == 9:
+                break                   
+        answer.append(max_val)
+    return ''.join(map(str, answer))
+```
+
+```python
+#review
+import sys
+input = sys.stdin.readline
+
+n = int(input())
+fear = list(map(int, input().split()))
+fear.sort()
+
+res = 0
+limit = 0
+front = 0
+now = 0
+for i in range(len(fear)):
+  if fear[i] == 1:
+    res += 1
+  else:
+    if front != fear[i]:
+      front = fear[i]
+      limit = fear[i]
+      now += 1
+    else:
+      now += 1
+    if now == limit:
+      res += 1
+      now = 0
+      limit = 0
+      front = 0
+print(res)
+
+# import sys
+# input = sys.stdin.readline
+
+# n = int(input())
+# fear = list(map(int, input().split()))
+# fear.sort()
+
+# res = 0
+# now = 0
+# for i in range(len(fear)):
+#   now += 1
+#   if now >= fear[i]:
+#     res+=1
+#     now = 0
+# print(res)
+```
+
+```python
+#review
+s = input()
+res = int(s[0])
+for i in range(1, len(s)):
+  if res == 0 or res == 1 or s[i] == 0 or s[i] == 1:
+    res += int(s[i])
+  else:
+    res *= int(s[i])
+print(res)
+```
+
+```python
+#review
+s = input()
+
+s = list(map(int, s))
+# 0
+cnt0 = 0
+if s[0] == 0:
+  cnt0 += 1
+for i in range(1, len(s)):
+  if s[i-1] == 1 and s[i] == 0:
+    cnt0 += 1
+
+# 1
+cnt1 = 0
+if s[0] == 1:
+  cnt1 += 1
+for i in range(1, len(s)):
+  if s[i-1] == 0 and s[i] == 1:
+    cnt1 += 1
+    
+print(min(cnt0, cnt1))
+```
+
+```python
+##review
+import sys
+input = sys.stdin.readline
+
+n = int(input())
+coins = list(map(int, input().split()))
+coins.sort()
+target = 1
+
+for x in coins:
+  if target < x:
+    break
+  target += x
+print(target)
+
+import sys
+input = sys.stdin.readline
+
+# n = int(input())
+# coins = list(map(int, input().split()))
+# coins.sort()
+# target = coins[0]
+# i = 1
+
+# if target != 1:
+#   print(1)
+# else:
+#   while i <= len(coins)-1 and coins[i] <= target+1:
+#     target += coins[i]
+#     i += 1
+#   print(target+1)
+```
