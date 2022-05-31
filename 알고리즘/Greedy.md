@@ -218,9 +218,9 @@ for x in line:
   cur += x
   sum += cur
 print(sum)
+```
 
----
-
+```python
 n = int(input())
 line = list(map(int, input().split()))
 
@@ -714,4 +714,39 @@ input = sys.stdin.readline
 #     target += coins[i]
 #     i += 1
 #   print(target+1)
+```
+
+```python
+#review
+n, m = map(int, input().split())
+balls = list(map(int, input().split()))
+
+cnt = [0] * 11
+
+for i in range(n):
+  cnt[balls[i]] += 1
+
+res = 0
+for i in range(1, m+1):
+  n -= cnt[i]
+  res += cnt[i] * n
+print(res)
+
+# n^2
+# n, m = map(int, input().split())
+# balls = list(map(int, input().split()))
+
+# res = 0
+# for i in range(n-1):
+#   for j in range(i+1, n):
+#     if balls[i] != balls[j]:
+#       res += 1
+# print(res)
+
+# 2^n
+# from itertools import combinations
+# n, m = map(int, input().split())
+# balls = list(map(int, input().split()))
+# dup = len(balls) - len(set(balls))
+# print(len(list(combinations(balls, 2))) - dup)
 ```
