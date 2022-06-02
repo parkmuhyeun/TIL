@@ -750,3 +750,51 @@ print(res)
 # dup = len(balls) - len(set(balls))
 # print(len(list(combinations(balls, 2))) - dup)
 ```
+
+```python
+from collections import deque
+
+def solution(people, limit):
+    if len(people) == 1:
+        return 1
+    people.sort()
+    q = deque(people)
+    res = 0
+    front = q[0]
+    back = q[len(q)-1]
+    while q:
+        if len(q) == 1:
+                res += 1
+                break
+        if front+back <= limit:
+            res += 1
+            q.popleft()
+            q.pop()
+            if len(q) == 0:
+                break
+            front = q[0]
+            back = q[len(q)-1]
+        else:
+            res += 1
+            q.pop()
+            back = q[len(q)-1]
+    
+    return res
+
+# refactoring
+from collections import deque
+
+def solution(people, limit):
+    people.sort()
+    q = deque(people)
+    res = 0
+    while q:
+        front = q.popleft()
+        if not q:
+            return res + 1
+        back = q.pop()
+        if front + back > limit:
+            q.appendleft(front)
+        res += 1
+    return res
+```
