@@ -845,3 +845,28 @@ def solution(routes):
             position = route[1]
     return answer
 ```
+
+```python
+#review
+import heapq
+
+def solution(food_times, k):
+    
+    if sum(food_times) <= k:
+        return -1
+    
+    length = len(food_times)
+    heap = []
+    for i in range(length):
+        heapq.heappush(heap, (food_times[i], i + 1))
+    
+    time = 0
+    while (heap[0][0] - time) * length < k:
+        k -= (heap[0][0] - time) * length
+        time += (heap[0][0] - time)
+        length -= 1
+        heapq.heappop(heap)
+    
+    res = sorted(heap, key = lambda x : x[1]) 
+    return res[k % length][1]
+```
