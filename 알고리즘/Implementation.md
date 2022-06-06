@@ -872,3 +872,65 @@ if flag:
 else:
   print("NO")
 ```
+
+```python
+#review
+n = input()
+left = 0
+right = 0
+for i in range(len(n)//2):
+  left += int(n[i])
+for i in range(len(n)//2, len(n)):
+  right += int(n[i])
+if left == right:
+  print("LUCKY")
+else:
+  print("READY")
+```
+
+```python
+#review
+s = input()
+res = sorted(s)
+val = 0
+front = ""
+for i in range(len(res)):
+  if 65 <= ord(res[i]):
+    front += res[i]
+  else:
+    val += int(res[i])
+print(front+str(val))
+```
+
+```python
+def solution(s):
+    answer = len(s)
+    
+    for i in range(1, len(s)//2 + 1):
+        previous = s[:i]
+        now = ""
+        res = ""
+        val = 0
+        for j in range(len(s)):
+            now += s[j]
+            if len(now) == i:
+                if previous == now:
+                    val += 1
+                    now = ""
+                else:
+                    if val == 1:
+                        res += previous
+                    else:
+                        res += str(val) + previous
+                        val = 1
+                    previous = now
+                    now = ""
+        if val == 1:
+            res += previous
+        else:
+            res += str(val) + previous
+        if len(s) % i != 0:
+            res += now
+        answer = min(answer, len(res))
+    return answer
+```
