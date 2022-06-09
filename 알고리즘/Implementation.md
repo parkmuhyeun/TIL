@@ -934,3 +934,107 @@ def solution(s):
         answer = min(answer, len(res))
     return answer
 ```
+
+```python
+#review
+def bodyCollision(nx, ny):
+  for body in snake:
+    if nx == body[0] and ny == body[1]:
+      return True
+  return False
+
+from collections import deque
+
+N = int(input())
+K = int(input())
+apples = [[0] * (N+1) for _ in range(N+1)]
+dirs = deque()
+for _ in range(K):
+  x, y = map(int, input().split())
+  apples[x][y] = 1
+L = int(input())
+for _ in range(L):
+  time, dir = input().split()
+  dirs.append((int(time), dir))
+
+x = 1
+y = 1
+dx = [0, 1, 0, -1]
+dy = [1, 0, -1, 0]
+dir = 0
+cnt = 0
+snake = deque()
+snake.append((1, 1))
+while(1):
+  if dirs and cnt == dirs[0][0]:
+    if dirs[0][1] == 'L':
+      dir = (dir - 1) % 4
+    else:
+      dir = (dir + 1) % 4
+    dirs.popleft()
+  nx = x + dx[dir]
+  ny = y + dy[dir]
+  if nx < 1 or N < nx or ny < 1 or N < ny or bodyCollision(nx, ny):
+    break
+  if apples[nx][ny] == 1:
+    apples[nx][ny] = 0
+  else:
+    snake.pop()
+  snake.appendleft((nx, ny))
+  x = nx
+  y = ny
+  cnt += 1
+print(cnt+1)
+```
+
+```python
+#review
+def solution(key, lock):
+    N = len(key)
+    M = len(lock)
+    length = M + 2 * (N-1)
+    board = [[0] * length for _ in range(length)]
+    for i in range(N-1, N-1+M):
+        for j in range(N-1, N-1+M):
+            board[i][j] = lock[i-(N-1)][j-(N-1)]
+
+    flag = 1
+    for rotate in range(4):
+        for i in range(length):
+            for j in range(length):
+                flag = 1
+                # 범위 안에 있는 값만 찍어준다
+                for k in range(i, i + N):
+                    for l in range(j, j + N):
+                        if N-1 <= k < N-1+M and N-1 <= l < N-1+M:
+                            if board[k][l] == 0:
+                                board[k][l] = key[k-i][l-j]
+                            elif board[k][l] == 1 and key[k-i][l-j] == 1:
+                                flag = 0
+                # Check
+                for k in range(N-1, N-1+M):
+                    for l in range(N-1, N-1+M):
+                        if board[k][l] == 0:
+                            flag = 0
+                            break
+                    if flag == 0:
+                        break
+                # 열 수 있으면 True, 없으면 원상복귀
+                if flag == 1:
+                    return True
+                else:
+                    for k in range(N-1, N-1+M):
+                        for l in range(N-1, N-1+M):
+                            board[k][l] = lock[k-(N-1)][l-(N-1)]
+        key = rotateKey(key)
+    return False
+
+def rotateKey(key):
+    n = len(key)
+    m = len(key[0])
+    rotate_key = [[0] * m for _ in range(n)]
+    for i in range(n):
+        for j in range(m):
+            rotate_key[j][n-1-i] = key[i][j]
+    return rotate_key
+```
