@@ -1038,3 +1038,41 @@ def rotateKey(key):
             rotate_key[j][n-1-i] = key[i][j]
     return rotate_key
 ```
+
+```python
+def possible(res):
+    for r in res:
+        x, y, a = r
+        # 기둥
+        if a == 0:
+            if y == 0 or (x-1, y, 1) in res or (x, y, 1) in res or (x, y-1, 0) in res:
+                continue
+            else:
+                return False
+        # 보
+        else:
+            if (x, y-1, 0) in res or (x+1, y-1, 0) in res or ((x-1, y, 1) in res and (x+1, y, 1) in res):
+                continue
+            else:
+                return False
+    return True            
+
+def solution(n, build_frame):
+    
+    res = []
+    for build in build_frame:
+        x, y, a, b = build
+                
+        # 설치
+        if b == 1:
+            res.append((x, y, a))
+            if not possible(res):
+                res.remove((x, y, a))
+        # 삭제
+        else:
+            res.remove((x, y, a))
+            if not possible(res):
+                res.append((x, y, a))
+    res.sort()
+    return res
+```
