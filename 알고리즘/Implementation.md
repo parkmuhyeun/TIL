@@ -1076,3 +1076,61 @@ def solution(n, build_frame):
     res.sort()
     return res
 ```
+
+```python
+#review
+from itertools import combinations
+import sys
+input = sys.stdin.readline
+
+n, m = map(int, input().split())
+homes = []
+chomes = []
+for i in range(n):
+  row = list(map(int, input().split()))
+  for j in range(n):
+    if row[j] == 1:
+      homes.append((i+1, j+1))
+    elif row[j] == 2:
+      chomes.append((i+1, j+1))
+
+res = 1e9
+for comb in combinations(chomes, m):
+  sum = 0
+  for home in homes:
+    min_dis = 1e9
+    for cx, cy in comb:
+      min_dis = min(min_dis, abs(cx - home[0]) + abs(cy - home[1]))
+    sum += min_dis
+  res = min(res, sum)
+print(res)
+```
+
+```python
+#review
+from itertools import permutations
+import copy
+
+def solution(n, weak, dist):
+    dlen = len(dist)
+    wlen = len(weak)
+    nweak = copy.deepcopy(weak)
+    for i in range(wlen):
+        nweak.append(weak[i] + n)
+        
+    res = dlen + 1 
+    for perm in permutations(dist, dlen):
+        for start in range(wlen):
+            cnt = 1
+            end = nweak[start] + perm[cnt - 1]
+            for i in range(start, start + wlen):
+                if nweak[i] > end:
+                    cnt += 1
+                    if cnt > dlen:
+                        break
+                    end = nweak[i] + perm[cnt - 1]
+            res = min(res, cnt)
+    if res > dlen:
+        res = -1
+    return res
+```
