@@ -261,7 +261,7 @@ while cnt <= s:
 print(board[a][b])
 ```
 
-``python
+```python
 from collections import deque
 
 def solution(board):
@@ -317,4 +317,101 @@ def get_next_pos(pos, board):
                     next.append({(pos1_x, pos1_y), (pos1_x, pos1_next_y)})
                     next.append({(pos2_x, pos2_y), (pos2_x, pos2_next_y)})
     return next
+```
+
+```python
+#review
+from collections import deque
+
+n, m, k, x = map(int, input().split())
+graph = [[] for _ in range(n+1)]
+for _ in range(m):
+  a, b = map(int, input().split())
+  graph[a].append(b)
+
+visited = [False] * (n+1)
+q = deque()
+q.append((x, 0))
+
+res = []
+while q:
+  now, cnt = q.popleft()
+  visited[now] = True
+  res.append((now, cnt))
+  for g in graph[now]:
+    if not visited[g]:
+      visited[g] = True
+      q.append((g, cnt+1))
+res.sort()
+
+cnt = 0
+city = []
+for i in range(len(res)):
+  if res[i][1] == k:
+    cnt += 1
+    city.append(res[i][0])
+if cnt == 0:
+  print("-1")
+else:
+  for x in city:
+    print(x)
+```
+
+```python
+#reivew
+from collections import deque
+from itertools import combinations
+import copy
+
+def bfs(x, y):
+  q = deque()
+  q.append((x,y))
+  while q:
+    x, y = q.popleft()
+    for dir in range(4):
+      nx = x + dx[dir]
+      ny = y + dy[dir]
+      if 1 <= nx <= n and 1 <= ny <= m and cboard[nx][ny] == 0:
+        cboard[nx][ny] = 2
+        q.append((nx, ny))
+
+n, m = map(int, input().split())
+board = [[0] * (m+1) for _ in range(n+1)]
+virus = []
+for i in range(1, n+1):
+  row = list(map(int, input().split()))
+  for j in range(1, m+1):
+    board[i][j] = row[j-1]
+    if board[i][j] == 2:
+      virus.append((i, j))
+      
+wall = []
+for i in range(1, n+1):
+  for j in range(1, m+1):
+    wall.append((i, j))
+
+res = -1
+for comb in list(combinations(wall, 3)):
+  flag = 0
+  cboard = copy.deepcopy(board)
+  for i, j in comb:
+    if cboard[i][j] == 2 or cboard[i][j] == 1:
+      flag = 1
+      break
+    else:
+      cboard[i][j] = 1
+  if flag == 1:
+    continue
+
+  dx = [0, 0, -1, 1]
+  dy = [1, -1, 0, 0]
+  for x, y in virus:
+    bfs(x, y)
+  safe = 0
+  for i in range(1, n+1):
+    for j in range(1, m+1):
+      if cboard[i][j] == 0:
+        safe += 1
+  res = max(res, safe)
+print(res)
 ```
