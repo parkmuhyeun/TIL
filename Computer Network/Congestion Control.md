@@ -65,3 +65,52 @@
 - Timeout
     - Much more serious
     - Heavy congestion
+- After timeout event:
+    - ssthresh -> cwnd/2
+    - cwnd -> 1 MSS
+    - Do slow start phase again
+- But, after 3 dup ACKs: enter Fast-recovery
+    - ssthresh -> cwnd/2 (same)
+    - cwnd is set to ssthresh
+    - cwnd then grows linearly (like congestion avoidance phase)
+
+## Evolution of TCP's Congestion Flow
+
+![](./img/cc_7.PNG)
+
+- TCP Tahoe does not adopt Fast-recovery
+
+## Summary: TCP Congestion Control
+- When cwnd is below, sender in slow start phase, window grows exponentially
+- When cwnd is above ssthresh, sender enters congestion-avodiance phase, cwnd grows linearly
+- When a triple duplicate ACk occurs, ssthresh set to cwnd/2 and cwnd set to ssthresh
+- When timeout occurs , ssthresh set to cwnd/2 and cwnd is set to 1 MSS
+
+## Fast Recovery in Detail
+Idea: Grant the sender temporary "credit" for each dupACk so as to keep segment in flight
+
+- If dupACKcount = 3
+    - ssthresh = cwnd/2
+    - cwnd = ssthresh + 3
+
+- While in fast recovery
+    - cwnd = cwnd + 1 for each additional duplicate ACk 
+- Exit fast recovery after receiving new ACK
+    - set cwnd = ssthresh
+
+## Example
+- Consider a TCP connection with:
+    - CWND=10 segments
+    - Last ACK was for packet # 101
+- 10 segments [101, 102, 103, ..., 110] are in flight
+    - segments 101 is dropped
+    - What ACKs do they generate?
+    - And how does the sender respond?
+
+## Time Line (at Sender)
+
+![](./img/cc_8.PNG)
+
+## Finite-State Machine of TCP Congestion Control
+
+![](./img/cc_9.PNG)
