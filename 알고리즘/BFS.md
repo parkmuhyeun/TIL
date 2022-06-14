@@ -415,3 +415,122 @@ for comb in list(combinations(wall, 3)):
   res = max(res, safe)
 print(res)
 ```
+
+```python
+#review
+import sys
+from collections import deque
+input = sys.stdin.readline
+
+N, K = map(int, input().split())
+board = [[0] * (N+1) for _ in range(N+1)]
+virus = []
+for i in range(1, N+1):
+  row = list(map(int, input().split()))
+  for j in range(1, N+1):
+    if row[j-1] != 0:
+      board[i][j] = row[j-1]
+      virus.append((row[j-1], 0, i, j))
+S, X, Y = map(int, input().split())
+virus.sort()
+
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
+
+q = deque()
+for i in range(len(virus)):
+  q.append(virus[i])
+while q:
+  type, time, x, y = q.popleft()
+  if time == S:
+    break
+  for dir in range(4):
+    nx = x + dx[dir]
+    ny = y + dy[dir]
+    if 1 <= nx <= N and 1 <= ny <= N and board[nx][ny] == 0:
+      board[nx][ny] = type
+      q.append((type, time+1, nx, ny))
+print(board[X][Y])
+
+
+# import sys
+# input = sys.stdin.readline
+
+# N, K = map(int, input().split())
+# board = [[0] * (N+1) for _ in range(N+1)]
+# virus = [[] for _ in range(K+1)]
+# for i in range(1, N+1):
+#   row = list(map(int, input().split()))
+#   for j in range(1, N+1):
+#     if row[j-1] != 0:
+#       board[i][j] = row[j-1]
+#       virus[row[j-1]].append((i, j))
+# S, X, Y = map(int, input().split())
+
+# dx = [-1, 1, 0, 0]
+# dy = [0, 0, -1, 1]
+
+# while S: 
+#   for i in range(1, K+1):
+#     for j in range(len(virus[i])):
+#       x, y = virus[i][j]
+#       for dir in range(4):
+#         nx = x + dx[dir]
+#         ny = y + dy[dir]
+#         if 1 <= nx <= N and 1 <= ny <= N and board[nx][ny] == 0:
+#           board[nx][ny] = i
+#           virus[i].append((nx, ny))
+#   S -= 1
+# print(board[X][Y])
+```
+
+```python
+#review
+def solution(p):
+    if isRight(p):
+        return p
+        
+    return recur(p)
+
+def recur(s):
+    if s == '':
+        return ''
+    left = 0
+    right = 0
+    u = ''
+    for i in range(len(s)):
+        if s[i] == '(':
+            right += 1
+            u += '('
+        else:
+            left += 1
+            u += ')'
+        if right >= 1 and right == left:
+            break
+    v = s[left+right:]
+    if isRight(u):
+        return u + recur(v)
+    else:
+        last = ''
+        for i in range(len(u)):
+            if i == 0 or i == len(u)-1:
+                continue
+            if u[i] == ')':
+                last += '('
+            else:
+                last += ')'
+        return '(' + recur(v) + ')' + last
+    
+def isRight(s):
+    st = []
+    for x in s:
+        if x == '(':
+            st.append(x)
+        else:
+            if not st:
+                return False
+            c = st.pop()
+            if c != '(':
+                return False
+    return True
+```
