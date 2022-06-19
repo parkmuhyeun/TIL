@@ -1,5 +1,5 @@
-# Grammer for Test
-##알고리즘/Grammer for Test
+# Grammer for Test(Python)
+##알고리즘/Grammer for Test(Python)
 
 ---
 
