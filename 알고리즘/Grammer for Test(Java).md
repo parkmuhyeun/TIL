@@ -597,3 +597,34 @@ public static void main(String[] args){
     System.out.println(list);
 }
 ```
+
+pair
+```java
+static class Pair implements Comparable<Pair> {
+    int first, second;
+    Pair(int f, int s) {
+        this.first = f;
+        this.second = s;
+    }
+    public int compareTo(Pair p) {
+        if(this.first > p.first) {  //내림차순
+            return -1;
+        }
+        else if(this.first == p.first) {
+            if(this.second < p.second) {    // 오름차순
+                return -1;
+            }
+        }
+        return 1;
+    }
+}
+```
+
+출력
+
+```java
+BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+bw.write("hi");
+bw.flush();
+bw.close();
+```
