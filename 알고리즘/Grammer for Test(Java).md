@@ -620,11 +620,65 @@ static class Pair implements Comparable<Pair> {
 }
 ```
 
-출력
+## 출력
 
 ```java
 BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 bw.write("hi");
 bw.flush();
 bw.close();
+```
+
+## 순열 (Permutation)
+
+```java
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class Main {
+  
+  public static void main(String[] args) {
+    List<int[]> permutations = new ArrayList<>();
+    int[] arr = {1, 2, 3, 4, 5};
+    boolean[] visited = new boolean[10];
+    
+    perm(permutations, arr, new int[2], visited, 0);
+    for (int[] permutation : permutations)
+      System.out.println(Arrays.toString(permutation));
+  }
+
+  static void perm(List<int[]> permutations, int[] arr, int[] data, boolean[] visited, int depth){
+    if (depth == data.length) {
+      int[] clone = data.clone();
+      permutations.add(clone);
+      return;
+    }
+
+    for (int i =0; i< arr.length; i++){
+      if (visited[i] != true) {
+        visited[i] = true;
+        data[depth] = arr[i];
+        perm(permutations, arr, data, visited, depth + 1);       
+        visited[i] = false;  
+      }
+    }
+  }
+  
+}
+```
+
+## 조합(Combination)
+
+```java
+static void combination(List<int[]> combinations, int data[], int start, int end, int idx) {
+    if (idx == data.length) {
+        int[] clone = data.clone();
+        combinations.add(clone);
+    } else if (start <= end){
+        data[idx] = start;
+        combination(combinations, data, start + 1, end, idx + 1);
+        combination(combinations, data, start + 1, end, idx);
+    }
+}
 ```
