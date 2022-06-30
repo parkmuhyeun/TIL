@@ -143,3 +143,81 @@ for case in range(t):
         ans += 1
   print(ans)
 ```
+
+```python
+#review
+n = int(input())
+nums = list(map(int, input().split()))
+pl, mi, mu, di = map(int, input().split())
+
+min_res = 1e9
+max_res = -1e9
+
+def dfs(dep, now):
+    global min_res, max_res, pl, mi, mu, di
+    if dep == n:
+        min_res = min(min_res, now)
+        max_res = max(max_res, now)
+    else:
+        if pl > 0:
+            pl -= 1
+            dfs(dep + 1, now + nums[dep])
+            pl += 1
+        if mi > 0:
+            mi -= 1
+            dfs(dep + 1, now - nums[dep])
+            mi += 1
+        if mu > 0:
+            mu -= 1
+            dfs(dep + 1, now * nums[dep])
+            mu += 1
+        if di > 0:
+            di -= 1
+            dfs(dep + 1, int(now / nums[dep]))
+            di += 1
+
+dfs(1, nums[0])
+
+print(max_res)
+print(min_res)
+
+# from itertools import permutations
+
+# n = int(input())
+# nums = list(map(int, input().split()))
+# pl, mi, mu, di = map(int, input().split())
+# signs = []
+
+# for i in range(pl):
+#   signs.append('+')
+# for i in range(mi):
+#   signs.append('-')
+# for i in range(mu):
+#   signs.append('*')
+# for i in range(di):
+#   signs.append('/')
+
+
+# max_res = -1e9
+# min_res = 1e9
+# for perm in list(permutations(signs, len(signs))):
+#   sum = nums[0]
+#   for i in range(len(perm)):
+#     if perm[i] == '+':
+#       sum = sum + nums[i+1]
+#     elif perm[i] == '-':
+#       sum = sum - nums[i+1]
+#     elif perm[i] == '*':
+#       sum = sum * nums[i+1]
+#     elif perm[i] == '/':
+#       if sum < 0:
+#         sum = -1 * sum
+#         sum = sum // nums[i+1]
+#         sum = -1 * sum
+#       else:
+#         sum = sum // nums[i+1]
+#   max_res = max(max_res, sum)      
+#   min_res = min(min_res, sum)
+# print(max_res)
+# print(min_res)
+```
