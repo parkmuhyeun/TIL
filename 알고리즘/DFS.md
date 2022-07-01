@@ -221,3 +221,124 @@ print(min_res)
 # print(max_res)
 # print(min_res)
 ```
+
+```python
+#review
+
+from itertools import combinations
+
+def check(x, y):
+  #x축
+  for i in range(x-1, -1, -1):
+    if board[i][y] == 'O':
+      break
+    if board[i][y] == 'S':
+      return False
+  for i in range(x+1, n):
+    if board[i][y] == 'O':
+      break
+    if board[i][y] == 'S':
+      return False
+    
+  #y축
+  for i in range(y-1, -1, -1):
+    if board[x][i] == 'O':
+      break
+    if board[x][i] == 'S':
+      return False
+  for i in range(y+1, n):
+    if board[x][i] == 'O':
+      break
+    if board[x][i] == 'S':
+      return False
+      
+  return True
+
+n = int(input())
+board = []
+teacher = []
+obstacle = []
+for i in range(n):
+  row = list(input().split())
+  for j in range(n):
+    if row[j] == 'T':
+      teacher.append((i, j))
+    if row[j] == 'X':
+      obstacle.append((i, j))
+  board.append(row)
+
+flag = False
+for comb in list(combinations(obstacle, 3)):
+  for x, y in comb:
+    board[x][y] = 'O'
+  for x, y in teacher:
+    if check(x, y):
+      flag = True
+    else:
+      flag = False
+      break
+  if flag:
+    break
+  else:
+    for x, y in comb:
+      board[x][y] = 'X'
+
+if flag:
+  print("YES")
+else:
+  print("NO")
+```
+
+```python
+#review
+def dfs(x, y, cnt):
+  visited[x][y] = cnt
+
+  dx = [0, 0, -1, 1]
+  dy = [1, -1, 0, 0]
+  for i in range(4):
+    nx = x + dx[i]
+    ny = y + dy[i]
+    if 0 <= nx < n and 0 <= ny < n and visited[nx][ny] == 0 and l <= abs(board[x][y] - board[nx][ny]) <= r:
+      dfs(nx, ny, cnt)
+
+n, l, r = map(int, input().split())
+board = []
+for _ in range(n):
+  board.append(list(map(int, input().split())))
+visited = [[0] * n for _ in range(n)]
+
+res = 0
+while True:
+  cnt = 1
+  for i in range(n):
+    for j in range(n):
+      if visited[i][j] == 0:
+        dfs(i, j, cnt)
+        cnt += 1 
+        
+  if cnt == (n*n) + 1:
+    break
+
+  people_cnt = [0] * cnt
+  country_cnt = [0] * cnt
+  # 나눌 수 구하기
+  for i in range(n):
+    for j in range(n): 
+      team = visited[i][j]
+      people_cnt[team] += board[i][j]
+      country_cnt[team] += 1
+  
+  # 부여
+  for i in range(n):
+    for j in range(n): 
+      team = visited[i][j]
+      board[i][j] = people_cnt[team] // country_cnt[team]
+  
+  res += 1
+  for i in range(n):
+    for j in range(n):
+      visited[i][j] = 0
+
+print(res)
+```
