@@ -248,3 +248,43 @@ while len(h) != 1:
   heapq.heappush(h, x+y)
 print(res)
 ```
+
+```python
+#review
+n = int(input())
+student = []
+for i in range(n):
+  row = list(input().split())
+  stu = []
+  stu.append(row[0])
+  for j in range(1, 4):
+    stu.append(int(row[j]))
+  student.append(stu)
+
+student.sort(key=lambda x: (-x[1], x[2], -x[3], x[0]))
+
+for s in student:
+  print(s[0])
+```
+
+```python
+#review
+import sys
+input = sys.stdin.readline
+
+n = int(input())
+homes = list(map(int, input().split()))
+homes.sort()
+if n % 2 == 0:
+  print(homes[(n//2) -1])
+else:
+  print(homes[n//2])
+
+# import sys
+# input = sys.stdin.readline
+
+# n = int(input())
+# homes = list(map(int, input().split()))
+# homes.sort()
+# print(homes[(n-1) // 2])
+```
