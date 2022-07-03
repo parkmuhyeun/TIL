@@ -534,3 +534,72 @@ def isRight(s):
                 return False
     return True
 ```
+
+```python
+#review
+from collections import deque
+
+def solution(board):
+    n = len(board)
+    pos = [(0, 0), (0, 1)]
+    visit = []
+    visit.append(pos)
+    
+    q = deque()
+    q.append((pos, 0))
+    
+    while q:
+        now, cost = q.popleft()
+        if (n-1, n-1) in now:
+            return cost
+        for next_pos in getNextPos(now, board):
+            if next_pos not in visit:
+                q.append((next_pos, cost+1))            
+                visit.append(next_pos)
+            
+    return 0
+
+def getNextPos(now, board):
+    next = []
+    n = len(board)
+    fx = now[0][0]
+    fy = now[0][1]
+    sx = now[1][0]
+    sy = now[1][1]
+    
+    dx = [-1, 1, 0 ,0]
+    dy = [0, 0, -1, 1]
+    # 상하좌우 이동
+    for i in range(4):
+        nfx = fx + dx[i]
+        nfy = fy + dy[i]
+        nsx = sx + dx[i]
+        nsy = sy + dy[i]
+        if 0 <= nfx < n and 0 <= nfy < n and 0 <= nsx < n and 0 <= nsy < n and board[nfx][nfy] == 0 and board[nsx][nsy] == 0:
+            next.append([(nfx, nfy), (nsx, nsy)])
+    
+    #가로회전
+    if fx == sx:
+        #위가 비어있는 경우
+        if 0 <= fx-1 < n and 0 <= sx-1 < n and board[fx-1][fy] == 0 and board[sx-1][sy] == 0:
+            next.append([(fx-1, fy), (fx, fy)])
+            next.append([(sx-1, sy), (sx, sy)])
+        #아래가 비어있는 경우
+        if 0 <= fx+1 < n and 0 <= sx+1 < n and board[fx+1][fy] == 0 and board[sx+1][sy] == 0:
+            next.append([(fx, fy), (fx+1, fy)])
+            next.append([(sx, sy), (sx+1, sy)])
+            
+    #세로회전
+    if fy == sy:
+        # 왼쪽이 비어있는 경우
+        if 0 <= fy-1 < n and 0 <= sy-1 < n and board[fx][fy-1] == 0 and board[sx][sy-1] == 0:
+            next.append([(fx, fy-1), (fx, fy)])
+            next.append([(sx, sy-1), (sx, sy)])
+        # 오른쪽이 비어있는 경우
+        if 0 <= fy+1 < n and 0 <= sy+1 < n and board[fx][fy+1] == 0 and board[sx][sy+1] == 0:
+            next.append([(fx, fy), (fx, fy+1)])
+            next.append([(sx, sy), (sx, sy+1)])
+    return next
+
+print(solution([[0, 0, 0, 1, 1], [0, 0, 0, 1, 0], [0, 1, 0, 1, 1], [1, 1, 0, 0, 1], [0, 0, 0, 0, 0]]))
+```
