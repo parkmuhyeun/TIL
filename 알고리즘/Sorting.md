@@ -288,3 +288,53 @@ else:
 # homes.sort()
 # print(homes[(n-1) // 2])
 ```
+
+```python
+def solution(N, stages):
+    cnt = [0] * (N+2)
+    success = [0] * (N+1)
+    reach = [0] * (N+1)
+    fail = []
+    res = []
+    
+    for x in stages:
+        cnt[x] += 1
+    
+    for i in range(1, N+2):
+        mul = cnt[i]
+        for j in range(1, i):
+            reach[j] += mul
+            success[j] += mul
+        if i != N+1:
+            reach[i] += mul
+        
+    for i in range(1, N+1):
+        if reach[i] == 0:
+            fail.append((0, i))
+        else:
+            fail.append(((reach[i] - success[i]) / reach[i], i))
+    fail.sort(key=lambda x: (-x[0], x[1]))
+    for i in range(N):
+        res.append(fail[i][1])
+    return res
+```
+
+```python
+import heapq
+n = int(input())
+res = 0
+cards = []
+
+for i in range(n):
+  heapq.heappush(cards, int(input()))
+
+while True:
+  if len(cards) == 1:
+    break
+  first = heapq.heappop(cards)
+  second = heapq.heappop(cards)
+  new = first + second
+  res += new
+  heapq.heappush(cards, new)
+print(res)
+```
