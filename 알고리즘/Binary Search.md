@@ -208,3 +208,66 @@ while start <= end:
 
 print(res)
 ```
+
+```python
+from bisect import bisect_left, bisect_right
+import sys
+input = sys.stdin.readline
+
+n, x = map(int, input().split())
+nums = list(map(int, input().split()))
+
+res = bisect_right(nums, x) - bisect_left(nums, x)
+if res == 0:
+  print(-1)
+else:
+  print(res)
+
+#bisect 안쓰고
+# def count_by_value(array, x):
+#   n = len(array)
+#   a = first(array, x, 0, n-1)
+  
+#   if a == None:
+#     return 0
+    
+#   b = last(array, x, 0, n-1)
+  
+#   return b - a + 1
+
+# def first(array, target, start, end):
+#   if start > end:
+#     return None
+
+#   mid = (start + end) // 2
+#   if (mid == 0 or target > array[mid - 1]) and array[mid] == target:
+#     return mid
+#   elif array[mid] >= target:
+#     return first(array, target, start, mid - 1)
+#   else:
+#     return first(array, target, mid + 1 , end)
+
+# def last(array, target, start, end):
+#   if start > end:
+#     return None
+
+#   mid = (start + end) // 2
+#   if (mid == n-1 or target < array[mid + 1]) and array[mid] == target:
+#     return mid
+#   elif array[mid] > target:
+#     return last(array, target, start, mid - 1)
+#   else:
+#     return last(array, target, mid + 1 , end)
+
+# import sys
+# input = sys.stdin.readline
+
+# n, x = map(int, input().split())
+# nums = list(map(int, input().split()))
+
+# res = count_by_value(nums, x)
+# if res == 0:
+#   print(-1)
+# else:
+#   print(res)
+```
