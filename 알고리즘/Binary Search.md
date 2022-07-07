@@ -271,3 +271,57 @@ else:
 # else:
 #   print(res)
 ```
+
+```python
+#review
+import sys
+input = sys.stdin.readline
+
+def binary_search(array, start, end):
+  if start > end:
+    return None
+  mid = (start + end) // 2
+  if array[mid] == mid:
+    return mid
+  elif mid < array[mid]:
+    return binary_search(array, start, mid -1)
+  else:
+    return binary_search(array, mid + 1, end)
+
+n = int(input())
+array = list(map(int, input().split()))
+
+res = binary_search(array, 0, n-1)
+if res == None:
+  print(-1)
+else:
+  print(res)
+```
+
+```python
+#review
+n, c = map(int, input().split())
+pos = []
+for _ in range(n):
+  pos.append(int(input()))
+pos.sort()
+
+start = 1
+end = pos[n-1] - pos[0]
+result = 0
+
+while start <= end:
+  mid = (start + end) // 2
+  value = pos[0]
+  cnt = 1
+  for i in range(1, n):
+    if pos[i] >= value + mid:
+      cnt += 1
+      value = pos[i]
+  if cnt >= c:
+    start = mid + 1
+    result = mid
+  else:
+    end = mid - 1
+print(result)
+```
