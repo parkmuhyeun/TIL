@@ -1,0 +1,30 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= Rest Docs API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+
+## Review
+
+=== Review 생성
+
+==== REQUEST
+include::{snippets}/reviews/create/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/reviews/create/http-response.adoc[]
+
+=== Review 생성1
+
+==== REQUEST
+include::{snippets}/reviews/create1/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/reviews/create1/http-response.adoc[]
+
