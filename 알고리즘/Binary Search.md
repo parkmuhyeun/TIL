@@ -325,3 +325,60 @@ while start <= end:
     end = mid - 1
 print(result)
 ```
+
+```python
+from bisect import bisect_left, bisect_right
+
+def solution(words, queries):
+    answer = []
+    array = [[] for _ in range(10001)]
+    reverse_array = [[] for _ in range(10001)]
+    for word in words:
+        array[len(word)].append(word)
+        reverse_array[len(word)].append(word[::-1])
+        
+    for i in range(10001):
+        array[i].sort()
+        reverse_array[i].sort()
+
+    for q in queries:
+        if q[0] != '?':
+            res = bisect_right(array[len(q)], q.replace('?', 'z')) - bisect_right(array[len(q)], q.replace('?', 'a'))
+        else:
+            res = bisect_right(reverse_array[len(q)], q[::-1].replace('?', 'z')) - bisect_right(reverse_array[len(q)], q[::-1].replace('?', 'a'))
+        answer.append(res)
+
+    return answer
+```
+
+```python
+import sys
+input = sys.stdin.readline
+
+n, m = map(int, input().split())
+trees = list(map(int, input().split()))
+
+if n == 1:
+  print(trees[0] - m)
+else:
+  trees.sort()
+  start = 1
+  end = trees[n-1]
+  res = 0
+  while start <= end:
+    mid = (start + end) // 2
+    sum = 0
+    
+    for tree in trees:
+      if tree > mid:
+        sum += tree - mid
+    if sum == m:
+      res = mid
+      break
+    if sum > m:
+      res = mid
+      start = mid + 1
+    else:
+      end = mid - 1
+  print(res)
+```
