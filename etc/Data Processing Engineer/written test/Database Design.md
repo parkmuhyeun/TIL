@@ -2,7 +2,7 @@
 #Data Processing Engineer/Database Design
 
 ```
-데이터베이스 구축 43 ~ 52
+데이터베이스 구축
 
  데이터베이스 설계
 
