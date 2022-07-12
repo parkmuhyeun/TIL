@@ -494,3 +494,34 @@ for i in range(1, n):
       d[i] = max(d[i], d[j] + 1)
 print(max(d))
 ```
+
+```python
+#review
+
+#DP(Dynamic Programming)
+# 재귀를 이용한 탑다운 방식
+d = [0] * 10
+
+def fibo(x):
+  if x == 1 or x == 2:
+    return 1
+  if d[x] != 0:
+    return d[x]
+  d[x] = fibo(x-1) + fibo(x-2)
+  return d[x]
+
+# print(fibo(4))  # -> 3  ( 1 1 2 3)
+
+# 반복문 이용한 바텀업 방식
+
+d = [0] * 10
+
+d[1] = 1
+d[2] = 1
+n = 4
+
+for i in range(3, n+1):
+  d[i] = d[i-1] + d[i-2]
+
+print(d[n])
+```
