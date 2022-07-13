@@ -525,3 +525,55 @@ for i in range(3, n+1):
 
 print(d[n])
 ```
+
+```python
+t = int(input())
+
+for _ in range(t):
+  n, m = map(int, input().split())
+  golds = [[0] * m for _ in range(n)]
+  row = list(map(int, input().split()))
+  for i in range(n):
+    for j in range(m):
+      golds[i][j] = row[(i * m) + j]
+
+  for i in range(1, m):
+    for j in range(0, n):
+      left_up = 0
+      left = 0
+      left_down = 0
+      if 0 <= j-1 < n:
+        left_up = golds[j-1][i-1]
+      if 0 <= j < n:
+        left = golds[j][i-1]
+      if 0 <= j+1 < n:
+        left_down = golds[j+1][i-1]
+      golds[j][i] += max(left_up, left, left_down)
+
+  res = 0
+  for i in range(0, n):
+    res = max(res, golds[i][m-1])
+  print(res)
+```
+
+```python
+n = int(input())
+nums = []
+for _ in range(n):
+  nums.append(list(map(int, input().split())))
+
+for i in range(1, n):
+  for j in range(0, i+1):
+    left = 0
+    right = 0
+    if 0 <= j-1 < i:
+      left = nums[i-1][j-1]
+    if 0 <= j < i:
+      right = nums[i-1][j]
+    nums[i][j] += max(left, right)
+
+res = 0
+for i in range(0, n):
+  res = max(res, nums[n-1][i])
+print(res)
+```
