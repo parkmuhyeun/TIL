@@ -577,3 +577,53 @@ for i in range(0, n):
   res = max(res, nums[n-1][i])
 print(res)
 ```
+
+```python
+n = int(input())
+day = []
+for _ in range(n):
+  t, p = map(int, input().split())
+  day.append((t, p))
+
+d = [0] * (n+1)
+max_money = 0
+
+for i in range(n-1, -1, -1):
+  if i+day[i][0] <= n:
+    d[i] = max(d[i+day[i][0]] +day[i][1], max_money)
+    max_money = d[i]
+  else:
+    d[i] = max_money
+
+print(max_money)
+
+# n = int(input())
+# day = []
+# for _ in range(n):
+#   t, p = map(int, input().split())
+#   day.append((t, p))
+
+# d = [0] * n
+
+# for i in range(n-1, -1, -1):
+#   if i+day[i][0]-1 < n:
+#     d[i] += day[i][1]
+#   max_money = 0
+#   for j in range(i+day[i][0], n):
+#     max_money = max(max_money, d[j])
+#   d[i] += max_money
+
+# print(max(d))
+```
+
+```python
+n = int(input())
+power = list(map(int, input().split()))
+d = [1] * n
+
+for i in range(1, n):
+  for j in range(0, i):
+    if power[i] < power[j]:
+      d[i] = max(d[j] + 1, d[i])
+print(n-max(d))
+```
