@@ -627,3 +627,48 @@ for i in range(1, n):
       d[i] = max(d[j] + 1, d[i])
 print(n-max(d))
 ```
+
+```python
+n = int(input())
+
+ugly = [0]
+i2 = 1
+i3 = 1
+i5 = 1
+
+for i in range(1, n):
+  min_val = min(2 * i2, 3 * i3, 5 * i5)
+  ugly.append(min_val)
+  if min_val == 2 * i2:
+    i2 += 1
+  if min_val == 3 * i3:
+    i3 += 1
+  if min_val == 5 * i5:
+    i5 += 1
+print(ugly[n-1])
+
+# n = int(input())
+
+# ugly = [0] * n
+# ugly[0] = 1
+# i2 = 0
+# i3 = 0
+# i5 = 0 
+
+# next2 = 2
+# next3 = 3
+# next5 = 5
+
+# for i in range(1, n):
+#   ugly[i] = min(next2, next3, next5)
+#   if ugly[i] == next2:
+#     i2 += 1
+#     next2 = ugly[i2] * 2
+#   if ugly[i] == next3:
+#     i3 += 1
+#     next3 = ugly[i3] * 3
+#   if ugly[i] == next5:
+#     i5 += 1
+#     next5 = ugly[i5] * 5
+# print(ugly[n-1])
+```
