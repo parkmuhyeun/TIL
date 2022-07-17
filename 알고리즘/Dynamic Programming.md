@@ -672,3 +672,31 @@ print(ugly[n-1])
 #     next5 = ugly[i5] * 5
 # print(ugly[n-1])
 ```
+
+```python
+#편집거리 알고리즘
+# 1) n번째 m번째 문자 같을때 - d[i][j] = d[i-1][j-1]
+# 2) n번째 m번째 문자 다를때 - d[i][j] = min(d[i][j-1], d[i-1][j-1], d[i-1][j]) + 1
+# 2-1) 삽입(왼쪽) - d[i][j] = d[i][j-1] + 1
+# 2-2) 교체(왼쪽위) - d[i][j] = d[i-1][j-1] + 1
+# 2-3) 삭제(위) - d[i][j] = d[i-1][j] + 1
+
+a = input()
+b = input()
+
+alen = len(a)
+blen = len(b)
+d = [[0] * (blen+1) for _ in range(alen+1)]
+for i in range(blen+1):
+  d[0][i] = i
+for i in range(alen+1):
+  d[i][0] = i
+
+for i in range(1, alen+1):
+  for j in range(1, blen+1):
+    if a[i-1] == b[j-1]:
+      d[i][j] = d[i-1][j-1]
+    else:
+      d[i][j] = min(d[i][j-1], d[i-1][j-1], d[i-1][j]) + 1
+print(d[alen][blen])
+```
