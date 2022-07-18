@@ -603,3 +603,94 @@ def getNextPos(now, board):
 
 print(solution([[0, 0, 0, 1, 1], [0, 0, 0, 1, 0], [0, 1, 0, 1, 1], [1, 1, 0, 0, 1], [0, 0, 0, 0, 0]]))
 ```
+
+```java
+//java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class P3055 {
+    static int R;
+    static int C;
+    static char[][] board;
+    static int[][] distance;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        String[] input = br.readLine().split(" ");
+        R = Integer.parseInt(input[0]);
+        C = Integer.parseInt(input[1]);
+        board = new char[R][C];
+        distance = new int[R][C];
+
+        Queue<Node> queue = new LinkedList<>();
+        int startX = 0, startY = 0;
+        int endX = 0, endY = 0;
+        for (int i = 0; i < R; i++) {
+            String[] split = br.readLine().split("");
+            for (int j = 0; j < C; j++) {
+                board[i][j] = split[j].charAt(0);
+                if (board[i][j] == '*')
+                    queue.add(new Node(i, j, '*'));
+                if (board[i][j] == 'S') {
+                    startX = i;
+                    startY = j;
+                }
+                if (board[i][j] == 'D') {
+                    endX = i;
+                    endY = j;
+                }
+            }
+        }
+        queue.add(new Node(startX, startY, 'S'));
+
+        int[] dx = {-1, 1, 0, 0};
+        int[] dy = {0, 0, -1, 1};
+
+        while (!queue.isEmpty()) {
+            Node poll = queue.poll();
+            if (poll.x == endX && poll.y == endY) {
+                break;
+            }
+
+            for (int i = 0; i < 4; i++) {
+                int nx = poll.x + dx[i];
+                int ny = poll.y + dy[i];
+
+                if (0 <= nx && nx < R && 0 <= ny && ny < C && distance[nx][ny] == 0) {
+                    if (poll.type == 'S' && (board[nx][ny] == '.' || board[nx][ny] == 'D')) {
+                        distance[nx][ny] = distance[poll.x][poll.y] + 1;
+                        queue.add(new Node(nx, ny, 'S'));
+                    }
+                    if (poll.type == '*' && (board[nx][ny] == '.' || board[nx][ny] == 'S')) {
+                        board[nx][ny] = '*';
+                        queue.add(new Node(nx, ny, '*'));
+                    }
+                }
+            }
+        }
+
+        if (distance[endX][endY] == 0) {
+            System.out.println("KAKTUS");
+        } else {
+            System.out.println(distance[endX][endY]);
+        }
+    }
+
+    static class Node {
+        int x;
+        int y;
+        char type;
+
+        public Node(int x, int y, char type) {
+            this.x = x;
+            this.y = y;
+            this.type = type;
+        }
+    }
+}
+```
