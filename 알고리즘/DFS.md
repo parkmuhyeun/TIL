@@ -342,3 +342,136 @@ while True:
 
 print(res)
 ```
+
+```java
+//java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class P1062 {
+    static int N, K;
+    static String[] words;
+    static int[] alphabet = new int[26];
+    static int max_res = 0;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        N = Integer.parseInt(st.nextToken());
+        K = Integer.parseInt(st.nextToken());
+
+        words = new String[N];
+
+        for (int i = 0; i < N; i++) {
+            words[i] = br.readLine().replaceAll("[antic]", "");
+        }
+
+        alphabet[0] = 1;
+        alphabet[2] = 1;
+        alphabet[8] = 1;
+        alphabet[13] = 1;
+        alphabet[19] = 1;
+
+        if (K > 5) {
+            for (int i = 0; i < 26; i++) {
+                if (alphabet[i] == 0)
+                    dfs(i, 5);
+            }
+        }else if (K == 5)
+            max_res = getRes();
+
+        System.out.println(max_res);
+    }
+
+    static void dfs(int index, int depth){
+        alphabet[index] = 1;
+        if (depth == K-1) {
+            int res = getRes();
+            max_res = Math.max(max_res, res);
+        }else{
+            for (int i = index+1; i < 26; i++   ) {
+                if (alphabet[i] == 0) {
+                    dfs(i, depth+1);
+                }
+            }
+        }
+        alphabet[index] = 0;
+    }
+
+    private static int getRes() {
+        int res = 0;
+        for (int i = 0; i < words.length; i++) {
+            Boolean flag = true;
+            for (int j = 0; j < words[i].length(); j++) {
+                if (alphabet[words[i].charAt(j)-97] != 1) {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag)
+                res += 1;
+        }
+        return res;
+    }
+}
+```
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class P1759 {
+    static int L, C;
+    static char[] data;
+    static List<String> result = new ArrayList<>();
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        String[] input = br.readLine().split(" ");
+        L = Integer.parseInt(input[0]);
+        C = Integer.parseInt(input[1]);
+
+        data = new char[C];
+        String[] word = br.readLine().split(" ");
+        for (int i = 0; i < word.length; i++) {
+            data[i] = word[i].charAt(0);
+        }
+
+        Arrays.sort(data);
+        dfs(0, 0, 0, -1, "");
+
+        for (int i = 0; i < result.size(); i++) {
+            System.out.println(result.get(i).toString());
+        }
+    }
+
+    static void dfs(int length, int ja, int mo, int cur, String pwd) {
+        if (length == L) {
+            if (ja >= 2 && mo >= 1) {
+                result.add(pwd);
+            }
+        }
+
+        for (int i = cur+1; i < C; i++) {
+            if (isMo(data[i])) {
+                dfs(length + 1, ja, mo + 1, i, pwd + data[i]);
+            } else {
+                dfs(length + 1, ja + 1, mo, i, pwd + data[i]);
+            }
+        }
+    }
+
+    private static boolean isMo(char datum) {
+        return datum == 'a' || datum == 'e' || datum == 'i' || datum == 'o' || datum == 'u';
+    }
+
+}
+```
