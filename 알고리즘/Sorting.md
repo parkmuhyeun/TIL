@@ -338,3 +338,145 @@ while True:
   heapq.heappush(cards, new)
 print(res)
 ```
+
+```java
+//java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class P1072 {
+    static double X, Y;
+    static double Z;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        X = Integer.parseInt(st.nextToken());
+        Y = Integer.parseInt(st.nextToken());
+        Z = Math.floor((Y * 100) / X);
+
+        int min = 1;
+        int max = (int) X;
+        int res = Integer.MAX_VALUE;
+
+        if (Z >= 99) {
+            System.out.println("-1");
+        } else {
+            while (true) {
+                int mid = (min + max) / 2;
+                double rate = Math.floor(((Y + (double)mid)) * 100 / ((X + (double) mid)));
+
+                if (rate > Z) {
+                    res = Math.min(res, mid);
+                    max = mid - 1;
+                } else {
+                    min = mid + 1;
+                }
+
+                if (min > max) {
+                    break;
+                }
+            }
+            System.out.println(res);
+        }
+    }
+}
+```
+
+```java
+//java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+public class P1713 {
+
+    static int N, M;
+    static int[] exist = new int[101];
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String br1 = br.readLine();
+        N = Integer.parseInt(br1);
+        String br2 = br.readLine();
+        M = Integer.parseInt(br2);
+        int[] nums = new int[M];
+
+        String[] split = br.readLine().split(" ");
+        for (int i = 0; i < M; i++) {
+            nums[i] = Integer.parseInt(split[i]);
+        }
+
+        ArrayList<Item> list = new ArrayList<>();
+
+        for (int i = 0; i < M; i++) {
+            if (exist[nums[i]-1] != 0) {
+                for (int j = 0; j < list.size(); j++) {
+                    if (list.get(j).studentNum == nums[i]) {
+                        list.get(j).recommendation += 1;
+                        break;
+                    }
+                }
+            }else{
+                if (list.size() == N) {
+                    exist[list.get(N-1).studentNum-1] = 0;
+                    list.remove(N-1);
+                }
+                list.add(new Item(nums[i], i, 1));
+                exist[nums[i]-1] = 1;
+            }
+            Collections.sort(list);
+        }
+
+        Collections.sort(list, new Comparator<Item>() {
+            @Override
+            public int compare(Item o1, Item o2) {
+                return Integer.compare(o1.studentNum, o2.studentNum);
+            }
+        });
+
+        for (int i = 0; i < list.size(); i++) {
+            System.out.print(list.get(i).studentNum);
+            if (i != N-1)
+                System.out.print(" ");
+        }
+
+    }
+
+}
+
+class Item implements Comparable<Item> {
+    int studentNum;
+    int order;
+    int recommendation;
+
+    public Item(int studentNum, int order, int recommendation) {
+        this.studentNum = studentNum;
+        this.order = order;
+        this.recommendation = recommendation;
+    }
+
+    @Override
+    public int compareTo(Item o) {
+        if (recommendation > o.recommendation) {
+            return -1;
+        } else if (recommendation == o.recommendation) {
+            return o.order - order;
+        }else{
+            return 1;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" + "studentNum=" + studentNum + ", order=" + order + ", recommendation=" + recommendation + '}';
+    }
+}
+```
+
