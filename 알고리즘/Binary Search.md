@@ -382,3 +382,287 @@ else:
       end = mid - 1
   print(res)
 ```
+
+```java
+//java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class P1806 {
+    static int N, S;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        N = Integer.parseInt(st.nextToken());
+        S = Integer.parseInt(st.nextToken());
+        int[] arr = new int[N+1];
+
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < N; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
+
+        int low = 0;
+        int high = 0;
+        int sum = arr[0];
+        int res = Integer.MAX_VALUE;
+        while (true) {
+            if (sum >= S) {
+                res = Math.min(res, high - low + 1);
+                sum -= arr[low++];
+            } else if (sum < S) {
+                sum += arr[++high];
+            }
+
+            if (high == N)
+                break;
+
+        }
+
+        if (res == Integer.MAX_VALUE)
+            System.out.println(0);
+        else
+            System.out.println(res);
+    }
+}
+```
+
+```java
+//java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class P2003 {
+
+    static int N, M;
+    static int[] arr;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String br1 = br.readLine();
+        String[] split1 = br1.split(" ");
+        N = Integer.parseInt(split1[0]);
+        M = Integer.parseInt(split1[1]);
+        arr = new int[N+1];
+
+        String br2 = br.readLine();
+        String[] split2 = br2.split(" ");
+
+        for (int i = 0; i < N; i++) {
+            arr[i] = Integer.parseInt(split2[i]);
+        }
+
+
+        int low = 0;
+        int high = 0;
+        int res = 0;
+        int sum = arr[low];
+
+        while (true) {
+            if (sum > M) {
+                sum -= arr[low++];
+            } else if (sum == M) {
+                res += 1;
+                sum -= arr[low++];
+            }
+            else {
+                sum += arr[++high];
+            }
+
+            if (high == N)
+                break;
+        }
+
+        System.out.println(res);
+
+    }
+}
+```
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.StringTokenizer;
+
+public class P2143 {
+
+    static int T, N, M;
+    static int[] a;
+    static int[] b;
+    static int[] subA;
+    static int[] subB;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        T = Integer.parseInt(st.nextToken());
+        st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        a = new int[N];
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < N; i++) {
+            a[i] = Integer.parseInt(st.nextToken());
+        }
+        st = new StringTokenizer(br.readLine());
+        M = Integer.parseInt(st.nextToken());
+        b = new int[M];
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < M; i++) {
+            b[i] = Integer.parseInt(st.nextToken());
+        }
+
+        subA = new int[(N * (N+1) / 2)];
+        subB = new int[(M * (M+1) / 2)];
+
+        getCnt(0, a, subA);
+        getCnt(0, b, subB);
+
+        sortSubB();
+        Arrays.sort(subA);
+
+        int pointA = 0;
+        int pointB = 0;
+        int sum = subA[pointA] + subB[pointB];
+        long res = 0;
+        while (true) {
+            //sum == T랑 같을시
+            if (sum == T) {
+                long mulA = 1;
+                long mulB = 1;
+                for (int i = pointA+1; i < subA.length; i++) {
+                    if (subA[i] == subA[i - 1]) {
+                        pointA++;
+                        mulA += 1;
+                    }else{
+                        break;
+                    }
+                }
+
+                for (int i = pointB+1; i < subB.length; i++) {
+                    if (subB[i] == subB[i - 1]) {
+                        pointB++;
+                        mulB += 1;
+                    }else{
+                        break;
+                    }
+                }
+                res += mulA * mulB;
+                pointA++;
+                pointB++;
+                if (pointA == subA.length || pointB == subB.length) {
+                    break;
+                }
+                sum = subA[pointA] + subB[pointB];
+            } else if (sum < T) {
+                sum -= subA[pointA++];
+                if (pointA == subA.length) {
+                    break;
+                }
+                sum += subA[pointA];
+            } else {
+                sum -= subB[pointB++];
+                if (pointB == subB.length) {
+                    break;
+                }
+                sum += subB[pointB];
+            }
+
+        }
+
+        System.out.println(res);
+
+    }
+
+    private static void sortSubB() {
+        Integer temp[] = new Integer[subB.length];
+        for (int i = 0; i < subB.length; i++) {
+            temp[i] = subB[i];
+        }
+        Arrays.sort(temp, Collections.reverseOrder());
+        for (int i = 0; i < subB.length; i++) {
+            subB[i] = temp[i];
+        }
+    }
+
+    private static void getCnt(int cnt, int[] ori, int[] sub) {
+        for (int i = 0; i < ori.length; i++) {
+            int sum = 0;
+            for (int j = i; j < ori.length; j++) {
+                sum += ori[j];
+                sub[cnt++] = sum;
+            }
+        }
+    }
+}
+```
+
+```java
+//java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class P2805 {
+
+    static int N, M;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        Long[] trees = new Long[N];
+
+        st = new StringTokenizer(br.readLine());
+        long start = 1;
+        long end = 0;
+        for (int i = 0; i < N; i++) {
+            trees[i] = Long.parseLong(st.nextToken());
+            end = Math.max(end, trees[i]);
+        }
+
+        long mid;
+        long res = 0;
+
+        while (true) {
+            mid = (start + end) / 2;
+            long sum = 0;
+            for (int i = 0; i < N; i++) {
+                sum = getSum(trees, mid, sum, i);
+            }
+
+            if (sum == M) {
+                res = mid;
+                break;
+            } else if (sum > M) {
+                res = mid;
+                start = mid + 1;
+            } else {
+                end = mid - 1;
+            }
+
+            if (start > end) {
+                break;
+            }
+        }
+
+        System.out.println(res);
+    }
+
+    private static long getSum(Long[] trees, long mid, long sum, int i) {
+        if (trees[i] > mid)
+            sum += trees[i] - mid;
+        return sum;
+    }
+}
+```
