@@ -480,3 +480,165 @@ class Item implements Comparable<Item> {
 }
 ```
 
+```java
+//java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class P1927 {
+
+    static int N;
+    static int[] heap;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        N = Integer.parseInt(br.readLine());
+        int height = 0;
+        int tempN = N;
+        while (tempN != 0) {
+            tempN /= 2;
+            height += 1;
+        }
+        int all = 1;
+        while (height != 0) {
+            all *= 2;
+            height--;
+        }
+        heap = new int[all];
+
+        int last = 1;
+        for (int i = 0; i < N; i++) {
+            int value = Integer.parseInt(br.readLine());
+            int parent;
+            int pos;
+
+            if (value != 0) {
+                pos = last;
+                parent = last / 2;
+
+                while (pos != 1) {
+                    if (heap[parent] > value) {
+                        heap[pos] = heap[parent];
+                        pos = parent;
+                        parent /= 2;
+                    } else {
+                        break;
+                    }
+                }
+
+                heap[pos] = value;
+                last++;
+            } else {
+                if (heap[1] == 0)
+                    System.out.println("0");
+                else {
+                    System.out.println(heap[1]);
+
+                    int lastVal = heap[last-1];
+                    heap[last-1] = 0;
+
+                    if(heap[1] == 0)
+                        continue;
+                    pos = 1;
+                    parent = pos * 2;
+                    while (pos < all) {
+                        if (heap[parent] == 0)
+                            break;
+                        int child = heap[parent];
+                        if (heap[parent+1] != 0 && (heap[parent] > heap[parent+1]))
+                            child = heap[++parent];
+                        if (child < lastVal) {
+                            heap[pos] = child;
+                            pos = parent;
+                            parent *= 2;
+                        } else {
+                            break;
+                        }
+
+                    }
+
+                    heap[pos] = lastVal;
+                    last--;
+                }
+            }
+
+        }
+
+    }
+
+}
+```
+
+```java
+//java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
+
+public class P1202 {
+    static int N, K;
+    static Jewelry[] jewelries;
+    static int[] bags;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        N = Integer.parseInt(st.nextToken());
+        K = Integer.parseInt(st.nextToken());
+
+        jewelries = new Jewelry[N];
+        bags = new int[K];
+
+        for (int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine());
+            jewelries[i] = new Jewelry(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()));
+        }
+
+        for (int i = 0; i < K; i++) {
+            bags[i] = Integer.parseInt(br.readLine());
+        }
+
+        Arrays.sort(bags);
+        Arrays.sort(jewelries, Comparator.comparingInt(Jewelry::getWeight));
+        PriorityQueue<Jewelry> pq = new PriorityQueue<>(Comparator.comparingInt(Jewelry::getValue).reversed());
+
+        int jIndex = 0;
+        long result = 0;
+        for (int i = 0; i < K; i++) {
+            while (jIndex < N && jewelries[jIndex].weight <= bags[i]) {
+                pq.add(jewelries[jIndex++]);
+            }
+
+            if (!pq.isEmpty())
+                result += pq.poll().value;
+        }
+
+        System.out.println(result);
+    }
+}
+
+class Jewelry {
+    int weight;
+    int value;
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public Jewelry(int weight, int value) {
+        this.weight = weight;
+        this.value = value;
+    }
+}
+```
