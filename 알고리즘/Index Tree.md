@@ -117,3 +117,71 @@ public class IndexTree {
     }
 }
 ```
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class P2243 {
+    static int N;
+    static int[] trees;
+    static int S = 1;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+
+        while (S < 1000000) {
+            S *= 2;
+        }
+        trees = new int[2 * S];
+
+        N = Integer.parseInt(br.readLine());
+        for (int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine());
+            if (Integer.parseInt(st.nextToken()) == 1) {
+                //출력(몇번쨰꺼) B
+                int b = Integer.parseInt(st.nextToken());
+                int idx = query(1, S, 1, b);
+                System.out.println(idx);
+                update(1, S, 1, idx, -1);
+            } else {
+                //수정(+, -) B C
+                int b = Integer.parseInt(st.nextToken());
+                int c = Integer.parseInt(st.nextToken());
+                update(1, S, 1, b, c);
+            }
+        }
+    }
+
+    static int query(int left, int right, int node, int target) {
+        if (left == right)
+            return left;
+
+        int mid = (left + right) / 2;
+        if (trees[node * 2] >= target) {
+            return query(left, mid, node * 2, target);
+        } else {
+            return query(mid + 1, right, node * 2 + 1, target - trees[node * 2]);
+        }
+    }
+
+    static void update(int left, int right, int node, int target, int diff) {
+        // 연관없음
+        if (target < left || right < target) {
+            return;
+        }
+        // 연관있음
+        else {
+            trees[node] += diff;
+            if (left != right) {
+                int mid = (left + right ) / 2;
+                update(left, mid, 2 * node, target, diff);
+                update(mid + 1 , right, 2 * node + 1, target, diff);
+            }
+        }
+    }
+}
+```
