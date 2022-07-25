@@ -615,3 +615,301 @@ for edge in edges:
     res += cost
 print(res)
 ```
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class P1717 {
+
+    static int N,M;
+    static int[] parent;
+    static int[] depth;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        parent = new int[N+1];
+
+        for (int i = 1; i < N+1; i++) {
+            parent[i] = i;
+            depth[i] = 1;
+        }
+
+        for (int i = 0; i < M; i++) {
+            st = new StringTokenizer(br.readLine());
+            int select, a, b;
+            select = Integer.parseInt(st.nextToken());
+            a = Integer.parseInt(st.nextToken());
+            b = Integer.parseInt(st.nextToken());
+            if (select == 0) {
+                //union
+                union(a, b);
+            } else {
+                //같은지 확인
+                if (find(a) == find(b))
+                    System.out.println("YES");
+                else
+                    System.out.println("NO");
+            }
+        }
+
+    }
+
+    static int find(int x) {
+        if (parent[x] == x)
+            return x;
+        else
+            return parent[x] = find(parent[x]);
+    }
+
+    static void union(int a, int b) {
+        a = find(a);
+        b = find(b);
+        if (a < b)
+            parent[b] = a;
+        else
+            parent[a] = b;
+    }
+}
+```
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.StringTokenizer;
+
+public class P1922 {
+    static int N, M, A, B, C;
+    static int[] parent = new int[1001];
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+
+        N = Integer.parseInt(br.readLine());
+        M = Integer.parseInt(br.readLine());
+        List<Edge> edges = new LinkedList<>();
+
+        for (int i = 0; i < N+1; i++) {
+            parent[i] = i;
+        }
+
+        for (int i = 0; i < M; i++) {
+            st = new StringTokenizer(br.readLine());
+            A = Integer.parseInt(st.nextToken());
+            B = Integer.parseInt(st.nextToken());
+            C = Integer.parseInt(st.nextToken());
+
+            edges.add(new Edge(A, B, C));
+        }
+        edges.sort(Comparator.comparingInt(Edge::getWeight));
+
+        int cnt = 0;
+        int result = 0;
+        while (cnt < N-1) {
+            Edge edge = edges.remove(0);
+            if (find(edge.start) != find(edge.end)) {
+                union(edge.start, edge.end);
+                result += edge.weight;
+                cnt++;
+            }
+        }
+
+        System.out.println(result);
+    }
+
+    static int find(int x) {
+        if (parent[x] == x)
+            return x;
+        else
+            return parent[x] = find(parent[x]);
+    }
+
+    static void union(int a, int b) {
+        a = find(a);
+        b = find(b);
+        if (a < b)
+            parent[b] = a;
+        else
+            parent[a] = b;
+    }
+}
+
+class Edge {
+    int start;
+    int end;
+    int weight;
+
+    public Edge(int start, int end, int weight) {
+        this.start = start;
+        this.end = end;
+        this.weight = weight;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+}
+```
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+
+public class P2252 {
+    static int N, M, A, B;
+    static int[] indegree = new int[32001];
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        Queue<Integer> queue = new LinkedList<>();
+        List<List<Integer>> graph = new ArrayList<>();
+        for (int i = 0; i < 32001; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+        for (int i = 0; i < M; i++) {
+            st = new StringTokenizer(br.readLine());
+            A = Integer.parseInt(st.nextToken());
+            B = Integer.parseInt(st.nextToken());
+            indegree[B] += 1;
+            graph.get(A).add(B);
+        }
+
+        for (int i = 1; i < N+1; i++) {
+            if (indegree[i] == 0)
+                queue.add(i);
+        }
+
+        //0이 되는 것 부터 출력
+        while (!queue.isEmpty()) {
+            int poll = queue.poll();
+            System.out.print(poll + " ");
+            for (int i = 0; i < graph.get(poll).size(); i++) {
+                int connect = graph.get(poll).get(i);
+                indegree[connect] -= 1;
+                if (indegree[connect] == 0)
+                    queue.add(connect);
+            }
+        }
+
+    }
+}
+```
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+
+public class P11438 {
+    static int N, M;
+    static int[][] dp = new int[18][100001];
+    static int[] depth = new int[100001];
+    static boolean[] visit = new boolean[100001];
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+
+        N = Integer.parseInt(br.readLine());
+        List<Integer>[] adj = new ArrayList[N+1];
+        for (int i = 1; i < N+1; i++) {
+            adj[i] = new ArrayList<>();
+        }
+
+        //1. tree 생성(깊이, dp[0][v] 채우기)
+        int a, b;
+        for (int i = 0; i < N-1; i++) {
+            st = new StringTokenizer(br.readLine());
+            a = Integer.parseInt(st.nextToken());
+            b = Integer.parseInt(st.nextToken());
+            adj[a].add(b);
+            adj[b].add(a);
+        }
+
+        Queue<Integer> q = new LinkedList<>();
+        q.add(1);
+        visit[1] = true;
+
+        while (!q.isEmpty()) {
+            int cur = q.poll();
+            for (int i = 0; i < adj[cur].size(); i++) {
+                int next = adj[cur].get(i);
+                if (visit[next]) {
+                    continue;
+                }
+                dp[0][next] = cur;
+                visit[next] = true;
+                depth[next] = depth[cur] + 1;
+                q.add(next);
+            }
+
+        }
+
+        //2. parent 초기화
+        for (int i = 1; i < 18; i++) {
+            for (int j = 1; j < N+1; j++) {
+                dp[i][j] = dp[i - 1][dp[i - 1][j]];
+            }
+        }
+
+        M = Integer.parseInt(br.readLine());
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < M; i++) {
+            st = new StringTokenizer(br.readLine());
+            a = Integer.parseInt(st.nextToken());
+            b = Integer.parseInt(st.nextToken());
+
+            sb.append(lca(a, b) + "\n");
+        }
+
+        System.out.print(sb);
+    }
+
+    static int lca(int a, int b) {
+        //3. 높이를 맞춰라
+        if (depth[a] > depth[b]) {
+            int temp = b;
+            b = a;
+            a = temp;
+        }
+
+        int gap = depth[b] - depth[a];
+        for (int i = 0; i < 18; i++) {
+            if ((gap & 1 << i) > 0) {
+                b = dp[i][b];
+            }
+        }
+
+        //4. 같이 위로 올라가면서 조상찾기
+        if (a == b)
+            return a;
+        for (int i = 17; i >= 0; i--) {
+            if (dp[i][a] != dp[i][b]) {
+                a = dp[i][a];
+                b = dp[i][b];
+            }
+        }
+
+        return dp[0][a];
+    }
+}
+```
