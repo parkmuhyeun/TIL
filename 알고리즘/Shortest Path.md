@@ -442,3 +442,224 @@ for i in range(n):
       print(end=' ')
   print()
 ```
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+
+public class P1753 {
+    static int V, E, K;
+    static List<Node>[] adj;
+    static int[] dis;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        V = Integer.parseInt(st.nextToken());
+        E = Integer.parseInt(st.nextToken());
+        K = Integer.parseInt(br.readLine());
+        adj = new ArrayList[V + 1];
+        dis = new int[V + 1];
+        for (int i = 1; i < V + 1; i++) {
+            adj[i] = new ArrayList<>();
+        }
+
+        for (int i = 1; i < V + 1; i++) {
+            dis[i] = (int) 1e9;
+        }
+
+        int u, v, w;
+        for (int i = 0; i < E; i++) {
+            st = new StringTokenizer(br.readLine());
+            u = Integer.parseInt(st.nextToken());
+            v = Integer.parseInt(st.nextToken());
+            w = Integer.parseInt(st.nextToken());
+            adj[u].add(new Node(v, w));
+        }
+
+        PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(Node::getWeight));
+        pq.add(new Node(K, 0));
+        dis[K] = 0;
+
+        while (!pq.isEmpty()) {
+            Node curNode = pq.poll();
+            if (dis[curNode.pos] < curNode.weight)
+                continue;
+            for (int i = 0; i < adj[curNode.pos].size(); i++) {
+                Node nextNode = adj[curNode.pos].get(i);
+                int cost = curNode.weight + nextNode.weight;
+                if (cost < dis[nextNode.pos]) {
+                    dis[nextNode.pos] = cost;
+                    pq.add(new Node(nextNode.pos, cost));
+                }
+            }
+        }
+
+        for (int i = 1; i < V + 1; i++) {
+            if (dis[i] == 1e9)
+                System.out.println("INF");
+            else
+                System.out.println(dis[i]);
+        }
+    }
+}
+
+class Node {
+    int pos;
+    int weight;
+
+    public Node(int next, int weight) {
+        this.pos = next;
+        this.weight = weight;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+}
+```
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class P11404 {
+    static int N, M;
+    static int[][] dis;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+
+        N = Integer.parseInt(br.readLine());
+        M = Integer.parseInt(br.readLine());
+        dis = new int[N + 1][N + 1];
+
+        for (int i = 1; i < N+1; i++) {
+            for (int j = 1; j < N + 1; j++) {
+                if (i != j)
+                    dis[i][j] = (int) 1e9;
+            }
+        }
+
+        int a, b, c;
+        for (int i = 0; i < M; i++) {
+            st = new StringTokenizer(br.readLine());
+            a = Integer.parseInt(st.nextToken());
+            b = Integer.parseInt(st.nextToken());
+            c = Integer.parseInt(st.nextToken());
+            dis[a][b] = Math.min(dis[a][b], c);
+        }
+
+        for (int k = 1; k < N + 1; k++) {
+            for (int i = 1; i < N + 1; i++) {
+                for (int j = 1; j < N + 1; j++) {
+                    dis[i][j] = Math.min(dis[i][j], dis[i][k] + dis[k][j]);
+                }
+            }
+        }
+
+        for (int i = 1; i < N + 1; i++) {
+            for (int j = 1; j < N + 1; j++) {
+                if (dis[i][j] == 1e9)
+                    System.out.print("0");
+                else
+                    System.out.print(dis[i][j]);
+                System.out.print(" ");
+            }
+            System.out.println();
+        }
+    }
+}
+```
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
+public class P11657 {
+    static int N, M;
+    static List<Edge> adj;
+    static long[] dis;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        dis = new long[N + 1];
+        adj = new ArrayList<>();
+
+        for (int i = 1; i < N + 1; i++) {
+            dis[i] = (long) 1e9;
+        }
+
+        int a, b, c;
+        for (int i = 0; i < M; i++) {
+            st = new StringTokenizer(br.readLine());
+            a = Integer.parseInt(st.nextToken());
+            b = Integer.parseInt(st.nextToken());
+            c = Integer.parseInt(st.nextToken());
+            adj.add(new Edge(a, b, c));
+        }
+
+
+        //1.출발 노드 설정
+        //2. 최단 거리 테이블 초기화
+        //3. 다음 과정 V(정점-1)번 반복
+        // 3-1. 모든 간선 E개 하나씩 확인
+        // 3-2각 간선을 거쳐 다른 노드로 가는 비용을 계산하여 최단 거리 테이블 갱신
+        //만약 음수 간선 순환 발생 체크하고 싶다면 3번 한번더 체크 이때, 최단 거리 테이블 갱신된다면 음수 간선 순환 존재
+        
+        dis[1] = 0;
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < M; j++) {
+                Edge edge = adj.get(j);
+                int cur = edge.from;
+                int next = edge.to;
+                int cost = edge.weight;
+
+                if (dis[cur] == 1e9)
+                    continue;
+                if (dis[next] > dis[cur] + cost) {
+                    dis[next] = dis[cur] + cost;
+
+                    if (i == N - 1) {
+                        System.out.println("-1");
+                        return;
+                    }
+                }
+            }
+        }
+
+        for (int i = 2; i < N+1; i++) {
+            if (dis[i] == 1e9)
+                System.out.println("-1");
+            else
+                System.out.println(dis[i]);
+        }
+
+    }
+}
+
+class Edge {
+    int from;
+    int to;
+    int weight;
+
+    public Edge(int from, int to, int weight) {
+        this.from = from;
+        this.to = to;
+        this.weight = weight;
+    }
+}
+```
