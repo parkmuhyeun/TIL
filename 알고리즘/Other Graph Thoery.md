@@ -913,3 +913,156 @@ public class P11438 {
     }
 }
 ```
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
+public class P2458 {
+    static int N, M;
+    static boolean[] visited;
+    static int[] inCnt;
+    static int[] outCnt;
+    static List<Integer>[] adj;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        adj = new ArrayList[N+1];
+        inCnt = new int[N + 1];
+        outCnt = new int[N + 1];
+
+        for (int i = 1; i < N + 1; i++) {
+            adj[i] = new ArrayList<>();
+        }
+
+        for (int i = 0; i < M; i++) {
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            adj[a].add(b);
+        }
+
+        for (int i = 1; i < N + 1; i++) {
+            visited = new boolean[N + 1];
+            outCnt[i] = dfs(i) - 1;
+        }
+
+        int answer = 0;
+        for (int i = 1; i < N + 1; i++) {
+            if (inCnt[i] + outCnt[i] == N - 1) {
+                answer++;
+            }
+        }
+
+        System.out.println(answer);
+    }
+
+
+    static int dfs(int cur) {
+        int outCnt = 0;
+        for (int i = 0; i < adj[cur].size(); i++) {
+            int next = adj[cur].get(i);
+            if (visited[next])
+                continue;
+            inCnt[next]++;
+            visited[next] = true;
+            outCnt += dfs(next);
+        }
+        return outCnt + 1;
+    }
+}
+```
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
+public class P11266 {
+    static int V, E;
+    static List<Integer>[] adj;
+    static int[] order;
+    static boolean[] isCut;
+    static int cnt;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        V = Integer.parseInt(st.nextToken());
+        E = Integer.parseInt(st.nextToken());
+
+        order = new int[V + 1];
+        isCut = new boolean[V + 1];
+        adj = new ArrayList[V + 1];
+        for (int i = 1; i < V+1; i++) {
+            adj[i] = new ArrayList<>();
+        }
+
+        int a, b;
+        for (int i = 0; i < E; i++) {
+            st = new StringTokenizer(br.readLine());
+            a = Integer.parseInt(st.nextToken());
+            b = Integer.parseInt(st.nextToken());
+            adj[a].add(b);
+            adj[b].add(a);
+        }
+
+        for (int i = 1; i < V + 1; i++) {
+            if (order[i] == 0)
+                dfs(i, true);
+        }
+
+        int ans = 0;
+        for (int i = 1; i < V+1; i++) {
+            if (isCut[i])
+                ans+=1;
+        }
+        System.out.println(ans);
+
+        for (int i = 1; i < V + 1; i++) {
+            if (isCut[i])
+                System.out.print(i + " ");
+        }
+    }
+
+    static int dfs(int cur, boolean isRoot) {
+        //단절점 판별
+        order[cur] = ++cnt;
+
+        int ret = cnt;
+        int child = 0;
+        //A가 시작정점이 아닐떄, order(A) <= low(B) 단절점, order(A) > low(B) 단절점이아니다
+        for (int i = 0; i < adj[cur].size(); i++) {
+            int next = adj[cur].get(i);
+            if (order[next] == 0) {
+                child++;
+                int low = dfs(next, false);
+                if (!isRoot && order[cur] <= low) {
+                    isCut[cur] = true;
+                }
+                ret = Math.min(ret, low);
+            }else{
+                ret = Math.min(ret, order[next]);
+            }
+        }
+
+        //A가 시작정점일때, child > 1일때 단절점
+        if (isRoot && child > 1) {
+            isCut[cur] = true;
+        }
+        return ret;
+    }
+}
+```
