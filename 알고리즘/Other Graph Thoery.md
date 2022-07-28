@@ -1066,3 +1066,349 @@ public class P11266 {
     }
 }
 ```
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+
+public class P3176 {
+    static int N, K;
+    static int[][] parent;
+    static int[][] max;
+    static int[][] min;
+    static int[] depth;
+    static boolean[] visited;
+    static List<Edge>[] adj;
+    static int minRes, maxRes;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+
+        N = Integer.parseInt(br.readLine());
+        parent = new int[18][N + 1];
+        max = new int[18][N + 1];
+        min = new int[18][N + 1];
+        depth = new int[N + 1];
+        visited = new boolean[N + 1];
+        adj = new ArrayList[N + 1];
+        for (int i = 1; i < N + 1; i++) {
+            adj[i] = new ArrayList<>();
+        }
+
+        int A, B, C;
+        for (int i = 0; i < N-1; i++) {
+            st = new StringTokenizer(br.readLine());
+            A = Integer.parseInt(st.nextToken());
+            B = Integer.parseInt(st.nextToken());
+            C = Integer.parseInt(st.nextToken());
+            adj[A].add(new Edge(B, C));
+            adj[B].add(new Edge(A, C));
+        }
+
+        Queue<Integer> q = new LinkedList<>();
+        q.add(1);
+        visited[1] = true;
+
+        //트리구성
+        while (!q.isEmpty()) {
+            int cur = q.poll();
+            for (int i = 0; i < adj[cur].size(); i++) {
+                Edge edge = adj[cur].get(i);
+                int next = edge.to;
+                int cost = edge.cost;
+                if (visited[next])
+                    continue;
+                parent[0][next] = cur;
+                depth[next] = depth[cur] + 1;
+                visited[next] = true;
+                max[0][next] = cost;
+                min[0][next] = cost;
+                q.add(next);
+            }
+        }
+
+        //parent 초기화
+        for (int i = 1; i < 18; i++) {
+            for (int j = 1; j < N + 1; j++) {
+                parent[i][j] = parent[i - 1][parent[i - 1][j]];
+                max[i][j] = Math.max(max[i-1][j], max[i - 1][parent[i - 1][j]]);
+                min[i][j] = Math.min(min[i-1][j], min[i - 1][parent[i - 1][j]]);
+            }
+        }
+
+        K = Integer.parseInt(br.readLine());
+
+        int D, E;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < K; i++) {
+            st = new StringTokenizer(br.readLine());
+            D = Integer.parseInt(st.nextToken());
+            E = Integer.parseInt(st.nextToken());
+            lca(D, E);
+            sb.append(minRes + " " + maxRes + "\n");
+        }
+
+        System.out.println(sb);
+    }
+
+    static void lca(int a, int b) {
+        //높이 맞추기
+        if (depth[a] > depth[b]) {
+            int temp = b;
+            b = a;
+            a = temp;
+        }
+
+        minRes = Integer.MAX_VALUE;
+        maxRes = -1;
+        
+        int gap = depth[b] - depth[a];
+        for (int i = 0; i < 18; i++) {
+            if ((gap & 1 << i) > 0) {
+                maxRes = Math.max(maxRes, max[i][b]);
+                minRes = Math.min(minRes, min[i][b]);
+                b = parent[i][b];
+            }
+        }
+        
+        if (a == b)
+            return;
+        //같아지면 동시에 올리기
+        //lca
+        //최소 조상 찾을떄 까지 도로 거리 중에 가장 짧은 값, 가장 긴 값 구하기
+        for (int i = 17; i >= 0; i--) {
+            if (parent[i][a] != parent[i][b]) {
+                maxRes = Math.max(maxRes, Math.max(max[i][a], max[i][b]));
+                minRes = Math.min(minRes, Math.min(min[i][a], min[i][b]));
+                a = parent[i][a];
+                b = parent[i][b];
+            }
+        }
+
+        maxRes = Math.max(maxRes, Math.max(max[0][a], max[0][b]));
+        minRes = Math.min(minRes, Math.min(min[0][a], min[0][b]));
+
+        return;
+    }
+}
+
+class Edge {
+    int to;
+    int cost;
+
+    public Edge(int to, int cost) {
+        this.to = to;
+        this.cost = cost;
+    }
+}
+```
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class P3830 {
+    static int N, M;
+    static Node[] parent;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+
+        char select;
+        int a, b, w;
+        while (true) {
+            st = new StringTokenizer(br.readLine());
+            N = Integer.parseInt(st.nextToken());
+            M = Integer.parseInt(st.nextToken());
+            parent = new Node[N + 1];
+            for (int i = 1; i < N + 1; i++) {
+                parent[i] = new Node(i, 0);
+            }
+            if (N == 0 && M == 0)
+                break;
+            for (int i = 0; i < M; i++) {
+                st = new StringTokenizer(br.readLine());
+                select = st.nextToken().charAt(0);
+                if (select == '!') {
+                    //무게 추가
+                    a = Integer.parseInt(st.nextToken());
+                    b = Integer.parseInt(st.nextToken());
+                    w = Integer.parseInt(st.nextToken());
+                    union(a, b, w);
+                } else {
+                    //무게 재기
+                    a = Integer.parseInt(st.nextToken());
+                    b = Integer.parseInt(st.nextToken());
+                    if (find(a).root == find(b).root) {
+                        System.out.println(parent[a].dis - parent[b].dis);
+                    } else {
+                        System.out.println("UNKNOWN");
+                    }
+                }
+            }
+        }
+    }
+
+    static Node find(int x) {
+        if (parent[x].getRoot() != x) {
+            Node node = find(parent[x].getRoot());
+            parent[x].root = node.root;
+            parent[x].dis += node.dis;
+        }
+        return parent[x];
+    }
+
+    static void union(int a, int b, int w) {
+        Node aNode = find(a);
+        Node bNode = find(b);
+        if (aNode.root == bNode.root)
+            return;
+        parent[aNode.root].dis = w + parent[b].dis - parent[a].dis;
+        parent[aNode.root].root = bNode.root;
+    }
+}
+
+class Node {
+    int root;
+    long dis;
+
+    public Node(int parent, long dis) {
+        this.root = parent;
+        this.dis = dis;
+    }
+
+    public int getRoot() {
+        return root;
+    }
+
+    public long getDis() {
+        return dis;
+    }
+}
+```
+
+```java
+package WEEK2.DAY03.P5719;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+
+public class P5719 {
+    static final int MAXN = 500;
+    static int N, M, S, D;
+    static int[][] adj;
+    static int[] dis;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+
+        while (true) {
+            st = new StringTokenizer(br.readLine());
+            N = Integer.parseInt(st.nextToken());
+            M = Integer.parseInt(st.nextToken());
+            if (N == 0 && M == 0)
+                break;
+
+            dis = new int[N];
+
+            adj = new int[MAXN][MAXN];
+            for (int i = 0; i < MAXN; i++) {
+                for (int j = 0; j < MAXN; j++) {
+                    adj[i][j] = 0;
+                }
+            }
+
+            st = new StringTokenizer(br.readLine());
+            S = Integer.parseInt(st.nextToken());
+            D = Integer.parseInt(st.nextToken());
+
+            int u, v, p;
+            for (int i = 0; i < M; i++) {
+                st = new StringTokenizer(br.readLine());
+                u = Integer.parseInt(st.nextToken());
+                v = Integer.parseInt(st.nextToken());
+                p = Integer.parseInt(st.nextToken());
+                adj[u][v] = p;
+            }
+
+            //다익스트라 돌리는데 최단 경로를 추적해서 기록
+            //제거 후
+            //다익스트라 하면 거의 최단경로
+            dijkstra(S);
+            removeShortest();
+            dijkstra(S);
+            if (dis[D] == Integer.MAX_VALUE)
+                System.out.println("-1");
+            else
+                System.out.println(dis[D]);
+
+        }
+    }
+
+    static void dijkstra(int start) {
+        PriorityQueue<Node> q = new PriorityQueue<>(Comparator.comparingInt(Node::getWeight));
+        q.add(new Node(S, 0));
+
+        for (int i = 0; i < N; i++) {
+            dis[i] = Integer.MAX_VALUE;
+        }
+
+        dis[start] = 0;
+
+        while (!q.isEmpty()) {
+            Node node = q.poll();
+            int cur = node.pos;
+            int curCost = node.weight;
+
+            if (dis[cur] < curCost)
+                continue;
+            for (int i = 0; i < N; i++) {
+                if (adj[cur][i] == 0) continue;
+                int next = i;
+                int nextCost = adj[cur][i];
+                int cost = curCost + nextCost;
+                if (dis[next] > cost) {
+                    dis[next] = cost;
+                    q.add(new Node(next, cost));
+                }
+            }
+        }
+    }
+
+    static void removeShortest() {
+        Queue<Integer> q = new LinkedList<>();
+        q.add(D);
+        while (!q.isEmpty()) {
+            int cur = q.poll();
+            for (int i = 0; i < N; i++) {
+                if (adj[i][cur] != 0 && dis[cur] - adj[i][cur] == dis[i]) {
+                    adj[i][cur] = 0;
+                    q.add(i);
+                }
+            }
+        }
+    }
+}
+
+class Node {
+    int pos;
+    int weight;
+
+    public Node(int pos, int weight) {
+        this.pos = pos;
+        this.weight = weight;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+}
+```
