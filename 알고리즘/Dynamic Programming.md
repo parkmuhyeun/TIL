@@ -700,3 +700,185 @@ for i in range(1, alen+1):
       d[i][j] = min(d[i][j-1], d[i-1][j-1], d[i-1][j]) + 1
 print(d[alen][blen])
 ```
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class P1932 {
+    static int N;
+    static int[][] dp;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+
+        N = Integer.parseInt(br.readLine());
+        dp = new int[N][N];
+
+        for (int i = 0; i < N; i++) {
+            st = new StringTokenizer(br.readLine());
+            for (int j = 0; j <= i; j++) {
+                dp[i][j] = Integer.parseInt(st.nextToken());
+            }
+        }
+
+        //왼쪽 위, 바로 위 중 최대
+        for (int i = 1; i < N; i++) {
+            for (int j = 0; j <= i; j++) {
+                int left = 0;
+                int right = 0;
+                if (0 <= j-1 && j-1 < N)
+                    left = dp[i - 1][j - 1];
+                if (0 <= j)
+                    right = dp[i - 1][j];
+                dp[i][j] += Math.max(left, right);
+            }
+        }
+
+        int res = 0;
+        for (int i = 0; i < N; i++) {
+            res = Math.max(res, dp[N-1][i]);
+        }
+        System.out.println(res);
+    }
+}
+```
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class P11660 {
+    static int N, M;
+    static int[][] arr;
+    static int[][] dp;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        arr = new int[N + 1][N + 1];
+        dp = new int[N + 1][N + 1];
+
+        for (int i = 1; i < N + 1; i++) {
+            st = new StringTokenizer(br.readLine());
+            for (int j = 1; j < N + 1; j++) {
+                arr[i][j] = Integer.parseInt(st.nextToken());
+            }
+        }
+
+        //기본 셋팅
+        dp[1][1] = arr[1][1];
+        for (int i = 2; i < N + 1; i++) {
+            dp[1][i] = dp[1][i-1] + arr[1][i];
+            dp[i][1] = dp[i-1][1] + arr[i][1];
+        }
+
+        //누적합 초기화
+        for (int i = 2; i < N + 1; i++) {
+            for (int j = 2; j < N + 1; j++) {
+                dp[i][j] = dp[i-1][j] + dp[i][j-1] - dp[i-1][j-1] + arr[i][j];
+            }
+        }
+
+        int x1, y1, x2, y2;
+        for (int i = 0; i < M; i++) {
+            st = new StringTokenizer(br.readLine());
+            x1 = Integer.parseInt(st.nextToken());
+            y1 = Integer.parseInt(st.nextToken());
+            x2 = Integer.parseInt(st.nextToken());
+            y2 = Integer.parseInt(st.nextToken());
+
+            int res;
+
+            res = dp[x2][y2] - dp[x1-1][y2] - dp[x2][y1-1] + dp[x1-1][y1-1];
+            System.out.println(res);
+        }
+    }
+
+}
+
+```
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+
+public class P14003 {
+    static int N;
+    static int[] arr, sort, pos;
+    static List<Integer> list = new ArrayList<>();
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+
+        N = Integer.parseInt(br.readLine());
+        arr = new int[N];
+        sort = new int[N];
+        for (int i = 0; i < N; i++) {
+            sort[i] = Integer.MAX_VALUE;
+        }
+        pos = new int[N];
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < N; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
+
+        int last = 0;
+        int lastIdx = 0;
+        int sortCnt = 0;
+        //이진탐색으로 긴 부분 수열만들기(추적하면서) - 자기보다 같거나 크면 넣기
+        for (int i = 0; i < N; i++) {
+            int val = arr[i];
+            int start = 0;
+            int end = sortCnt;
+
+            int mid = 0;
+            while (start < end) {
+                mid = (start + end) / 2;
+                if (sort[mid] >= val) {
+                    end = mid;
+                } else {
+                    start = mid + 1;
+                }
+            }
+
+            sort[start] = val;
+            if (i == 0 || last < start) {
+                last = start;
+                lastIdx = i;
+                sortCnt++;
+            }
+            pos[i] = start;
+        }
+
+        int temp = last;
+//        Stack<Integer> s = new Stack<>();
+        for (int i = lastIdx; i >= 0; i--) {
+            if (temp == pos[i]) {
+//                s.push(arr[i]);
+                list.add(arr[i]);
+                temp--;
+            }
+        }
+
+        //마지막 수에서 역으로 가면서 수 추가
+        System.out.println(last + 1);
+//        while (!s.isEmpty()) {
+//            System.out.print(s.pop() + " ");
+//        }
+        for (int i = list.size() -1 ; i >= 0; i--) {
+            System.out.print(list.get(i) + " ");
+        }
+    }
+}
+```
