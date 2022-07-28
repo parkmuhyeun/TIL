@@ -1293,8 +1293,6 @@ class Node {
 ```
 
 ```java
-package WEEK2.DAY03.P5719;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
