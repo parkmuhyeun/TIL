@@ -887,3 +887,52 @@ public class IndexTree {
 }
 ```
 
+## 빠른 출력 - BufferdWriter, StringBuilder
+빠른 출력을 위해 BufferdWriter 혹은 Stringbuilder 사용가능, BufferdWriter의 경우 버퍼를 잡아 놓았끼 때문에 반드시 flush(), close()를 반드시 호출해 줘야함. 그리고 자동개행기능이 없기 때문에 개행이 필요할 경우 \n을 따로 처리
+
+```java
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class Main {
+    static int T, A, B;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+
+        T = Integer.parseInt(br.readLine());
+        for (int i = 0; i < T; i++) {
+            st = new StringTokenizer(br.readLine());
+            A = Integer.parseInt(st.nextToken());
+            B = Integer.parseInt(st.nextToken());
+            bw.write(A+B + "\n");
+        }
+        bw.flush();
+        bw.close();
+    }
+}
+```
+
+```java
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class Main {
+    static int T, A, B;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+
+        T = Integer.parseInt(br.readLine());
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < T; i++) {
+            st = new StringTokenizer(br.readLine());
+            A = Integer.parseInt(st.nextToken());
+            B = Integer.parseInt(st.nextToken());
+            sb.append(A + B + "\n");
+        }
+        System.out.print(sb);
+    }
+}
+```
