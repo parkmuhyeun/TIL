@@ -1410,3 +1410,211 @@ class Node {
     }
 }
 ```
+
+```java
+package ct;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
+public class P13905 {
+	static int N, M, S, E, A, B, K;
+	static int[] parent = new int[100001];
+	static List<Node>[] adj = new ArrayList[100001];
+	static boolean[] visited = new boolean[100001];
+	static int[] res = new int[100001];
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		
+		for(int i =1; i < N+1; i++) {
+			parent[i] = i;
+			adj[i] = new ArrayList<>();
+			res[i] = 987654321;
+		}
+		
+		st = new StringTokenizer(br.readLine());
+		S = Integer.parseInt(st.nextToken());
+		E = Integer.parseInt(st.nextToken()); 
+		
+		PriorityQueue<Edge> pq = new PriorityQueue<>(Comparator.comparingInt(Edge::getWeight).reversed());
+		for(int i =0; i < M; i++) {
+			st = new StringTokenizer(br.readLine());
+			A = Integer.parseInt(st.nextToken());
+			B = Integer.parseInt(st.nextToken());
+			K = Integer.parseInt(st.nextToken());
+			pq.add(new Edge(A, B, K));
+		}
+		
+		while(!pq.isEmpty()) {
+			Edge edge = pq.poll();
+			if(find(edge.from) != find(edge.to)) {
+				union(edge.from, edge.to);
+				adj[edge.from].add(new Node(edge.to, edge.weight));
+				adj[edge.to].add(new Node(edge.from, edge.weight));
+			}
+		}
+		
+		Queue<Integer> q = new LinkedList<>();
+		q.add(S);
+		
+		while(!q.isEmpty()) {
+			int cur = q.poll();
+			for(int i =0; i < adj[cur].size(); i++) {
+				Node node = adj[cur].get(i);
+				int next = node.pos;
+				if (!visited[next]) {
+					res[next] = Math.min(res[cur], node.weight);
+					visited[next] = true;
+					q.add(next);
+				}
+			}
+		}
+		
+		if(res[E] == 987654321)
+			System.out.println("0");
+		else
+			System.out.println(res[E]);
+	}
+
+	static int find(int x) {
+		if(parent[x] == x)
+			return x;
+		else
+			return parent[x] = find(parent[x]);
+	}
+	
+	static void union(int a, int b) {
+		a = find(a);
+		b = find(b);
+		if (a < b)
+			parent[b] = a;
+		else
+			parent[a] = b;
+	}
+}
+
+class Edge{
+	int from;
+	int to;
+	int weight;
+	
+	public Edge(int from, int to, int weight) {
+		this.from = from;
+		this.to = to;
+		this.weight = weight;
+	}
+	
+	public int getWeight() {
+		return weight;
+	}
+}
+
+class Node{
+	int pos;
+	int weight;
+	
+	public Node(int pos, int weight) {
+		this.pos = pos;
+		this.weight = weight;
+	}
+}
+```
+
+```java
+package ct;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+import java.util.StringTokenizer;
+
+public class P17398 {
+	static int N, M, Q, X, Y, A;
+	static long res = 0;
+	static long[] cnt = new long[100001];
+	static int[] parent = new int[100001];
+	static boolean[] visited = new boolean[100001];
+	static List<int[]> adj = new ArrayList<>();
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		Q = Integer.parseInt(st.nextToken());
+		
+		for(int i =1; i < N+1; i++) {
+			parent[i] = i;
+			cnt[i] = 1;
+		}
+		
+		adj.add(new int[]{0, 0});
+		for(int i = 0; i < M; i++) {
+			st = new StringTokenizer(br.readLine());
+			X = Integer.parseInt(st.nextToken());
+			Y = Integer.parseInt(st.nextToken());
+			adj.add(new int[] {X, Y});
+		}
+		
+		Stack<Integer> s = new Stack<>();
+		for(int i = 0; i < Q; i++) {
+			A = Integer.parseInt(br.readLine());
+			visited[A] = true;
+			s.push(A);
+		}
+		
+		for(int i = 1; i < M+1; i++) {
+			if(visited[i] == true)
+				continue;
+			int[] pop = adj.get(i);
+			if(find(pop[0]) != find(pop[1]))
+				union(pop[0], pop[1]);
+		}
+		
+		
+		while(!s.isEmpty()) {
+			int idx = s.pop();
+			int[] pop = adj.get(idx);
+			int front = find(pop[0]);
+			int back = find(pop[1]);
+			if(front != back)
+				res += (1L * cnt[front] * cnt[back]);
+			union(pop[0], pop[1]);
+		}
+		System.out.println(res);
+	}
+	
+	static int find(int x) {
+		if(parent[x] == x)
+			return x;
+		else
+			return parent[x] = find(parent[x]);
+	}
+	
+	static void union(int a, int b) {
+		int findA = find(a);
+		int findB = find(b);
+		if(findA == findB)
+			return;
+		cnt[findB] += cnt[findA];
+		parent[findA] = findB;
+	}
+}
+```
