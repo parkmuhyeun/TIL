@@ -663,3 +663,203 @@ class Edge {
     }
 }
 ```
+
+```java
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
+
+public class P1854 {
+	static int N, M, K, A, B, C;
+	static List<Edge>[] adj = new ArrayList[1001];
+	static List<Integer>[] dist = new ArrayList[1001];
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		K = Integer.parseInt(st.nextToken());
+		
+		for(int i = 1; i < N + 1; i++) {
+			adj[i] = new ArrayList<>();
+			dist[i] = new ArrayList<>();
+		}
+		
+		for(int i = 0; i < M; i++) {
+			st = new StringTokenizer(br.readLine());
+			A = Integer.parseInt(st.nextToken());
+			B = Integer.parseInt(st.nextToken());
+			C = Integer.parseInt(st.nextToken());
+			adj[A].add(new Edge(B, C));
+		}
+		
+		dijkstra(1);
+		
+		for(int i = 1; i < N+1; i++) {
+			if(dist[i].size() < K)
+				bw.write("-1\n");
+			else
+				bw.write(dist[i].get(K-1) + "\n");
+		}
+		bw.flush();
+		bw.close();
+	}
+
+	static void dijkstra(int start) {
+		PriorityQueue<Edge> pq = new PriorityQueue<>(Comparator.comparingInt(Edge::getWeight));
+		pq.add(new Edge(start, 0));
+		int cnt = 0;
+		
+		while(!pq.isEmpty()) {
+			Edge edge = pq.poll();
+			int cur = edge.pos;
+			if(dist[cur].size() < K)
+				dist[cur].add(edge.weight);
+			else
+				continue;
+			if(dist[cur].size() == K)
+				cnt++;
+			if(cnt == N)
+				break;
+			for(int i =0; i < adj[cur].size(); i++) {
+				Edge nextEdge = adj[cur].get(i);
+				int next = nextEdge.pos;
+				int cost = edge.weight + nextEdge.weight;
+				if (dist[next].size() < K)
+					pq.add(new Edge(next, cost));
+			}
+		}
+	}
+}
+
+class Edge {
+	int pos;
+	int weight;
+	
+	public Edge(int pos, int weight) {
+		this.pos = pos;
+		this.weight = weight;
+	}
+	
+	public int getWeight() {
+		return weight;
+	}
+}
+```
+
+```java
+package ct;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
+
+public class P10217 {
+	static int T, N, M, K, U, V, C, D;
+	static List<Edge>[] adj = new ArrayList[101];
+	static int dp[][] = new int[101][10001];
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		StringTokenizer st;
+		
+		T = Integer.parseInt(br.readLine());
+		
+		for(int tc = 1; tc <= T; tc++) {
+			st = new StringTokenizer(br.readLine());
+			N = Integer.parseInt(st.nextToken());
+			M = Integer.parseInt(st.nextToken());
+			K = Integer.parseInt(st.nextToken());
+			
+			for(int i = 1; i < N + 1; i++) {
+				adj[i] = new ArrayList<>();
+				for(int j = 0; j < M + 1; j++)
+					dp[i][j] = Integer.MAX_VALUE;
+			}
+
+			for(int i = 0; i < K; i++) {
+				st = new StringTokenizer(br.readLine());
+				U = Integer.parseInt(st.nextToken());
+				V = Integer.parseInt(st.nextToken());
+				C = Integer.parseInt(st.nextToken());
+				D = Integer.parseInt(st.nextToken());
+				adj[U].add(new Edge(V, C, D));
+			}
+			
+			dijkstra(1);
+			
+			int result = Integer.MAX_VALUE;
+			for(int i = 1; i < M + 1; i++) {
+				result = Math.min(result, dp[N][i]);
+			}
+			
+			if (result == Integer.MAX_VALUE)
+				bw.write("Poor KCM\n");
+			else
+				bw.write(result+"\n");
+		}
+		
+		bw.flush();
+		bw.close();
+	}
+	
+	static void dijkstra(int start) {
+		PriorityQueue<Edge> pq = new PriorityQueue<>(Comparator.comparingInt(Edge::getTime));
+		pq.add(new Edge(start, 0 , 0));
+		dp[start][0] = 0;
+		
+		while(!pq.isEmpty()) {
+			Edge edge = pq.poll();
+			int cur = edge.pos;
+			if (dp[cur][edge.cost] < edge.time)
+				continue;
+			for(int i = 0; i < adj[cur].size(); i++) {
+				Edge nextEdge = adj[cur].get(i);
+				int next = nextEdge.pos;
+				int c = edge.cost + nextEdge.cost;
+				int t = edge.time + nextEdge.time;
+				if (c <= M && dp[next][c] > t) {
+					dp[next][c] = t;
+					pq.add(new Edge(next, c, t));
+				}
+			}
+			
+		}
+	}
+
+}
+
+class Edge{
+	int pos;
+	int cost;
+	int time;
+	
+	public Edge(int pos, int cost, int time) {
+		this.pos = pos;
+		this.cost = cost;
+		this.time = time;
+	}
+	
+	public int getTime() {
+		return time;
+	}
+}
+```
