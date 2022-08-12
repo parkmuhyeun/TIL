@@ -1618,3 +1618,258 @@ public class P17398 {
 	}
 }
 ```
+
+```java
+package ct;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.StringTokenizer;
+
+public class P2463 {
+	static int N, M, X, Y, W;
+	static int[] parent = new int[100001];
+	static int[] cnt = new int[100001];
+	static long totalWeight = 0;
+	static long res = 0;
+	static int mod = 1000000000;
+	static List<Edge> graph = new ArrayList<>(); 
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		
+		for(int i = 1; i < N + 1; i++) {
+			parent[i] = i;
+			cnt[i] = 1;
+		}
+		
+		
+		for(int i = 0; i < M; i++) {
+			st = new StringTokenizer(br.readLine());
+			X = Integer.parseInt(st.nextToken());
+			Y = Integer.parseInt(st.nextToken());
+			W = Integer.parseInt(st.nextToken());
+			graph.add(new Edge(X, Y, W));
+			totalWeight += W;
+		}
+		Collections.sort(graph, Comparator.comparingInt(Edge::getWeight).reversed());
+		
+		for(int i = 0; i < M; i++) {
+			Edge edge = graph.get(i);
+			int a = find(edge.from);
+			int b = find(edge.to);
+			if(a != b)
+				union(a, b);
+			totalWeight -= edge.weight;
+		}
+		
+		System.out.print(res);
+	}
+
+	static int find(int x) {
+		if (parent[x] == x)
+			return x;
+		else
+			return parent[x] = find(parent[x]);
+	}
+	
+	static void union(int a, int b) {
+		res += 1L * cnt[a] * cnt[b] * totalWeight;
+		res %= mod;
+		parent[b] = a;
+		cnt[a] += cnt[b];
+	}
+}
+
+class Edge {
+	int from;
+	int to;
+	int weight;
+	
+	public Edge(int from, int to, int weight) {
+		this.from = from;
+		this.to = to;
+		this.weight = weight;
+	}
+	
+	public int getWeight() {
+		return weight;
+	}
+}
+```
+
+```java
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class P16566 {
+	static int N, M, K;
+	static int[] parent = new int[4000001];
+	static int[] card = new int[4000001];
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		K = Integer.parseInt(st.nextToken());
+		
+		for(int i = 1; i < N+1;i++) {
+			parent[i] = i;
+		}
+		
+		st = new StringTokenizer(br.readLine());
+		for(int i = 0; i < M; i++) {
+			card[i] = Integer.parseInt(st.nextToken());
+		}
+		Arrays.sort(card, 0, M);
+		
+		st = new StringTokenizer(br.readLine());
+		for(int i = 0; i < K; i++) {
+			int find = Integer.parseInt(st.nextToken());
+			int s = 0;
+			int e = M-1;
+			while(s < e) {
+				int mid = (s + e) / 2;
+				if (find < card[mid]) {
+					e = mid;
+				}else {
+					s = mid + 1;
+				}
+			}
+			int idx = find(e);
+			bw.write(card[idx] + "\n");
+			union(idx, find(idx+1));
+		}
+		bw.flush();
+		bw.close();
+	}
+
+	static int find(int x) {
+		if(parent[x] == x)
+			return x;
+		else
+			return parent[x] = find(parent[x]);
+	}
+	
+	static void union(int a, int b) {
+		parent[a] = b;
+	}
+}
+```
+
+```java
+package ct;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.StringTokenizer;
+
+public class P10423 {
+	static int N, M, K, U, V, W;
+	static int[] parent = new int[1001];
+	static int[] yny = new int[1001];
+	static List<Edge> graph = new ArrayList<>();
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		K = Integer.parseInt(st.nextToken());
+		
+		st = new StringTokenizer(br.readLine());
+		for(int i = 0; i < K; i++) {
+			yny[Integer.parseInt(st.nextToken())] = -1;
+		}
+		
+		for(int i = 1; i < N+1; i++) {
+			if(yny[i] == -1)
+				parent[i] = -1;
+			else
+				parent[i] = i;
+		}
+		
+		for(int i = 0; i < M; i++) {
+			st = new StringTokenizer(br.readLine());			
+			U = Integer.parseInt(st.nextToken());
+			V = Integer.parseInt(st.nextToken());
+			W = Integer.parseInt(st.nextToken());
+			graph.add(new Edge(U, V, W));
+		}
+		Collections.sort(graph, Comparator.comparingInt(Edge::getWeight));
+		
+		int res = 0;
+		for(int i = 0; i < M; i++) {
+			Edge edge = graph.get(i);
+			if (find(edge.from) != find(edge.to)) {
+				union(edge.from, edge.to);
+				res += edge.weight;
+			}
+		}
+		
+		System.out.println(res);
+	}
+
+	static int find(int x) {
+		if(parent[x] == -1)
+			return -1;
+		
+		if(parent[x] == x)
+			return x;
+		else
+			return parent[x] = find(parent[x]);
+	}
+	
+	static void union(int a, int b) {
+		int findA = find(a);
+		int findB = find(b);
+		
+		if(findA == -1) {
+			parent[findB] = -1;
+		}else if(findB == -1) {
+			parent[findA] = -1;
+		}else {
+			parent[findA] = findB;
+		}
+	}
+}
+
+class Edge{
+	int from;
+	int to;
+	int weight;
+	
+	public Edge(int from, int to, int weight) {
+		this.from = from;
+		this.to = to;
+		this.weight= weight;
+	}
+	
+	public int getWeight() {
+		return weight;
+	}
+}
+```
