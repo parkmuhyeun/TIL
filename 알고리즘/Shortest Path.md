@@ -863,3 +863,114 @@ class Edge{
 	}
 }
 ```
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
+
+public class P1162 {
+	static int N, M, K, A, B, C;
+	static List<Edge>[] adj = new ArrayList[10001];
+	static long[][] dp = new long[10001][21];
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		K = Integer.parseInt(st.nextToken());
+		
+		for(int i = 1; i < N + 1; i++) {
+			adj[i] = new ArrayList<>();
+			for(int j = 0; j < 21; j++) {
+				dp[i][j] = Long.MAX_VALUE;
+			}
+		}
+		
+		for(int i = 0; i < M; i++) {
+			st = new StringTokenizer(br.readLine());			
+			A = Integer.parseInt(st.nextToken());
+			B = Integer.parseInt(st.nextToken());
+			C = Integer.parseInt(st.nextToken());
+			adj[A].add(new Edge(B, C));
+			adj[B].add(new Edge(A, C));
+		}
+		
+		dijkstra(1);
+		
+		long res = Long.MAX_VALUE;
+		for(int i = 1; i < K +1 ;i++) {
+			res = Math.min(res, dp[N][i]);
+		}
+
+		System.out.print(res);
+	}
+
+	static void dijkstra(int start) {
+		PriorityQueue<Road> pq = new PriorityQueue<>(Comparator.comparingLong(Road::getWeight));
+		pq.add(new Road(start, 0, 0));
+		dp[start][0] = 0;
+		dp[start][1] = 0;
+		
+		while(!pq.isEmpty()) {
+			Road road = pq.poll();
+			int cur = road.pos;
+			
+			if(dp[cur][road.k] < road.weight)
+				continue;
+			for(int i = 0; i < adj[cur].size(); i++) {
+				Edge edge = adj[cur].get(i);
+				int next = edge.pos;
+				Long cost = road.weight + edge.weight; 
+				
+				if(dp[next][road.k] > cost) {
+					dp[next][road.k] = cost;
+					pq.add(new Road(next, cost, road.k));
+				}
+				
+				if(road.k + 1 <= K) {
+					if(dp[next][road.k + 1] > road.weight) {
+						dp[next][road.k + 1] = road.weight;
+						pq.add(new Road(next, road.weight, road.k + 1));
+					}	
+				}
+				
+			}
+		}
+		
+	}
+}
+
+class Edge {
+	int pos;
+	int weight;
+	
+	public Edge(int pos, int weight) {
+		this.pos = pos;
+		this.weight = weight;
+	}
+}
+
+class Road {
+	int pos;
+	long weight;
+	int k;
+	
+	public Road(int pos, long weight, int k) {
+		this.pos = pos;
+		this.weight = weight;
+		this.k = k;
+	}
+	
+	public long getWeight() {
+		return weight;
+	}
+}
+```
