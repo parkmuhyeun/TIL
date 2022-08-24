@@ -1134,3 +1134,93 @@ def solution(n, weak, dist):
         res = -1
     return res
 ```
+
+```java
+import java.io.*;
+
+public class L86491 {
+
+    public static void main(String[] args) throws IOException {
+        int[][] arr = new int[][]{{60,50}, {30, 70}, {60, 30}, {80, 40}};
+        System.out.println(solution(arr));
+    }
+
+    static int maxA = 0;
+    static int maxB = 0;
+    public static int solution(int[][] sizes) {
+        int length = sizes.length;
+        for (int i = 0; i < length; i++) {
+            maxA = Math.max(maxA, sizes[i][0]);
+            maxB = Math.max(maxB, sizes[i][1]);
+        }
+        int max1 = Math.max(maxA, maxB);
+
+        int max2 = 0;
+        for (int i = 0; i < length; i++) {
+            int min = Math.min(sizes[i][0], sizes[i][1]);
+            max2 = Math.max(max2, min);
+        }
+
+        return max1 * max2;
+    }
+
+}
+```
+
+```java
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class L87946 {
+
+    public static void main(String[] args) throws IOException {
+        System.out.println(solution(80, new int[][]{{80, 20}, {50, 40}, {30, 10}}));
+    }
+
+    public static int solution(int k, int[][] dungeons) {
+        List<int[][]> permutations = new ArrayList<>();
+        int answer = -1;
+        int length = dungeons.length;
+        boolean[] visited = new boolean[length];
+        perm(permutations, dungeons, new int[length][2], visited, 0);
+
+        for (int[][] permutation : permutations) {
+            int p = k;
+            int cnt = 0;
+            for (int i = 0; i < length; i++) {
+                if (permutation[i][0] > p)
+                    break;
+                cnt++;
+                p -= permutation[i][1];
+            }
+            answer = Math.max(answer, cnt);
+        }
+
+        return answer;
+    }
+
+    public static void perm(List<int[][]> permutations, int[][] arr, int[][] data, boolean[] visited, int depth) {
+        if (depth == data.length) {
+            int[][] clone = new int[data.length][data[0].length];
+            for (int i = 0; i < data.length; i++) {
+                for (int j = 0; j < data[0].length; j++) {
+                    clone[i][j] = data[i][j];
+                }
+            }
+            permutations.add(clone);
+            return;
+        }
+
+        for (int i = 0; i < arr.length; i++) {
+            if (!visited[i]) {
+                visited[i] = true;
+                data[depth][0] = arr[i][0];
+                data[depth][1] = arr[i][1];
+                perm(permutations, arr, data, visited, depth + 1);
+                visited[i] = false;
+            }
+        }
+    }
+}
+```
