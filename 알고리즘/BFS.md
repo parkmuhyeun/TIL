@@ -694,3 +694,109 @@ public class P3055 {
     }
 }
 ```
+
+```java
+import java.io.*;
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class L1844 {
+
+    public static void main(String[] args) throws IOException {
+        System.out.println(solution(new int[][]{{1, 0, 1, 1, 1}, {1, 0, 1, 0, 1}, {1, 0, 1, 1, 1}, {1, 1, 1, 0, 1}, {0, 0, 0, 0, 1}}));
+    }
+
+    static int[][] dis;
+    static int X, Y;
+
+    public static int solution(int[][] maps) {
+        X = maps.length;
+        Y = maps[0].length;
+        dis = new int[X+1][Y+1];
+        bfs(maps);
+        if(dis[X][Y] == 0)
+            return -1;
+        else
+            return dis[X][Y];
+    }
+
+    static void bfs(int[][] maps) {
+        Queue<Pos> q = new LinkedList<>();
+        q.add(new Pos(1, 1));
+        dis[1][1] = 1;
+
+        int[] dx = {0, 0, 1, -1};
+        int[] dy = {1, -1, 0, 0};
+        while (!q.isEmpty()) {
+            Pos poll = q.poll();
+            int x = poll.x;
+            int y = poll.y;
+
+            if (x == X && y == Y)
+                break;
+
+            for (int i = 0; i < 4; i++) {
+                int nx = x + dx[i];
+                int ny = y + dy[i];
+
+                if (1 <= nx && nx <= X && 1 <= ny && ny <= Y && maps[nx-1][ny-1] == 1 && dis[nx][ny] == 0) {
+                    dis[nx][ny] = dis[x][y] + 1;
+                    q.add(new Pos(nx, ny));
+                }
+            }
+        }
+    }
+}
+
+class Pos{
+    int x;
+    int y;
+
+    public Pos(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+}
+
+```
+
+```java
+import java.io.*;
+import java.util.LinkedList;
+import java.util.Queue;
+
+class L43162 {
+    boolean[] visited;
+    
+    public int solution(int n, int[][] computers) {
+        int answer = 0;
+        visited = new boolean[n];
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                bfs(i, computers);
+                answer++;
+            }
+        }
+        return answer;
+    }
+
+    void bfs(int start, int[][] computers) {
+        Queue<Integer> q = new LinkedList<>();
+        q.add(start);
+        visited[start] = true;
+
+        while (!q.isEmpty()) {
+            Integer cur = q.poll();
+
+            for (int i = 0; i < computers.length; i++) {
+                if (cur == i)
+                    continue;
+                if (computers[cur][i] == 1 && !visited[i]) {
+                    visited[i] = true;
+                    q.add(i);
+                }
+            }
+        }
+    }
+}
+```
