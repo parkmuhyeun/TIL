@@ -475,3 +475,139 @@ public class P1759 {
 
 }
 ```
+
+```java
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class L43163 {
+
+    public static void main(String[] args) throws IOException {
+        System.out.println(solution("hit", "cog", new String[]{"hot", "dot", "dog", "lot", "log"}));
+    }
+
+    static boolean[] visited;
+    static int answer = 51;
+
+    public static int solution(String begin, String target, String[] words) {
+        visited = new boolean[words.length];
+
+        List<Word> goes = check(begin, words);
+        for (Word go : goes) {
+            dfs(go, target, words, 1);
+        }
+
+        if (answer == 51)
+            return 0;
+        else
+            return answer;
+    }
+
+    static List<Word> check(String now, String[] words) {
+        List<Word> list = new ArrayList<>();
+        int idx = 0;
+        for (String word : words) {
+            if (visited[idx]) {
+                idx++;
+                continue;
+            }
+            int br = 0;
+            for (int i = 0; i < word.length(); i++) {
+                if (word.charAt(i) != now.charAt(i))
+                    br++;
+                if (br >= 2)
+                    break;
+            }
+            if (br < 2)
+                list.add(new Word(idx, word));
+            idx++;
+        }
+
+        return list;
+    }
+
+    static void dfs(Word word, String target, String[] words, int cnt) {
+        visited[word.idx] = true;
+        if (word.word.equals(target)) {
+            answer = Math.min(answer, cnt);
+        }else{
+            List<Word> goes = check(word.word, words);
+            for (Word go : goes) {
+                if (!visited[go.idx])
+                    dfs(go, target, words, cnt + 1);
+            }
+        }
+        visited[word.idx] = false;
+    }
+}
+
+class Word {
+    int idx;
+    String word;
+
+    public Word(int idx, String word) {
+        this.idx = idx;
+        this.word = word;
+    }
+}
+```
+
+```java
+import java.io.*;
+import java.util.*;
+
+public class L43164 {
+
+    public static void main(String[] args) throws IOException {
+//        System.out.println(Arrays.toString(solution(new String[][]{{"ICN", "JFK"}, {"HND", "IAD"}, {"JFK", "HND"}})));
+        System.out.println(Arrays.toString(solution(new String[][]{{"ICN", "SFO"}, {"ICN", "ATL"}, {"SFO", "ATL"}, {"ATL", "ICN"}, {"ATL", "SFO"}})));
+    }
+
+    static int cnt;
+    static boolean[] visited;
+    static List<String> result = new ArrayList<>();
+
+    public static String[] solution(String[][] tickets) {
+        cnt = tickets.length;
+        visited = new boolean[cnt];
+        List<Ticket> list = new ArrayList<>();
+        for (int i = 0; i < tickets.length; i++) {
+            if (tickets[i][0].equals("ICN"))
+                list.add(new Ticket(i, tickets[i][1]));
+        }
+
+        for (int i = 0; i < list.size(); i++) {
+            dfs(list.get(i), "ICN" + " " + list.get(i).to, tickets, 1);
+        }
+
+        Collections.sort(result);
+        String[] answer = result.get(0).split(" ");
+        return answer;
+    }
+
+    static void dfs(Ticket now, String des, String[][] tickets, int depth) {
+        visited[now.idx] = true;
+        if (depth == cnt) {
+            result.add(des);
+        } else {
+            for (int i = 0; i < tickets.length; i++) {
+                if (!visited[i] && tickets[i][0].equals(now.to)) {
+                    dfs(new Ticket(i, tickets[i][1]), des + " " +  tickets[i][1], tickets, depth + 1);
+                }
+            }
+        }
+        visited[now.idx] = false;
+    }
+}
+
+class Ticket {
+    int idx;
+    String to;
+
+    public Ticket(int idx, String to) {
+        this.idx = idx;
+        this.to = to;
+    }
+}
+```
