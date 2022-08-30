@@ -800,3 +800,103 @@ class L43162 {
     }
 }
 ```
+
+```java
+import java.io.*;
+import java.util.*;
+
+public class L87694 {
+
+    public static void main(String[] args) throws IOException {
+        System.out.println(solution(new int[][]{{1, 1, 7, 4}, {3, 2, 5, 5}, {4, 3, 6, 9}, {2, 6, 8 ,8}}, 1, 3, 7, 8));
+//        System.out.println(solution(new int[][]{{1, 1, 8, 4}, {2, 2, 4, 9}, {3, 6, 9 ,8}, {6, 3, 7, 7}}, 9, 7, 6, 1));
+    }
+
+    static int[][] board = new int[102][102];
+    static int[][] dis = new int[102][102];
+    static int desX;
+    static int desY;
+
+    public static int solution(int[][] rectangle, int characterX, int characterY, int itemX, int itemY) {
+        desX = itemY * 2;
+        desY = itemX * 2;
+
+        for (int i = 0; i < rectangle.length; i++) {
+            int startY = rectangle[i][0] * 2;
+            int startX = rectangle[i][1] * 2;
+            int endY = rectangle[i][2] * 2;
+            int endX = rectangle[i][3] * 2;
+
+            addRoad(101 - startX, startY, 101 - endX, endY);
+        }
+        removeRoad(rectangle);
+        bfs(characterY * 2, characterX * 2);
+        return dis[101-desX][desY] / 2;
+    }
+
+    private static void bfs(int x, int y) {
+        Queue<Pos> q = new LinkedList<>();
+        q.add(new Pos(101 - x, y));
+
+        int[] dx = {0, 0, -1, 1};
+        int[] dy = {1, -1, 0, 0};
+        while (!q.isEmpty()) {
+            Pos now = q.poll();
+            if(now.x == 101 - desX && now.y == desY)
+                return;
+            for (int i = 0; i < 4; i++) {
+                int nx = now.x + dx[i];
+                int ny = now.y + dy[i];
+                if (1 <= nx && nx <= 100 && 1 <= ny && ny <= 100 && board[nx][ny] == 1 && dis[nx][ny] == 0) {
+                    dis[nx][ny] = dis[now.x][now.y] + 1;
+                    q.add(new Pos(nx, ny));
+                }
+
+            }
+        }
+    }
+
+    private static void removeRoad(int[][] rectangle) {
+        for (int i = 0; i < rectangle.length; i++) {
+            int startY = rectangle[i][0] * 2 + 1;
+            int startX = 101 - rectangle[i][1] * 2 - 1;
+            int endY = rectangle[i][2] * 2 - 1;
+            int endX =  101 - rectangle[i][3] * 2 + 1;
+            for (int j = startX; j >= endX; j--) {
+                for (int k = startY; k <= endY; k++) {
+                    board[j][k] = 0;
+                }
+            }
+        }
+    }
+
+    private static void addRoad(int startX, int startY, int endX, int endY) {
+        //아래
+        for (int i = startY; i <= endY; i++) {
+            board[startX][i] = 1;
+        }
+        //왼쪽
+        for (int i = startX; i >= endX; i--) {
+            board[i][startY] = 1;
+        }
+        //오른쪽
+        for (int i = startX; i >= endX; i--) {
+            board[i][endY] = 1;
+        }
+        //위
+        for (int i = startY; i <= endY; i++) {
+            board[endX][i] = 1;
+        }
+    }
+}
+
+class Pos{
+    int x;
+    int y;
+
+    public Pos(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+}
+```
