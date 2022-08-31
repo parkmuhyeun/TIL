@@ -642,3 +642,156 @@ class Jewelry {
     }
 }
 ```
+
+```java
+import java.io.*;
+import java.util.*;
+
+public class L42748 {
+
+    public static void main(String[] args) throws IOException {
+        System.out.println(solution(new int[]{1, 5, 2, 6, 3, 7, 4}, new int[][]{{2, 5, 3}, {4, 4, 1}, {1, 7, 3}}));
+    }
+
+    public static List<Integer> solution(int[] array, int[][] commands) {
+        List<Integer> answer = new ArrayList<>();
+
+        for (int[] command : commands) {
+            int start = command[0];
+            int end = command[1];
+            int target = command[2];
+
+            List<Integer> list = new ArrayList<>();
+            for (int i = start; i <= end; i++) {
+                list.add(array[i-1]);
+            }
+            Collections.sort(list);
+
+            answer.add(list.get(target - 1));
+        }
+
+        return answer;
+    }
+}
+```
+
+```java
+import java.io.*;
+import java.util.*;
+
+public class test {
+
+    public static void main(String[] args) throws IOException {
+//        System.out.println(solution(new int[]{6, 10, 2}));
+        System.out.println(solution(new int[]{0, 0, 0, 0}));
+    }
+
+    public static String solution(int[] numbers) {
+        int length = numbers.length;
+        String[] sNumbers = new String[length];
+        for (int i = 0; i < length; i++) {
+            sNumbers[i] = String.valueOf(numbers[i]);
+        }
+
+        Arrays.sort(sNumbers, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return (o2+o1).compareTo(o1+o2);
+            }
+        });
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            sb.append(sNumbers[i]);
+        }
+
+        if (sb.charAt(0) == '0') {
+            return "0";
+        }
+
+        return sb.toString();
+    }
+}
+
+
+// import java.io.*;
+// import java.util.*;
+
+// public class test {
+
+//     public static void main(String[] args) throws IOException {
+// //        System.out.println(solution(new int[]{6, 10, 2}));
+// //        System.out.println(solution(new int[]{3, 30, 34, 5, 9}));
+// //        System.out.println(solution(new int[]{23, 232, 21, 212}));
+//         System.out.println(solution(new int[]{979, 97, 978, 81, 818, 817}));
+// //        System.out.println(solution(new int[]{0, 0, 0, 0}));
+//     }
+
+//     public static String solution(int[] numbers) {
+//         int length = numbers.length;
+//         int[] count = new int[length];
+//         int maxLen = 0;
+
+//         for(int i =0; i < length; i++){
+//             if (numbers[i] != 0)
+//                 break;
+//             if (i == length -1)
+//                 return "0";
+//         }
+
+//         for (int i = 0; i < length; i++) {
+//             int len = 0;
+//             int num = numbers[i];
+//             do {
+//                 num /= 10;
+//                 len++;
+//             } while (num != 0);
+//             count[i] = len;
+//             maxLen = Math.max(maxLen, len);
+//         }
+
+//         List<Num> list = new ArrayList<>();
+//         for (int i = 0; i < length; i++) {
+//             int val = numbers[i];
+//             int cnt = maxLen - count[i];
+//             for (int j = 0; j < cnt; j++) {
+//                 val *= 10;
+//             }
+//             list.add(new Num(val, cnt));
+//         }
+//         Collections.sort(list);
+
+//         String answer = "";
+//         for (int i = 0; i < length; i++) {
+//             int val = list.get(i).val;
+//             int cnt = list.get(i).cnt;
+//             for (int j = 0; j < cnt; j++) {
+//                 val /= 10;
+//             }
+//             answer += val;
+//         }
+
+//         return answer;
+//     }
+// }
+
+// class Num implements Comparable<Num>{
+//     int val;
+//     int cnt;
+
+//     public Num(int val, int cnt) {
+//         this.val = val;
+//         this.cnt = cnt;
+//     }
+
+//     @Override
+//     public int compareTo(Num o) {
+//         if (val > o.val)
+//             return -1;
+//         else if(val == o.val)
+//             return o.cnt - cnt;
+//         else
+//             return 1;
+//     }
+// }
+```
