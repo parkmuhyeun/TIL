@@ -795,3 +795,32 @@ public class test {
 //     }
 // }
 ```
+
+```java
+import java.util.Arrays;
+
+class L42747 {
+        public static int solution(int[] citations) {
+        int answer = 0;
+        int length = citations.length;
+        Arrays.sort(citations);
+
+        for(int i = 1; i <= citations[length-1]; i++){
+            int pivot = 0;
+            for (int j = 0; j < length; j++) {
+                if (i <= citations[j]){
+                    pivot = j;
+                    break;
+                }
+            }
+
+            int left = pivot;
+            int right = length - pivot;
+            if (left <= i && i <= right)
+                answer = i;
+        }
+
+        return answer;
+    }
+}
+```
