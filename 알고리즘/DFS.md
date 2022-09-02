@@ -611,3 +611,152 @@ class Ticket {
     }
 }
 ```
+
+```java
+import java.io.*;
+import java.util.*;
+
+public class L42747 {
+
+    public static void main(String[] args) throws IOException {
+        System.out.println(solution(
+                new int[][]{{1, 1, 0, 0, 1, 0}, {0, 0, 1, 0, 1, 0}, {0, 1, 1, 0, 0, 1},
+                        {1, 1, 0, 1, 1, 1}, {1, 0, 0, 0, 1, 0}, {0, 1, 1, 1, 0, 0}},
+                new int[][]{{1, 0, 0, 1, 1, 0}, {1, 0, 1, 0, 1, 0}, {0, 1, 1, 0, 1, 1},
+                        {0, 0, 1, 0, 0, 0}, {1, 1, 0, 1, 1, 0}, {0, 1, 0, 0, 0, 0}}));
+    }
+
+    static boolean[][] visited;
+    static int length;
+
+    public static int solution(int[][] game_board, int[][] table) {
+        length = game_board.length;
+        visited = new boolean[length][length];
+        List<List<Point>> empty = new ArrayList<>();
+        List<List<Point>> puzzle = new ArrayList<>();
+
+        //1. dfs로 board, table 추출
+
+        //board
+        for (int i = 0; i < length; i++) {
+            for (int j = 0; j < length; j++) {
+                if (!visited[i][j] && game_board[i][j] == 0) {
+                    List<Point> list = new ArrayList<>();
+                    list.add(new Point(0, 0));
+                    dfs(i, j, i, j, game_board, list, 0);
+                    Collections.sort(list);
+                    empty.add(list);
+                }
+            }
+        }
+
+        for (int i = 0; i < length; i++) {
+            Arrays.fill(visited[i], false);
+        }
+
+        //table
+        for (int i = 0; i < length; i++) {
+            for (int j = 0; j < length; j++) {
+                if (!visited[i][j] && table[i][j] == 1) {
+                    List<Point> list = new ArrayList<>();
+                    list.add(new Point(0, 0));
+                    dfs(i, j, i, j, table, list, 1);
+                    Collections.sort(list);
+                    puzzle.add(list);
+                }
+            }
+        }
+
+        boolean[] puzzleCheck = new boolean[puzzle.size()];
+        int answer = 0;
+        //2. 회전하면서 확인
+        for (int i = 0; i < empty.size(); i++) {
+            List<Point> getEmpty = empty.get(i);
+            for (int j = 0; j < puzzle.size(); j++) {
+                if(puzzleCheck[j])
+                    continue;
+                List<Point> getPuzzle = puzzle.get(j);
+                if (getEmpty.size() == getPuzzle.size() && isRotate(getEmpty, getPuzzle)) {
+                    answer += getPuzzle.size();
+                    puzzleCheck[j] = true;
+                    break;
+                }
+            }
+        }
+
+        return answer;
+    }
+
+    private static boolean isRotate(List<Point> empty, List<Point> puzzle) {
+        //90도 회전
+        for (int i = 0; i < 4; i++) {
+            //회전하고 난뒤 다시 0, 0 기준
+            int zeroX = puzzle.get(0).x;
+            int zeroY = puzzle.get(0).y;
+
+            for (int j = 0; j < puzzle.size(); j++) {
+                puzzle.get(j).x -= zeroX;
+                puzzle.get(j).y -= zeroY;
+            }
+
+            boolean flag = true;
+
+            for (int j = 0; j < empty.size(); j++) {
+                Point emptyPoint = empty.get(j);
+                Point puzzlePoint = puzzle.get(j);
+
+                if (emptyPoint.x != puzzlePoint.x || emptyPoint.y != puzzlePoint.y) {
+                    flag = false;
+                    break;
+                }
+            }
+
+            if (flag) {
+                return true;
+            } else {
+                //회전
+                for (int j = 0; j < puzzle.size(); j++) {
+                    int temp = puzzle.get(j).x;
+                    puzzle.get(j).x = puzzle.get(j).y;
+                    puzzle.get(j).y = -temp;
+                }
+                Collections.sort(puzzle);
+            }
+        }
+
+        return false;
+    }
+
+    private static void dfs(int startX, int startY, int x, int y, int[][] arr, List<Point> result, int type){
+        visited[x][y] = true;
+
+        int[] dx = {0, 0, -1, 1};
+        int[] dy = {1, -1, 0, 0};
+        for (int i = 0; i < 4; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            if (0 <= nx && nx < length && 0 <= ny && ny < length && !visited[nx][ny] && arr[nx][ny] == type) {
+                result.add(new Point(nx - startX, ny - startY));
+                dfs(startX, startY, nx, ny, arr, result, type);
+            }
+        }
+    }
+}
+
+class Point implements Comparable<Point>{
+    int x;
+    int y;
+
+    public Point(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    @Override
+    public int compareTo(Point o) {
+        if (x == o.x)
+            return y - o.y;
+        return x - o.x;
+    }
+}
+```
