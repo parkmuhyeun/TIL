@@ -1224,3 +1224,109 @@ public class L87946 {
     }
 }
 ```
+
+```java
+import java.io.IOException;
+
+public class L118666 {
+
+    public static void main(String[] args) throws IOException {
+        System.out.println(solution(new String[]{"AN", "CF", "MJ", "RT", "NA"}, new int[]{5, 3, 2, 7, 5}));
+    }
+
+    static int[][] score = new int[4][2];
+    public static String solution(String[] survey, int[] choices) {
+        for (int i = 0; i < survey.length; i++) {
+            if (choices[i] < 4) {
+                addScore(survey[i].charAt(0), 4 - choices[i]);
+            } else if(choices[i] > 4) {
+                addScore(survey[i].charAt(1), choices[i] - 4);
+            }
+        }
+
+        return getAnswer("");
+    }
+
+    private static String getAnswer(String answer) {
+        if (score[0][0] >= score[0][1])
+            answer += "R";
+        else
+            answer += "T";
+        if (score[1][0] >= score[1][1])
+            answer += "C";
+        else
+            answer += "F";
+        if (score[2][0] >= score[2][1])
+            answer += "J";
+        else
+            answer += "M";
+        if (score[3][0] >= score[3][1])
+            answer += "A";
+        else
+            answer += "N";
+        return answer;
+    }
+
+    private static void addScore(char type, int num) {
+        if (type == 'R')
+            score[0][0] += num;
+        else if(type == 'T')
+            score[0][1] += num;
+        else if(type == 'C')
+            score[1][0] += num;
+        else if(type == 'F')
+            score[1][1] += num;
+        else if(type == 'J')
+            score[2][0] += num;
+        else if(type == 'M')
+            score[2][1] += num;
+        else if(type == 'A')
+            score[3][0] += num;
+        else if(type == 'N')
+            score[3][1] += num;
+    }
+}
+```
+
+```java
+import java.io.IOException;
+import java.util.*;
+
+public class L92334 {
+
+    public static void main(String[] args) throws IOException {
+        System.out.println(Arrays.toString(solution(new String[]{"muzi", "frodo", "apeach", "neo"}
+                , new String[]{"muzi frodo", "apeach frodo", "frodo neo", "muzi neo", "apeach muzi"}, 2)));
+        System.out.println(Arrays.toString(solution(new String[]{"con", "ryan"}
+                , new String[]{"ryan con", "ryan con", "ryan con", "ryan con"}, 2)));
+    }
+
+    public static int[] solution(String[] id_list, String[] report, int k) {
+        HashMap<String, Integer> relate = new HashMap<>();
+        List<Set<String>> list = new ArrayList<>();
+
+        for (int i = 0; i < id_list.length; i++) {
+            relate.put(id_list[i], i);
+            list.add(new HashSet<>());
+        }
+
+        for (int i = 0; i < report.length; i++) {
+            String[] split = report[i].split(" ");
+            String bad = split[1];
+            list.get(relate.get(bad)).add(split[0]);
+        }
+
+        int[] answer = new int[id_list.length];
+        for (int i = 0; i < list.size(); i++) {
+            Set<String> send = list.get(i);
+            if (send.size() >= k) {
+                for (String s : send) {
+                    answer[relate.get(s)] += 1;
+                }
+            }
+        }
+
+        return answer;
+    }
+}
+```
