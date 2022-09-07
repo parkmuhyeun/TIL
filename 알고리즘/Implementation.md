@@ -1330,3 +1330,190 @@ public class L92334 {
     }
 }
 ```
+
+```java
+class Solution {
+    public int[] L77484(int[] lottos, int[] win_nums) {
+        int[] answer = new int[2];
+        int length = 6;
+        int cnt = 0;
+        int zero = 0;
+        for (int i = 0; i < length; i++) {
+            if (lottos[i] == 0)
+                zero++;
+            for (int j = 0; j < length; j++) {
+                if (lottos[i] == win_nums[j])
+                    cnt++;
+            }
+        }
+        answer[1] = 7 - cnt;
+        answer[0] = 7 - (cnt + zero);
+        if(answer[1] == 7)
+            answer[1] = 6;
+        if(answer[0] == 7)
+            answer[0] = 6;
+
+        return answer;
+    }
+}
+```
+
+
+```java
+class L72410 {
+    public static String solution(String new_id) {
+        int length1 = new_id.length();
+        StringBuilder first = new StringBuilder();
+        one(new_id, length1, first);
+
+        StringBuilder second = new StringBuilder();
+        two(length1, first, second);
+
+        boolean flag = false;
+        StringBuilder third = new StringBuilder();
+        three(second, flag, third);
+
+        if (third.length() != 0) {
+            four(second, third);
+        }
+
+        five(third);
+
+        return last(third);
+    }
+
+    private static String last(StringBuilder third) {
+        if (third.length() >= 16) {
+            if (third.charAt(14) == '.')
+                return(third.substring(0, 14));
+            else
+                return(third.substring(0, 15));
+        }else{
+            if (third.length() == 1) {
+                third.append(third.charAt(0));
+                third.append(third.charAt(0));
+            } else if (third.length() == 2)
+                third.append(third.charAt(1));
+            return third.toString();
+        }
+    }
+
+    private static void five(StringBuilder third) {
+        if (third.length() == 0)
+            third.append("a");
+    }
+
+    private static void four(StringBuilder second, StringBuilder third) {
+        if (second.charAt(0) == '.')
+            third.replace(0, 1, "");
+        int length3 = third.length();
+        if (third.charAt(length3 - 1) == '.')
+            third.replace(length3 - 1, length3, "");
+    }
+
+    private static void three(StringBuilder second, boolean flag, StringBuilder third) {
+        for (int i = 0; i < second.length(); i++) {
+            char c = second.charAt(i);
+            if (c == '.') {
+                if (!flag) {
+                    flag = true;
+                }
+            }else{
+                if (flag) {
+                    flag = false;
+                    third.append(".");
+                }
+                third.append(c);
+            }
+        }
+    }
+
+    private static void two(int length1, StringBuilder first, StringBuilder second) {
+        for (int i = 0; i < length1; i++) {
+            char c = first.charAt(i);
+            if(isCheck(c))
+                second.append(c);
+        }
+    }
+
+    private static void one(String new_id, int length1, StringBuilder first) {
+        for (int i = 0; i < length1; i++) {
+            char c = new_id.charAt(i);
+            if (65 <= c && c <= 90)
+                first.append(Character.toLowerCase(c));
+            else
+                first.append(c);
+        }
+    }
+
+    private static boolean isCheck(char c) {
+        if (97 <= c && c <= 122)
+            return true;
+        if (48 <= c && c <= 57)
+            return true;
+        if (c == 45 || c == 46 || c == 95)
+            return true;
+
+        return false;
+    }
+}
+```
+
+```java
+import java.io.*;
+import java.util.HashMap;
+
+public class L81301 {
+
+    public static void main(String[] args) throws IOException {
+        System.out.println(solution("one4seveneight"));
+        System.out.println(solution("23four5six7"));
+    }
+
+    public static int solution(String s) {
+        HashMap<String, Integer> map = new HashMap<>();
+        Init(map);
+
+        StringBuilder answer = new StringBuilder();
+        StringBuilder val = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (48 <= c && c <= 57) {
+                if (isConvert(map, val)) {
+                    answer.append(map.get(val.toString()));
+                    val = new StringBuilder();
+                }
+                answer.append(c);
+            }else if (!isConvert(map, val)) {
+                val.append(c);
+            } else if (isConvert(map, val)) {
+                answer.append(map.get(val.toString()));
+                val = new StringBuilder();
+                val.append(c);
+            }
+        }
+
+        if(isConvert(map, val))
+            answer.append(map.get(val.toString()));
+
+        return Integer.parseInt(answer.toString());
+    }
+
+    private static boolean isConvert(HashMap<String, Integer> map, StringBuilder val) {
+        return map.get(val.toString()) != null;
+    }
+
+    private static void Init(HashMap<String, Integer> map) {
+        map.put("zero", 0);
+        map.put("one", 1);
+        map.put("two", 2);
+        map.put("three", 3);
+        map.put("four", 4);
+        map.put("five", 5);
+        map.put("six", 6);
+        map.put("seven", 7);
+        map.put("eight", 8);
+        map.put("nine", 9);
+    }
+}
+```
