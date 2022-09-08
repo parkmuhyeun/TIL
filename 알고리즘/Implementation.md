@@ -1517,3 +1517,112 @@ public class L81301 {
     }
 }
 ```
+
+```java
+import java.util.Arrays;
+
+class L12982 {
+    public static int solution(int[] d, int budget) {
+        Arrays.sort(d);
+        int answer = 0;
+
+        for (int i = 0; i < d.length; i++) {
+            if (budget >= d[i]) {
+                budget -= d[i];
+                answer++;
+            }else
+                break;
+        }
+        return answer;
+    }
+}
+```
+
+```java
+class L17681 {
+   public static String[] solution(int n, int[] arr1, int[] arr2) {
+        int length = arr1.length;
+        int[][] divide1 = new int[length][length];
+        int[][] divide2 = new int[length][length];
+        String[] res = new String[length];
+        
+        init(arr1, length, divide1);
+        init(arr2, length, divide2);
+        
+        for (int i = 0; i < length; i++) {
+            StringBuilder sb = new StringBuilder();
+            for (int j = 0; j < length; j++) {
+                if (divide1[i][j] == 1 || divide2[i][j] == 1) {
+                    sb.append('#');
+                }else{
+                    sb.append(' ');
+                }
+            }
+            res[i] = sb.toString();
+        }
+
+        return res;
+    }
+
+    private static void init(int[] arr, int length, int[][] divide) {
+        for (int i = 0; i < length; i++) {
+            int temp = arr[i];
+            int cnt = 0;
+            while (temp != 0) {
+                int val = temp % 2;
+                divide[i][length - 1 - cnt] = val;
+                temp /= 2;
+                cnt++;
+            }
+        }
+    }
+}
+```
+
+```java
+class L17682 {
+    public static int solution(String dartResult) {
+        int[] res = new int[3];
+        int length = dartResult.length();
+
+        int cnt = 0;
+        for (int i = 0; i < length; i += 2) {
+            int score = dartResult.charAt(i) - '0';
+            char bonus = dartResult.charAt(i+1);
+            if (bonus == '0') {
+                score = 10;
+                bonus = dartResult.charAt(i+2);
+                i++;
+            }
+            if (i + 2 <= length) {
+                char option =' ';
+                if (i + 2 != length)
+                    option = dartResult.charAt(i + 2);
+                int pow = (int) Math.pow(score, getBonus(bonus));
+                if (option == '*') {
+                    if (cnt != 0)
+                        res[cnt-1] *= 2;
+                    res[cnt] = pow * 2;
+                    i++;
+                } else if (option == '#') {
+                    res[cnt] = pow * -1;
+                    i++;
+                }else{
+                    res[cnt] = pow;
+                }
+            }
+            cnt++;
+        }
+
+        return res[0] + res[1] + res[2];
+    }
+
+    private static int getBonus(char bonus) {
+        if (bonus == 'S')
+            return 1;
+        else if(bonus == 'D')
+            return 2;
+        return 3;
+    }
+}
+```
