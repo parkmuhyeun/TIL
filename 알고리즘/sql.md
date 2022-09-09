@@ -1,0 +1,12 @@
+# sql
+#알고리즘/sql
+
+---
+
+```sql
+SELECT ANIMAL_ID FROM ANIMAL_INS WHERE NOT NAME is NULL;
+```
+
+```sql
+SELECT ANIMAL_ID, NAME FROM ANIMAL_INS ORDER BY ANIMAL_ID 
+```

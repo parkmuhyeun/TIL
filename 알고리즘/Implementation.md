@@ -1626,3 +1626,115 @@ class L17682 {
     }
 }
 ```
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+class L12977 {
+     public static int solution(int[] nums) {
+        List<int[]> combinations = new ArrayList<>();
+        boolean[] prime = new boolean[50001];
+        for (int i = 0; i < 50001; i++)
+            prime[i] = true;
+
+        combination(combinations, new int[3], nums, 0, nums.length - 1, 0);
+
+        for (int i = 2; i < Math.sqrt(50000); i++) {
+            if (prime[i]) {
+                for (int j = 2; i * j < 50001; j++) {
+                    prime[i * j] = false;
+                }
+            }
+        }
+
+        int answer = 0;
+        for (int[] combination : combinations) {
+            int sum = 0;
+            for (int num : combination) {
+                sum += num;
+            }
+            if (prime[sum])
+                answer++;
+        }
+
+        return answer;
+    }
+
+    static void combination(List<int[]> combinations, int[] data, int[] nums, int start, int end, int idx) {
+        if (idx == data.length) {
+            int[] clone = data.clone();
+            combinations.add(clone);
+        } else if (start <= end) {
+            data[idx] = nums[start];
+            combination(combinations, data, nums, start + 1, end, idx + 1);
+            combination(combinations, data, nums, start + 1, end, idx);
+        }
+    }
+}
+
+```
+
+```java
+class L67256 {
+public static String solution(int[] numbers, String hand) {
+        int[] left = new int[]{3, 0};
+        int[] right = new int[]{3, 2};
+        int[][] keyPad = new int[][]{{3, 1}, {0, 0}, {0, 1}, {0, 2}, {1, 0}, {1, 1}, {1, 2}, {2, 0}, {2, 1}, {2, 2}};
+
+        StringBuilder answer = new StringBuilder();
+        for (int i = 0; i < numbers.length; i++) {
+            int number = numbers[i];
+            if (isLeft(number))
+                answer.append("L");
+            else if (isRight(number))
+                answer.append("R");
+            else{
+                int x = keyPad[number][0];
+                int y = keyPad[number][1];
+                int leftDis = Math.abs(left[0] - x) + Math.abs(left[1] - y);
+                int rightDis = Math.abs(right[0] - x) + Math.abs(right[1] - y);
+                if (leftDis < rightDis)
+                    answer.append("L");
+                else if (leftDis > rightDis)
+                    answer.append("R");
+                else {
+                    if (hand.equals("right"))
+                        answer.append("R");
+                    else
+                        answer.append("L");
+                }
+            }
+
+            if (answer.charAt(i) == 'L') {
+                left[0] = keyPad[number][0];
+                left[1] = keyPad[number][1];
+            } else {
+                right[0] = keyPad[number][0];
+                right[1] = keyPad[number][1];
+            }
+        }
+
+        return answer.toString();
+    }
+
+    private static boolean isLeft(int number) {
+        return number == 1 || number == 4 || number == 7;
+    }
+
+    private static boolean isRight(int number) {
+        return number == 3 || number == 6 || number == 9;
+    }
+}
+```
+
+```java
+class L86051 {
+    public int solution(int[] numbers) {
+        int answer = 45;
+        for(int i = 0; i < numbers.length; i++)
+            answer -= numbers[i];
+        return answer;
+    }
+}
+```
