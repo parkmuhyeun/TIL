@@ -1738,3 +1738,108 @@ class L86051 {
     }
 }
 ```
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+
+public class L64061 {
+    public static void main(String[] args) {
+        System.out.println(solution(new int[][]{
+                {0, 0, 0, 0, 0}, {0, 0, 1, 0, 3}, {0, 2, 5, 0, 1}, {4, 2, 4, 4, 2}, {3, 5, 1, 3, 1}
+        }, new int[]{1, 5, 3, 5, 1, 2, 1, 4}));
+    }
+
+    public static int solution(int[][] board, int[] moves) {
+        List<Stack<Integer>> bStack = new ArrayList<>();
+        Stack<Integer> res = new Stack<>();
+
+        for (int i = 0; i < board[0].length; i++) {
+            bStack.add(new Stack<Integer>());
+            for (int j = board.length - 1; j >= 0; j--) {
+                int num = board[j][i];
+                if (num != 0)
+                    bStack.get(i).push(num);
+            }
+        }
+        
+        int answer = 0;
+        for (int i = 0; i < moves.length; i++) {
+            int idx = moves[i] - 1;
+            int top = -1;
+            if (bStack.get(idx).isEmpty())
+                continue;
+            int push = bStack.get(idx).pop();
+            if (!res.isEmpty())
+                top = res.peek();
+            if (top == push) {
+                res.pop();
+                answer += 2;
+            } else
+                res.push(push);
+        }
+        
+        return answer;
+    }
+}
+```
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class L68935 {
+    public static void main(String[] args) {
+        System.out.println(solution(45));
+    }
+
+    public static int solution(int n) {
+        List<Integer> list = new ArrayList<>();
+
+        while (n != 0) {
+            list.add(n % 3);
+            n /= 3;
+        }
+
+        int answer = 0;
+        int pow = list.size() -1;
+        for (int i = 0; i < list.size(); i++) {
+            answer += Math.pow(3, pow) * list.get(i);
+            pow--;
+        }
+        return answer;
+    }
+}
+```
+
+```java
+class L82612 {
+    public long solution(int price, int money, int count) {
+        long sum = 0;
+        for(int i = 1; i < count+1; i++){
+            sum += price * i;
+        }
+        
+        if (money - sum >= 0)
+            return 0;
+        else
+            return -(money - sum);
+    }
+}
+```
+
+```java
+class L76501 {
+    public int solution(int[] absolutes, boolean[] signs) {
+        int answer = 0;
+        for(int i = 0; i < absolutes.length; i++){
+            if (signs[i])
+                answer += absolutes[i];
+            else
+                answer -= absolutes[i];
+        }
+        return answer;
+    }
+}
+```
