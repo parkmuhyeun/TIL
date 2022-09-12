@@ -978,3 +978,72 @@ public class rotate {
     }
 }
 ```
+
+```java
+import java.util.*;
+
+class L68644 {
+    public int[] solution(int[] numbers) {
+        Set<Integer> res = new HashSet<>();
+
+        for (int i = 0; i < numbers.length - 1; i++) {
+            for (int j = i+1; j < numbers.length; j++) {
+                res.add(numbers[i] + numbers[j]);
+            }   
+        }
+        
+        int[] answer = new int[res.size()];
+        int cnt = 0;
+        for (int num : res) {
+            answer[cnt++] = num;
+        }
+        Arrays.sort(answer);
+        
+        return answer;
+    }
+}
+```
+
+```java
+class L77884 {
+    public int solution(int left, int right) {
+        int answer = 0;
+        for(int i = left; i <= right; i++){
+            int cnt = 0;
+            for(int j = 1; j <= i; j++){
+                if (i % j == 0)
+                    cnt++;
+            }
+            if (cnt % 2 == 0)
+                answer += i;
+            else
+                answer -= i;
+        }
+        return answer;
+    }
+}
+```
+
+```java
+class L70128 {
+    public int solution(int[] a, int[] b) {
+        int answer = 0;
+        for(int i = 0; i < a.length; i++){
+            answer += a[i] * b[i];
+        }
+        return answer;
+    }
+}
+```
+
+```java
+class L87389 {
+    public int solution(int n) {
+        for(int i = 2; i < n; i++){
+            if (n % i == 1)
+                return i;
+        }
+        return 0;
+    }
+}
+```
