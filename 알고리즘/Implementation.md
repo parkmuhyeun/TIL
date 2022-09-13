@@ -1912,3 +1912,140 @@ class L87389 {
     }
 }
 ```
+
+```java
+import java.io.*;
+
+public class L92335 {
+
+    public static void main(String[] args) throws IOException {
+        System.out.println(solution(437674, 3));
+        System.out.println(solution(110011, 10));
+    }
+
+    public static int solution(int n, int k) {
+        StringBuilder sb = new StringBuilder();
+        while (n != 0) {
+            sb.append(n % k);
+            n /= k;
+        }
+
+        String kJin = sb.reverse().toString();
+        boolean flag = false;
+        StringBuilder val = new StringBuilder();
+        int answer = 0;
+        for (int i = 0; i < kJin.length(); i++) {
+            char now = kJin.charAt(i);
+            if (now != '0'){
+                flag = true;
+                val.append(now);
+            }else if (now == '0' && flag){
+                if(isPrime(Long.parseLong(val.toString())))
+                    answer++;
+                val = new StringBuilder();
+                flag = false;
+            }
+        }
+
+        if (val.toString().length() != 0 && isPrime(Long.parseLong(val.toString()))) {
+            answer++;
+        }
+        return answer;
+    }
+
+    private static boolean isPrime(long x){
+        if (x == 1)
+            return false;
+        for(int i = 2; i <= Math.sqrt(x); i++){
+            if (x % i == 0)
+                return false;
+        }
+        return true;
+    }
+}
+```
+
+```java
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
+public class L92341 {
+    public static void main(String[] args) throws IOException {
+//        System.out.println(Arrays.toString(solution(new int[]{180, 5000, 10, 600},
+//                new String[]{
+//                        "05:34 5961 IN", "06:00 0000 IN", "06:34 0000 OUT",
+//                        "07:59 5961 OUT", "07:59 0148 IN", "18:59 0000 IN",
+//                        "19:09 0148 OUT", "22:59 5961 IN", "23:00 5961 OUT"}
+//                )));
+        System.out.println(Arrays.toString(solution(new int[]{120, 0, 60, 591},
+                new String[]{
+                        "16:00 3961 IN","16:00 0202 IN","18:00 3961 OUT",
+                        "18:00 0202 OUT","23:58 3961 IN"}
+        )));
+    }
+
+    public static int[] solution(int[] fees, String[] records) {
+        HashMap<Integer, Integer> all = new HashMap<>();
+        HashMap<Integer, String> now = new HashMap<>();
+
+        for (int i = 0; i < records.length; i++) {
+            String[] split = records[i].split(" ");
+            String time = split[0];
+            int carNum = Integer.parseInt(split[1]);
+            String type = split[2];
+            if (type.equals("IN")) {
+                now.put(carNum, time);
+            } else {
+                String start = now.get(carNum);
+                String[] sSplit = start.split(":");
+                int startHour = Integer.parseInt(sSplit[0]);
+                int startMinute = Integer.parseInt(sSplit[1]);
+                String[] oSplit = time.split(":");
+                int outHour = Integer.parseInt(oSplit[0]);
+                int outMinute = Integer.parseInt(oSplit[1]);
+                int hour = 0;
+                int minute = 0;
+                if (outMinute >= startMinute) {
+                    hour = outHour - startHour;
+                    minute = outMinute - startMinute;
+                }else{
+                    hour = outHour - 1 - startHour;
+                    minute = outMinute + 60 - startMinute;
+                }
+                all.put(carNum, (hour * 60) + minute + all.getOrDefault(carNum, 0));
+                now.remove(carNum);
+            }
+        }
+
+        for (int key : now.keySet()) {
+            String[] split = now.get(key).split(":");
+            int hour = 23 - Integer.parseInt(split[0]);
+            int minute = 59 - Integer.parseInt(split[1]);
+            all.put(key, (hour * 60) + minute + all.getOrDefault(key, 0));
+        }
+
+        Object[] mapKey = all.keySet().toArray();
+        Arrays.sort(mapKey);
+        List<Integer> answerList = new ArrayList<>();
+        for (Object key : mapKey) {
+            int usedTime = all.get((int) key);
+            if (usedTime <= fees[0]) {
+                answerList.add(fees[1]);
+            }else{
+                usedTime -= fees[0];
+                answerList.add(fees[1] + (int)(Math.ceil((double)usedTime / fees[2])) * fees[3]);
+            }
+        }
+
+        int size = answerList.size();
+        int[] answer = new int[size];
+        for (int i = 0; i <size; i++) {
+            answer[i] = answerList.get(i);
+        }
+        return answer;
+    }
+}
+```
