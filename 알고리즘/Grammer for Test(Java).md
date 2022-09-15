@@ -978,3 +978,98 @@ public class rotate {
     }
 }
 ```
+
+## AraryList <-> Array 변환
+
+```java
+// ArrayList -> Array
+    public static void main(String[] args) {
+        //1
+        ArrayList<Integer> list = new ArrayList<>();
+        Integer[] integers = list.toArray(new Integer[0]);
+
+        //2
+        int[] arr = new int[list.size()];
+        for (int i = 0; i <; i++) {
+            arr[i] = list.get(i);
+        }
+    }
+
+```
+
+```java
+// Array -> ArrayList
+    public static void main(String[] args) {
+        String[] arr = {"a", "b", "c", "d"};
+        List<String> strings = Arrays.asList(arr);
+    }
+```
+
+## Map Key, Value 정렬
+
+```java
+// Key 정렬
+    public static void main(String[] args) {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("a", 200);
+        map.put("d", 100);
+        map.put("c", 400);
+        map.put("b", 500);
+
+        List<String> list = new ArrayList<>(map.keySet());
+        Collections.sort(list);
+
+        for (String key : list) {
+            System.out.println(key + " : " + map.get(key));
+        }
+        
+        /* 결과
+            a : 200
+            b : 500
+            c : 400
+            d : 100    
+         */
+    }
+```
+
+```java
+//Value 정렬할 때는 Comparator 사용
+    public static void main(String[] args) {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("d", 100);
+        map.put("c", 500);
+        map.put("a", 400);
+        map.put("b", 200);
+
+        List<String> list = new ArrayList<>(map.keySet());
+
+        list.sort(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return map.get(o1) - map.get(o2);
+            }
+        });
+
+        for (String key : list) {
+            System.out.println(key + " : " + map.get(key));
+        }
+
+        /* 결과
+            d : 100
+            b : 200
+            a : 400
+            c : 500
+         */
+    }
+```
+
+## 반올림, 올림, 내림, 절대값
+
+```java
+    public static void main(String[] args) {
+        System.out.println(Math.floor(5.4)); // -> 5.0
+        System.out.println(Math.ceil(5.4)); // -> 6.0
+        System.out.println(Math.round(5.4)); // -> 5
+        System.out.println(Math.abs(-5)); // -> 5
+    }
+```
