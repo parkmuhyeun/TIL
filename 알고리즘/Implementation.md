@@ -2049,3 +2049,66 @@ public class L92341 {
     }
 }
 ```
+
+```java
+import java.util.Arrays;
+
+public class L92342 {
+    public static void main(String[] args) {
+        System.out.println(Arrays.toString(solution(5, new int[]{2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0})));
+    }
+
+    static int[] lion = new int[12];
+    static int[] temp = new int[12];
+    public static int[] solution(int n, int[] info) {
+        Arrays.fill(lion, -1);
+        bt(0, n, info);
+
+        if (lion[0] == -1)
+            return new int[]{-1};
+        else {
+            int[] ret = new int[11];
+            for (int i = 0; i < 11; i++) {
+                ret[i] = lion[i];
+            }
+            return ret;
+        }
+    }
+
+    static void bt(int idx, int left, int[] info) {
+        if (idx == 10) {
+            temp[idx] = left;
+            int score = 0;
+            for (int i = 0; i < 11; i++) {
+                if (temp[i] > info[i])
+                    score += (10 - i);
+                else if (info[i] != 0)
+                    score -= (10 - i);
+            }
+            if (score <= 0)
+                return;
+            temp[11] = score;
+            if (compare(temp, lion)) {
+                for (int i = 0; i < 12; i++)
+                    lion[i] = temp[i];
+            }
+
+            return;
+        }
+
+        for (int i = 0; i <= left; i++) {
+            temp[idx] = i;
+            bt(idx + 1, left - i, info);
+        }
+    }
+
+    private static boolean compare(int[] temp, int[] lion) {
+        for (int i = 11; i >= 0; i--) {
+            if (lion[i] != temp[i])
+                return temp[i] > lion[i];
+        }
+        return false;
+    }
+
+}
+```
