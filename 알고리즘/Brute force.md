@@ -86,3 +86,123 @@ public class Main {
     }
 }
 ```
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class P15649 {
+    static boolean[] visited;
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(bufferedReader.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+        visited = new boolean[n+1];
+        dfs(0, n,  new int[m]);
+    }
+    private static void dfs(int idx, int n, int[] data) {
+        if (idx == data.length){
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < data.length; i++) {
+                sb.append(data[i] + " ");
+            }
+            System.out.println(sb.toString());
+            return;
+        }
+
+        for (int i = 1; i < n + 1; i++) {
+            if (!visited[i]) {
+                visited[i] = true;
+                data[idx] = i;
+                dfs(idx + 1, n, data);
+                visited[i] = false;
+            }
+        }
+    }
+}
+```
+
+```java
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class P15651 {
+    static StringBuilder sb = new StringBuilder();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+        dfs(0, n,  new int[m]);
+        System.out.println(sb);
+    }
+    private static void dfs(int idx, int n, int[] data) {
+        if (idx == data.length){
+            for (int i = 0; i < data.length; i++) {
+                sb.append(data[i] + " ");
+            }
+            sb.append("\n");
+            return;
+        }
+
+        for (int i = 1; i < n + 1; i++) {
+            data[idx] = i;
+            dfs(idx + 1, n, data);
+        }
+    }
+}
+```
+
+```java
+import java.io.*;
+
+public class P9663 {
+    static int n;
+    static int[] posX = new int[16];
+    static int[] posY = new int[16];
+    static int ans = 0;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        n = Integer.parseInt(br.readLine());
+        for (int i = 0; i < n; i++) {
+            dfs(0, i);
+        }
+        System.out.println(ans);
+    }
+
+    private static void dfs(int y, int x) {
+        if (y == n-1){
+            ans++;
+            return;
+        }
+
+        posY[y] = y;
+        posX[y] = x;
+        for (int i = 0; i < n; i++) {
+            if (!check(y + 1, i)) {
+                continue;
+            }
+            dfs(y + 1, i);
+        }
+    }
+
+    private static boolean check(int y, int x) {
+        for (int i = 0; i < y; i++) {
+            //가로
+            if (posY[i] == y)
+                return false;
+            //세로
+            if (posX[i] == x)
+                return false;
+            //대각
+            if (Math.abs(posY[i] - y) == Math.abs(posX[i] - x))
+                return false;
+        }
+        return true;
+    }
+
+}
+```
