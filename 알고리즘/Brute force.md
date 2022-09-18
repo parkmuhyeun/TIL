@@ -206,3 +206,106 @@ public class P9663 {
 
 }
 ```
+
+```java
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class P15650 {
+
+    static int m, n;
+    static StringBuilder sb = new StringBuilder();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        m = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(st.nextToken());
+        dfs(0, new int[n]);
+        System.out.print(sb);
+    }
+
+    static void dfs(int idx, int[] data) {
+        if (idx == n) {
+            for (int i = 0; i < n; i++) {
+                sb.append(data[i] + " ");
+            }
+            sb.append("\n");
+            return;
+        }
+
+        for (int i = 1; i < m+1; i++) {
+            if (idx == 0 || (idx >= 1 && data[idx - 1] < i)) {
+                data[idx] = i;
+                dfs(idx+1, data);
+            }
+        }
+    }
+}
+
+//(2)
+// import java.io.*;
+// import java.util.StringTokenizer;
+
+// public class Main {
+
+//     static int m, n;
+//     static StringBuilder sb = new StringBuilder();
+//     public static void main(String[] args) throws IOException {
+//         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+//         StringTokenizer st = new StringTokenizer(br.readLine());
+//         m = Integer.parseInt(st.nextToken());
+//         n = Integer.parseInt(st.nextToken());
+//         dfs(0, 0, new int[n]);
+//         System.out.print(sb);
+//     }
+
+//     static void dfs(int idx, int at, int[] data) {
+//         if (idx == n) {
+//             for (int i = 0; i < n; i++) {
+//                 sb.append(data[i] + " ");
+//             }
+//             sb.append("\n");
+//             return;
+//         }
+
+//         for (int i = at + 1; i < m+1; i++) {
+//             data[idx] = i;
+//             dfs(idx+1, i, data);
+//         }
+//     }
+// }
+```
+
+```java
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class 15652 {
+
+    static int m, n;
+    static StringBuilder sb = new StringBuilder();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        m = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(st.nextToken());
+        dfs(0, 1, new int[n]);
+        System.out.print(sb);
+    }
+
+    static void dfs(int idx, int at, int[] data) {
+        if (idx == n) {
+            for (int i = 0; i < n; i++) {
+                sb.append(data[i] + " ");
+            }
+            sb.append("\n");
+            return;
+        }
+
+        for (int i = at; i < m+1; i++) {
+            data[idx] = i;
+            dfs(idx+1, i,  data);
+        }
+    }
+}
+```
