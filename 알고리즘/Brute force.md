@@ -309,3 +309,163 @@ public class 15652 {
     }
 }
 ```
+
+```java
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class P14888 {
+    static int n;
+    static int[] num;
+    static int[] op = new int[4];
+    static boolean[] check;
+    static int max = -987654321, min = 987654321;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        n = Integer.parseInt(br.readLine());
+        check = new boolean[n];
+        num = new int[n];
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < n; i++) {
+            num[i] = Integer.parseInt(st.nextToken());
+        }
+
+        st = new StringTokenizer(br.readLine());
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 4; i++) {
+            op[i] = Integer.parseInt(st.nextToken());
+            addOp(sb, i, op[i]);
+        }
+
+        dfs(0, new char[n-1], sb);
+        System.out.print(max + "\n" + min);
+    }
+
+    static void dfs(int idx, char[] data, StringBuilder sb) {
+        if (idx == n - 1) {
+            int sum = num[0];
+            for (int i = 1; i < n; i++) {
+                sum = calculate(sum, num[i], data[i-1]);
+            }
+            max = Math.max(max, sum);
+            min = Math.min(min, sum);
+            return;
+        }
+
+        for (int i = 0; i < n-1; i++) {
+            if (!check[i]) {
+                check[i] = true;
+                data[idx] = sb.charAt(i);
+                dfs(idx+1, data, sb);
+                check[i] = false;
+            }
+        }
+    }
+
+    private static int calculate(int num1, int num2, char op) {
+        if (op == '+')
+            return num1 + num2;
+        else if(op == '-')
+            return num1 - num2;
+        else if(op == '*')
+            return num1 * num2;
+        else
+            return num1 / num2;
+    }
+
+    private static void addOp(StringBuilder sb, int type, int cnt) {
+        if (type == 0) {
+            for (int j = 0; j < cnt; j++) {
+                sb.append("+");
+            }
+        }else if(type == 1){
+            for (int j = 0; j < cnt; j++) {
+                sb.append("-");
+            }
+        }else if(type == 2){
+            for (int j = 0; j < cnt; j++) {
+                sb.append("*");
+            }
+        }else{
+            for (int j = 0; j < cnt; j++) {
+                sb.append("/");
+            }
+        }
+    }
+
+}
+```
+
+```java
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class P14889 {
+    static int n;
+    static int[][] board;
+    static int ans = 987654321;
+    static boolean[] check;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+        n = Integer.parseInt(br.readLine());
+        board = new int[n][n];
+        check = new boolean[n];
+        for (int i = 0; i < n; i++) {
+            st = new StringTokenizer(br.readLine());
+            for (int j = 0; j < n; j++) {
+                board[i][j] = Integer.parseInt(st.nextToken());
+            }
+        }
+
+        dfs(0, -1, new int[n/2]);
+        System.out.println(ans);
+    }
+
+    static void dfs(int idx, int at, int[] start) {
+        if (idx == n / 2) {
+            int score = 0;
+            int[] link = new int[n/2];
+            int cnt = 0;
+            boolean[] num = new boolean[n];
+            for (int i = 0; i < n/2; i++) {
+                num[start[i]] = true;
+            }
+            for (int i = 0; i < n; i++) {
+                if (!num[i])
+                    link[cnt++] = i;
+                if (cnt == n/2)
+                    break;
+            }
+
+            //start 계산
+            for (int i = 0; i < n/2 - 1; i++) {
+                for (int j = i+1; j < n / 2; j++) {
+                    score += board[start[i]][start[j]] + board[start[j]][start[i]];
+                }
+            }
+
+            //link 계산
+            for (int i = 0; i < n/2 - 1; i++) {
+                for (int j = i+1; j < n / 2; j++) {
+                    score -= board[link[i]][link[j]] + board[link[j]][link[i]];
+                }
+            }
+
+            ans = Math.min(ans, Math.abs(score));
+
+            return;
+        }
+
+        for (int i = at + 1; i < n; i++) {
+            if (!check[i]) {
+                check[i] = true;
+                start[idx] = i;
+                dfs(idx + 1, i, start);
+                check[i] = false;
+            }
+        }
+    }
+
+}
+```
