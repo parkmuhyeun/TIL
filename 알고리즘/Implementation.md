@@ -2196,3 +2196,142 @@ public class L72411 {
     }
 }
 ```
+
+```java
+import java.io.*;
+import java.util.*;
+
+public class L72412 {
+    public static void main(String[] args) throws IOException {
+        System.out.println(Arrays.toString(solution(
+                new String[]{"java backend junior pizza 150", "python frontend senior chicken 210",
+                        "python frontend senior chicken 150", "cpp backend senior pizza 260",
+                        "java backend junior chicken 80", "python backend senior chicken 50"},
+                new String[]{"java and backend and junior and pizza 100", "python and frontend and senior and chicken 200",
+                        "cpp and - and senior and pizza 250", "- and backend and senior and - 150",
+                        "- and - and - and chicken 100", "- and - and - and - 150"})));
+    }
+
+    static HashMap<String, Integer> index = new HashMap<>();
+    static List<List<Integer>> scores = new ArrayList<>();
+    static int cnt = 0;
+    static boolean[] check = new boolean[4];
+    public static int[] solution(String[] info, String[] query) {
+        int length = query.length;
+        int[] answer = new int[length];
+
+        for (String s : info) {
+            String[] split = s.split(" ");
+            String key = "" + split[0].charAt(0) + split[1].charAt(0) + split[2].charAt(0) + split[3].charAt(0);
+            int score = Integer.parseInt(split[4]);
+            if (!index.containsKey(key)) {
+                index.put(key, cnt++);
+                scores.add(new ArrayList<>());
+            }
+            scores.get(index.get(key)).add(score);
+
+            for (int i = 1; i <= 4; i++) {
+                dfs(0, new int[i], -1, new StringBuilder(key), score);
+            }
+        }
+
+        for (int i = 0; i < scores.size(); i++) {
+            Collections.sort(scores.get(i));
+        }
+
+        for (int i = 0; i < length; i++) {
+            String q = query[i];
+            String[] split = q.split(" and ");
+            String[] last = split[3].split(" ");
+            int score = Integer.parseInt(last[1]);
+            String key = "" + split[0].charAt(0) + split[1].charAt(0) + split[2].charAt(0) + last[0].charAt(0);
+
+            if(!index.containsKey(key))
+                answer[i] = 0;
+            else{
+                List<Integer> list = scores.get(index.get(key));
+                int size = list.size();
+                if (score > list.get(size - 1)) {
+                    answer[i] = 0;
+                    continue;
+                }
+
+                int start = 0;
+                int end = size - 1;
+                int idx = 0;
+                //이진 탐색
+                while (start <= end) {
+                    int mid = (start + end) / 2;
+                    if (list.get(mid) >= score) {
+                        idx = mid;
+                        end = mid - 1;
+                    } else {
+                        start = mid + 1;
+                    }
+                }
+                answer[i] = size - idx;
+            }
+        }
+
+        return answer;
+    }
+
+    static void dfs(int idx, int[] data, int at, StringBuilder sb, int score){
+        if (idx == data.length) {
+            StringBuilder clone = new StringBuilder();
+            for (int i = 0; i < sb.length(); i++) {
+                clone.append(sb.charAt(i));
+            }
+            for (int i = 0; i < data.length; i++) {
+                clone.setCharAt(data[i], '-');
+            }
+            String key = clone.toString();
+            if (!index.containsKey(key)) {
+                index.put(key, cnt++);
+                scores.add(new ArrayList<>());
+            }
+            scores.get(index.get(key)).add(score);
+            return;
+        }
+
+        for (int i = at+1; i < 4; i++) {
+            if (!check[i]){
+                check[i] = true;
+                data[idx] = i;
+                dfs(idx+1, data, i, sb, score);
+                check[i] = false;
+            }
+        }
+    }
+
+}
+```
+
+```java
+import java.io.*;
+import java.util.Arrays;
+
+public class L70129 {
+    public static void main(String[] args) throws IOException {
+        System.out.println(Arrays.toString(solution("110010101001")));
+    }
+
+    public static int[] solution(String s) {
+        int[] answer = new int[2];
+        while (!s.equals("1")) {
+            int curSize = s.length();
+            int nextSize = s.replace("0", "").length();
+            answer[1] += curSize - nextSize;
+            answer[0]++;
+            StringBuilder sb = new StringBuilder();
+            while (nextSize != 0) {
+                sb.append(nextSize % 2);
+                nextSize = nextSize / 2;
+            }
+            s = sb.reverse().toString();
+        }
+
+        return answer;
+    }
+}
+```
