@@ -2335,3 +2335,195 @@ public class L70129 {
     }
 }
 ```
+
+```java
+import java.io.*;
+import java.util.Stack;
+
+public class L60058 {
+    public static void main(String[] args) throws IOException {
+//        System.out.println(solution("(()())()"));
+        System.out.println(solution(")("));
+    }
+
+    public static String solution(String p) {
+        return rec(p);
+    }
+
+    static String rec(String w) {
+        if (w.equals(""))
+            return "";
+
+        String u = divideString(w);
+        String v = w.substring(u.length());
+        if (rightString(u))
+            return u + rec(v);
+
+        String substring = u.substring(1, u.length() - 1);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < substring.length(); i++) {
+            if (substring.charAt(i) == '(')
+                sb.append(')');
+            else
+                sb.append('(');
+        }
+        return "(" + rec(v) + ')' + sb.toString();
+    }
+
+    private static boolean rightString(String u) {
+        Stack<Character> st = new Stack<>();
+        for (int i = 0; i < u.length(); i++) {
+            if (u.charAt(i) == '(') {
+                st.push('(');
+            } else {
+                if (st.isEmpty() || st.pop() != '(')
+                    return false;
+            }
+        }
+        if (!st.isEmpty())
+            return false;
+
+        return true;
+    }
+
+    private static String divideString(String w) {
+        int cnt1 = 0;
+        int cnt2 = 0;
+        int i;
+        for (i = 0; i < w.length(); i++) {
+            if (w.charAt(i) == '(')
+                cnt1++;
+            else
+                cnt2++;
+            if (cnt1 == cnt2)
+                break;
+        }
+        return w.substring(0, i+1);
+    }
+}
+```
+
+```java
+import java.io.*;
+
+public class L60057 {
+    public static void main(String[] args) throws IOException {
+//        System.out.println(solution("aabbaccc"));
+//        System.out.println(solution("ababcdcdababcdcd"));
+//        System.out.println(solution("abcabcabcabcdededededede"));
+        System.out.println(solution("a"));
+    }
+
+    public static int solution(String s) {
+        int length = s.length();
+        int answer = 1001;
+        for (int i = 1; i <= (length+1) / 2; i++) {
+            String pre = s.substring(0, i);
+            StringBuilder cur = new StringBuilder();
+            StringBuilder res = new StringBuilder();
+            int cutSize = i;
+            int cnt = 1;
+            for (int j = i; j < length; j++) {
+                cur.append(s.charAt(j));
+                cutSize--;
+                if (cutSize == 0) {
+                    if (pre.equals(cur.toString())) {
+                        cnt++;
+                    }else{
+                        if (cnt != 1)
+                            res.append(cnt);
+                        res.append(pre);
+                        cnt = 1;
+                        pre = cur.toString();
+                    }
+                    cutSize = i;
+                    cur = new StringBuilder();
+                }
+            }
+            if (cnt != 1)
+                res.append(cnt);
+            res.append(pre);
+            if (cur.length() != 0)
+                res.append(cur);
+            answer = Math.min(answer, res.length());
+        }
+        return answer;
+    }
+}
+```
+
+```java
+import java.io.*;
+import java.util.Arrays;
+import java.util.HashMap;
+
+public class L12981 {
+    public static void main(String[] args) throws IOException {
+//        System.out.println(Arrays.toString(solution(3, new String[]{"tank", "kick", "know", "wheel", "land", "dream", "mother", "robot", "tank"})));
+//        System.out.println(Arrays.toString(solution(5, new String[]{"hello", "observe", "effect", "take", "either", "recognize", "encourage",
+//                "ensure", "establish", "hang", "gather", "refer", "reference", "estimate", "executive"})));
+        System.out.println(Arrays.toString(solution(2, new String[]{"hello", "one", "even", "never", "now", "world", "draw"})));
+    }
+
+    public static int[] solution(int n, String[] words) {
+        HashMap<String, Integer> check = new HashMap<>();
+        int id = 1;
+        int turn = 1;
+        char cur = words[0].charAt(words[0].length() - 1);
+        check.put(words[0], 1);
+        for (int i = 1; i < words.length; i++) {
+            if (cur != words[i].charAt(0) || check.containsKey(words[i])) {
+                break;
+            }
+
+            cur = words[i].charAt(words[i].length() - 1);
+            check.put(words[i], 1);
+            id++;
+            if (id == n) {
+                id = 0;
+                turn++;
+            }
+
+            if (i == words.length - 1) {
+                return new int[]{0, 0};
+            }
+        }
+        return new int[]{id+1, turn};
+    }
+}
+```
+
+```java
+import java.io.*;
+import java.util.Stack;
+
+public class L12973 {
+    public static void main(String[] args) throws IOException {
+        System.out.println(solution("baabaa"));
+        System.out.println(solution("cdcd"));
+    }
+
+    public static int solution(String s) {
+        Stack<Character> st = new Stack<>();
+        if (s.length() == 0)
+            return 1;
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (st.isEmpty()) {
+                st.push(c);
+                continue;
+            }
+
+            if (st.peek() == c)
+                st.pop();
+            else
+                st.push(c);
+        }
+        if (!st.isEmpty())
+            return 0;
+        else
+            return 1;
+    }
+}
+```
