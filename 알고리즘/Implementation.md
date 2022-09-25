@@ -2527,3 +2527,137 @@ public class L12973 {
     }
 }
 ```
+
+```java
+import java.io.*;
+
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        System.out.println(solution(new int[][]{{2, 5}}));
+    }
+
+    public static int solution(int[][] queries) {
+        int[][] arr = new int[1001][2];
+        int answer = 0;
+
+        for (int i = 0; i < queries.length; i++) {
+            int idx = queries[i][0];
+            int cnt = queries[i][1];
+
+            if (arr[idx][0] + cnt > arr[idx][1]) {
+                arr[idx][1] = findSize(arr[idx][0] + cnt);
+                if (arr[idx][0] != 0) {
+                    answer += arr[idx][0];
+                }
+            }
+            arr[idx][0] += cnt;
+        }
+
+        return answer;
+    }
+
+    private static int findSize(int i1) {
+        int n = 1;
+        while (n < i1) {
+            n *= 2;
+        }
+        return n;
+    }
+}
+```
+
+```java
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+public class Solution2 {
+    public static void main(String[] args) {
+        System.out.println(solution(2, new String[]{"slang", "badcode"},
+                "badcode s.n. bad.code .code s..ng ... .."));
+//        System.out.println(solution(3, new String[]{"abcde", "cdefg", "efgij"},
+//                ".. ab. cdefgh .gi. .z."));
+    }
+
+    public static String solution(int k, String[] dic, String chat) {
+        HashMap<String, Integer> check = new HashMap<>();
+        for (String key : dic) {
+            check.put(key, key.length());
+        }
+
+        StringBuilder answer = new StringBuilder();
+        String[] chats = chat.split(" ");
+        for (int i = 0; i < chats.length; i++) {
+            String word = chats[i];
+            int chatLength = word.length();
+            List<Integer> dotPos = hasDot((word));
+            int cnt = dotPos.size();
+            if (cnt != 0) {
+                boolean flag = true;
+                for (int j = 0; j < dic.length; j++) {
+                    int dicLength = check.get(dic[j]);
+                    if (chatLength <= dicLength && dicLength <= k * cnt + chatLength - cnt) {
+                        int cur = 0;
+                        int pl = 0;
+                        for (int l = 0; l < cnt; l++) {
+                            int next = dotPos.get(l);
+                            //전
+                            flag = false;
+                            for (int m = cur; m < next; m++) {
+                                if (word.charAt(m) != dic[j].charAt(m+pl)) {
+                                    flag = true;
+                                    break;
+                                }
+                            }
+                            if (flag)
+                                break;
+
+                            int temp = 1;
+                            for (int m = 2; m <= k; m++) {
+                                if (cur + m + (chatLength - (next + 1)) <= dicLength)
+                                    temp = m;
+                            }
+                            pl += (temp - 1);
+                            cur = next+1;
+                        }
+                        for (int l = chatLength - 1; l > cur; l--) {
+                            if (word.charAt(l) != dic[j].charAt(l)) {
+                                flag = true;
+                                break;
+                            }
+                        }
+                        if (!flag)
+                            break;
+                    }
+                }
+                if (!flag) {
+                    for (int l = 0; l < chatLength; l++) {
+                        answer.append("#");
+                    }
+                }else
+                    answer.append(word);
+            }else{
+                if (check.containsKey(word)) {
+                    for (int j = 0; j < chatLength; j++) {
+                        answer.append("#");
+                    }
+                }else
+                    answer.append(word);
+            }
+            if (i != chats.length -1)
+                answer.append(" ");
+        }
+
+        return answer.toString();
+    }
+
+    private static List<Integer> hasDot(String chat) {
+        List<Integer> pos = new ArrayList<>();
+        for (int i = 0; i < chat.length(); i++) {
+            if (chat.charAt(i) == '.')
+                pos.add(i);
+        }
+        return pos;
+    }
+}
+```
