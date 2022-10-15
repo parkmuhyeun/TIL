@@ -1765,4 +1765,521 @@ OLAP(Roll up, Drill down ,drill across, drill-thrugh, pivoting, slicing, dicing)
 회피 기법(Avoidance)
 발견 기법(detectoin)
 회복 기법(recovery)
+
+요구사항 검토(Requirements Review)
+- 동료 검토(Peer Review)
+- 워크스루(Walk Through)
+- 인스펙션 (Insepctiopn)
+프로토타이핑(Prototyping)
+
+인터페이스 검증 주요 항목
+완전성(Completeness)
+일관성(Consistency)
+명확성(Unambiguity)
+기능성(funtionality)
+검증 가능성(Verifiablity)
+추적 가능성(Traceability)
+변경 용이성(Easy Changeble)
+
+미들웨어(Middleware)
+운영체제와 응용 프로그램 또는 서버와 클라이언트 사이에서 서비스를 제공하는 소프트웨어
+
+DB
+클라이언트에서 원격의 데이터베이스와 연결하는 미들웨어
+
+RFC(원격 프로시저 호출)
+원격 프로시저를 로컬 프로시저처럼 호출하는 미들웨어
+
+MOM(메시지 지향 미들웨어)
+비동기형 메시지를 전달하는 미들웨어
+
+TP-Monitor(트랜잭션 처리 모니터)
+트랜잭션을 처리 및 감시하는 미들웨어
+
+ORB(객체 요청 브로커)
+코바 표준 스펙을 구현한 객체 지향 미들웨어
+
+WAS(웹 애플리케이션 서버)
+동적 콘텐츠 처리하기 위한 미들웨어
+
+모둘 연계
+내부 모듈과 외부 모듈 또는 내부 모듈간 데이터 교환을 위해 관계를 설정
+
+모듈 연계 방법
+EAI(Enterprise Application Integration)
+기업 내 각종 애플리케이션 및 플랫폼 간의 상호 연동이 가능하게 해주는 솔루션
+EAI 구축 유형
+Point-to-Point
+Hub & Spoke
+Message Bus
+Hybrid
+
+ESB
+애플리케이션 간 표준 기반 인터페이스 제공
+
+웹 서비스
+네트워크 정보를 표준화된 서비스 형태로 만들어 공유하는 기술
+
+웹 서비스 구성
+SOAP
+UDDI
+WSDL
+
+JSON(Javascript Objecnt Notation)
+데이터 객체를 속성 값의 쌍 형태로 표현하는 개방형 표준 포맷
+
+AJAX(Asynchronous JavaScript and XML)
+클라이언트와 서버 간에 XML 데이터를 주고 받는 비동기 통신 기술
+
+
+인터페이스 보안
+인터페이스의 보안 취약점을 분석한 후 적절한 보안 기능을 적용하는 것
+
+인터페이스 보안 기능 적용
+네트워크 영역, IPsec(IP Security), SSL(Secure Socket Layer), S-HTTP(Secure hypertext Transfer Protocol)
+애플리케이션 영역
+데이터베이스 영역
+
+데이터 무결성 검사 도구
+Tirpwire, AIDE, Samhain, Claymore, Slipwire, Fcheck
+
+인터페이스 구현 검증
+인터페이스가 정상적으로 문제없이 작동하는지 확인
+
+인터페이스 구현 검증 도구
+xUnit
+STAF
+FitNesse
+NTAF
+Selenium
+watir
+
+인터페이스 구현 감시 도구
+인터페이스 동작 상태는 APM을 통해 감시 가능
+대표적인 APM
+스카우터(Scouter)
+제니퍼(Jennifer)
+
+APM(Application Performance Management)
+애플리케이션 성능 관리를 위해 다양한 모니터링 도구를 제공하는 도구
+
+리소스 방식 Nagios, Zabbix, Cacti
+엔드투엔드 방식 VisualVM, 제니퍼, 스카우터
+
+DDL(Data Definition Langauge)
+db를 구축하거나 수정할 목적으로 사용하는 언어
+create
+alter
+drop
+
+cascade
+제거할 요소를 참조하는 모든 개체를 함께 제거
+restrict
+다른 개체가 제거할 요소를 참조중일대는 제거 취소
+
+DCL(Data Control Language)
+데이터의 보안, 무결성, 회복, 병행 제어등을 정의하는데 사용하는 언어
+COMMIT
+ROLLBACK
+GRANT
+REVOKE
+
+사용자 등급
+DBA 데이베이스 관리자
+RESOURCE 데이터베이스 및 테이블 생성 가능자
+CONNECT 단순사용자
+
+WITH GRANT OPTION 부여받은 권한을 다른 사람에게 다시 권한부여 가능
+GRANT OPTION FOR 다른 사용자에게 권한 부여할 수 있는 권한 취소
+CASCADE 권한 취소시 연쇄적 취소
+
+
+TCL(Transaction Control Language)
+COMMIT 트랜잭션이 수행한 내용을 데이터베이스에 반영하는 명령
+ROLLBACK 변경되었으나 아직 COMMIT되지 않은 모든 내용을 취소하고 데이터베이스를 이전 상태로 되돌리는 명령어
+SAVEPOINT 트랜잭션 내에 ROLLBACK할 위치인 저장점을 지정하는 명령어
+
+프로시저(Procedure)
+sql로 작성한 일련의 작업을 원할 때마다 저장한 작업을 수행하도록 하는 절자형SQL
+
+DECLARE
+BEGIN
+CONTROL
+SQL
+EXCEPTION
+TRANSACTION
+END
+
+프로시저 생성
+CREATE PROCEDURE
+
+프로시저 실행
+EXCEUTE 프로시저명
+or EXEC
+or CALL 
+
+프로시저 제거
+DROP PROCEDURE 프로시저명
+
+트리거(Trigger)
+이벤트가 발생할 때 관련 작업이 자동으로 실행되게 하는 절차형 SQL
+
+DECLARE
+EVENT
+BEGIN
+CONTROL
+SQL
+EXCEPTION
+END
+
+트리거 생성
+CREATE TRIGGER
+
+트리거 제거
+DROP TRIGGER
+
+
+사용자 정의 함수 ( ex) sum, avg, dml)
+프로시저와 유사하게 일련의 작업을 연속적으로 처리하지만 종료시 처리 결과로 단일값만을 반환하는 절차형 SQL
+
+DECLARE
+BEGIN
+CONTROL
+SQL
+EXCEPTION
+RETURN
+END
+
+사용자 정의 함수 생성
+CREATE FUNCTION
+
+커서(Cursor)
+쿼리문의 처리 결과가 저장되어 있는 메모리 공간을 가르키는 포인터
+
+묵시적 커서(Implicit Cursor)
+내부에서 자동으로 생성되어 사용되는 커서
+속성 종류
+SQL%FOUND 쿼리수행의 결과로 패치된 튜플 수가 1개이상이면 TRUE
+SQL%NOTFOUND 쿼리수행의 결과로 패치된 튜플 수가 0개이면 TRUE
+SQL%ROWCOUNT 쿼리수행결과로 패치된 튜플 수 반환
+SQL%ISOPEN 커서가 열린상태이면 open 묵시적 커서는 생성된후 자동으로 닫히기 떄문에 항상 Close
+
+명시적 커서(Explicit Cursor)
+사용자가 직접 정의해서 사용하는 커서
+
+선언(Declare) 형식
+CURSOR 커서명(매개변수1, 매개변수2, ....)
+IS
+
+SELECT문:
+
+열기(Open) 형식
+OPEN 커서명(매개변수1, 매개변수2, ...)
+
+패치(Fetch) 형식
+FETCH 커서명 INTO 변수1, 변수2 ...;
+
+닫기(Close) 형식
+CLOSE 커서명
+
+DBMS 접속
+데이터를 사용하기 위해 응용시스템을 이용하여 DBMS 접근하는 것
+
+웹응용시스템
+웹 서버 + 웹애플리케이션 서버로 구성
+
+DBMS 접속기술
+DBMS에 접근하기 위해 사용되는 API를 편리하게 도와주는 프레임워크
+종류
+JDBC(Java DataBase Connectivity)
+ODBC(Open Database Connectivity)
+MYBATIS
+
+동적 SQL(Dynamic SQL)
+SQL구문을 동적으로 변경하여 처리할 수 있는 SQL 처리 방식
+
+SQL 테스트
+SQL이 작성 의도에 맞게 원하는 기능을 수행하는지 검증하는 과정
+
+단문 sql 테스트
+DDL, DML, DCL이 포함되어 있는 SQL, TCL을 테스트하는 것
+BY DESCRIBE(=DESC)
+
+절차형 SQL 테스트
+BY SHOW ERRORS
+
+orm(객체 관계 매핑)
+객체와 관계형 데이터베이스의 데이터를 연결하는 기술
+
+쿼리 성능 향상
+데이터 입 출력 애플리케이션의 성능 향상을 위해 SQL 코드를 최적화하는 것
+옵티마이저  실행 계획 검토 후 SQL 코드와 인덱스 재구성 필요
+
+옵티마이저(Optimizer)
+작성된 SQL이 가장 효율적으로 수행되도록 최적의 경로를 찾아주는 모듈
+RBO(Rule Based Optimizer): 미리 정해둔 규칙 기반
+CBO(Cost Based Optimizer): 비용으로 최적의 경로를 찾는
+
+실행 계획(Execution Plan)
+옵티마이저가 수립한 SQL 코드의 실행 절차와 방법
+실행계획은 EXPLAIN으로 확인 가능
+
+
+SDLC(Software Development Lifec Cycle): 소프트웨어 개발 생명주기
+
+SDLC
+소프트웨어 개발 생명주기
+
+Secure SDLC
+SDLC에 보안 강화를 위한 프로세스를 추가한 것
+
+Secure SDLC의 대표적인 방법론
+CLASP 초기 단계 보안강화 방법
+SDL 기존의 SDLC를 개선한 방법론
+Seven Touchpoints 소프트웨어 보안 모범사례를 SDLC에 통합한 방법
+
+소프트웨어 개발 보안 요소
+기밀성(Confidentiality)
+무결성(Integrity)
+가용성(Availability)
+인증(Authentication)
+부인 방지(Nonrepudiation)
+
+시큐어 코딩(Secure Coding)
+보안 요소들을 고려하며 코딩하는 것
+
+입력 데이터 검증 및 표현의 보안 약점
+sql 삽입(Injection)
+경로 조작 및 자원 삽입
+크로스사이트 스크립팅(XSS)
+운영체제 명령어 삽입
+위험한 형식 파일 업로드
+신뢰되지 않는 URL 주소로 자동접속 연결
+메모리 버퍼 오버플로
+
+보안 기능
+코딩하는 기능인 인증, 접근제어, 기밀성, 암호화 등을 올바르게 구현하기 위한 보안 점검 항목
+
+보안 기능의 보안 약점
+적절한 인증없이 중요기능 허가
+부적절한 인가
+중요한 자원에 대한 잘못된 권한 설정
+취약한 암호화 알고리즘 사용
+중요정보 평문 저장 및 전송
+하드코드된 암호화 키
+
+암호 알고리즘
+중요 정보를 보호하기 위해 평문을 암호화된 문장으로 만드는 절차
+
+개인키 암호화(Private Key Encryption)
+동일한 키로 데이터를 암호화 복호화하는 기법
+
+종류
+스트림 암호화 방식, LFSR, RC4
+블록 암호화 방식: DES, SEED, AES ARIA
+
+공개키 암호화(Public Key Encryption)
+암호화할때 사용하는 공개키는 사용자에게 공개, 복호화할때 비밀키는 관리자가 비밀리에 관리하는 암호화 기법
+ex) RSA
+
+양방향 알고리즘 종류
+SEED
+ARIA
+DES
+AES
+RSA
+
+해시 함수 종류
+SHA 시리즈
+MD5
+N-NASH
+SNEFRU
+
+해시
+임의의 길이의 입력 데이터나 메시지를 고정된 길이의 값이나 키로 변환
+
+서비스 거부 공격(Denial of Service)
+대량의 데이터를 한 곳의 서버에 집중적으로 전송하여 서버 정상적인 기능 방해하는 것
+
+Ping of death
+SMURFING
+SYN Floding
+TearDROP
+LAND Attack(Land Area Network Denial Attack)
+DDOS(Distrubted Denial of Service)
+- 종류: Trin00, TFN, TFN2K, STacheldraht
+
+네트워크 침해 공격 관련 용어
+세션 하이재킹(Session Hijacking)
+ARP 스푸핑(ARP Spoofing)
+스미싱(Smishing)
+스피어 피싱(Spear Pishing)
+APT 지능형 지속 위협(Adavanced Persistent Threats)
+무작위 대입 공격(Brute Force Attack)
+큐싱(Qshing)
+SQL 삽입(Injection) 공격
+크로스 사이트 스크립팅(XSS:Cross Site Scripting)
+스니핑(Sniffing)
+
+정보 보안 침해 공격 관련 용어
+좀비pc
+C&C 서버
+봇넷(Botnet)
+웜(Worm)
+제로 데이 공격(Zero Day Attack)
+키로거 공격 (Key Logger Attack)
+랜섬웨어 (Ransomeware)
+백도어(Back dore, Trap Door)
+트로이 목마 (Trojan Horse)
+
+보안 솔루션
+외부로부터 불법적인 침입 막는 기술 및 시스템 
+
+주요 보안 솔루션
+방화벽(Firewall)
+침입 탐지 시스템(IDS, Intrusion, Detection System)
+침입 방지 시스템(IPS, Intrusion Prevention System)
+데이터 유출 방지(DLP, Data Leak Prevention)
+웹 방화벽(Web Firewall)
+VPN(Virutl Private Network), 가상 사설 통신망
+NAC(Network Access Control)
+ESM(Entreprise Security Management)
+
+소프트웨어 패키징
+모듈별로 생성한 파일들을 묶어 배포용 설치 파일을 만드는 것
+
+
+릴리즈 노트
+소프트웨어 개발 과정에서 정리된 릴리즈 정보를 고객과 공유하기 위한 문서
+
+릴리즈 노트 작성 항목
+머리말
+개요
+목적
+문제 요약
+재현 항목
+수정/개선 내용
+사용자 영향도
+SW 지원 영향도
+노트
+면책 조항
+연락처
+
+저작권
+창작자과 가지는 배타적 독점적 권리로, 타인에게 침해받지 않을 고유한 권한
+
+디지털 저작권 관리(Digital Right Management)
+저작권자가 배포한 디지털 컨텐츠가 저작권자가 의도한 용도로만 사용되도록 하는 디지털 콘텐츠 관리 및 보호 기술
+
+디지털 저작권 관리의 흐름및 구성 요소
+클리어링 하우스(Clearing House)
+콘텐츠 제공자(Content Provider)
+패키저(Packager)
+콘텐츠 분배자(Contents Distributor)
+콘텐츠 소비자(Customer)
+DRM 컨트롤러(DRM Controller)
+보안 컨테이너(Security Container
+
+디지털 저작권 관리의 기술 요소
+암호화(Encryption)
+키 관리(Key Management)
+암호화 파일 생성(Packager)
+식별 기술(Identification)
+저작권 표현(Right Expression)
+정책 관리(Policy Management)
+크랙 방지(Tamper Resistence)
+인증(Authentication)
+
+형상 관리(SCM, Software Configuration Management)
+개발 과정에서 소프트웨어의 변경사항을 관리하기 위해 개발된 일련의 활동
+
+형상 관리 기능
+형상 식별
+버전 제어
+형상 통제
+형상 감사
+형상 기록
+
+소프트웨어 버전 등록 관련 주요 기능
+저장소(Repository)
+가져오기
+체크아웃
+체크인
+커밋
+동기화
+
+소프트웨어 버전 등록 과정
+가져오기(import)
+-> 인출(check out)
+-> 예치(commit)
+-> 동기화(update)
+-> 차이(diff)
+
+Subversion(svn)
+클라이언트/서버 구조로 서버에는 최신 버전의 파일들과 변경 사항이 관리
+주요 명령어
+add
+commit
+update
+checkout
+lock/unlock
+import
+export
+info
+diff
+merge
+
+git
+분산 버전관리 시슽엠으로 2개의 저장소, 즉 지역 저장소와 원격 저장소가 존재
+주요 명령어
+add
+commit
+branch
+checkout
+merge
+init
+remote add
+push
+fetch
+clone
+
+깃 명령어 활용
+
+계정 설정하기
+git config --global
+
+지역 저장소 만들기
+git init
+
+변경 내역을 지역 저장소에 저장하기
+git add --all
+
+git commit -m "메시지"
+
+병합 기능 사용하기
+새로운브랜치
+git branch new_test
+
+브랜치 이동
+git checkout new_test
+
+병합
+git merge new_test
+
+브랜치 삭제
+git branch --d new_test
+
+지역 저장소의 버전 관리 내역을 원격 저장소에 저장하기
+git remote add abc 저장소주소
+
+git push abc master
+
+빌드 자동화 도구
+빌드를 포함하여 테스트 및 배포를 자동화해주는 도구
+
+jenkins
+java 기반의 오픈 소스 형태로 서블릿 컨테이너에서 실행되는 서버 기반 도구
+
+Gradle
+Groovy를 기반으로 한 오픈 소스 형태의 자동화 도구
 ```
