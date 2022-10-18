@@ -2661,3 +2661,257 @@ public class Solution2 {
     }
 }
 ```
+
+```java
+public class L12985 {
+
+    public static void main(String[] args) {
+        System.out.println(solution(8, 4, 7));
+    }
+
+    public static int solution(int n, int a, int b)
+    {
+        int answer = 1;
+
+        if (a > b) {
+            int temp = a;
+            a = b;
+            b = temp;
+        }
+
+        while (!isPossible(a, b)) {
+            a = getNextNumber(a);
+            b = getNextNumber(b);
+            answer++;
+        }
+
+        return answer;
+    }
+
+    private static boolean isPossible(int a, int b) {
+        return b - a == 1 && !isEven(a) && isEven(b);
+    }
+
+    private static int getNextNumber(int num) {
+        return (num - 1) / 2 + 1;
+    }
+
+    private static boolean isEven(int num) {
+        return num % 2 == 0;
+    }
+
+}
+```
+
+```java
+public class L12914 {
+
+    public static void main(String[] args) {
+        System.out.println(solution(4));
+    }
+
+    public static long solution(int n) {
+        long dp[] = new long[n+1];
+
+        if (n <= 2)
+            return n;
+        dp[1] = 1;
+        dp[2] = 2;
+        for (int i = 3; i <= n; i++)
+            dp[i] = (dp[i-1] + dp[i-2]) % 1234567;
+
+        return dp[n];
+    }
+
+}
+
+//중복 순열 + 백트레킹으로 풀면 시간초과
+// public class L12914 {
+
+//     public static void main(String[] args) {
+//         System.out.println(solution(3));
+//     }
+
+//     static long answer = 0;
+
+//     public static long solution(int n) {
+//         bt(new int[n], 0, 0, n);
+
+//         return answer;
+//     }
+
+//     static void bt(int arr[], int idx, int sum, int end) {
+//         if (sum == end) {
+//             answer = (answer+1) % 1234567;
+//             return;
+//         }
+
+//         for (int i = 1; i <= 2; i++){
+//             if (sum + i <= end) {
+//                 arr[idx] = i;
+//                 bt(arr, idx + 1, sum + i, end);
+//             }
+//         }
+//     }
+// }
+```
+
+```java
+//순열 Review
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class Main {
+
+    static boolean[] visited;
+    static int N, M;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        visited = new boolean[N+1];
+        dfs(new int[M], 0);
+    }
+
+    static void dfs(int arr[], int idx) {
+        if (idx == arr.length) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < arr.length; i++) {
+                sb.append(arr[i] + " ");
+            }
+            System.out.println(sb.toString());
+            return;
+        }
+
+        for (int i = 1; i <= N; i++) {
+            if (!visited[i]) {
+                visited[i] = true;
+                arr[idx] = i;
+                dfs(arr, idx + 1);
+                visited[i] = false;
+            }
+        }
+    }
+}
+```
+
+```java
+//조합 review
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class Main {
+
+    static int N, M;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        dfs(new int[M], 0, 0);
+    }
+
+    static void dfs(int arr[], int idx, int at) {
+        if (idx == arr.length) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < arr.length; i++) {
+                sb.append(arr[i] + " ");
+            }
+            System.out.println(sb.toString());
+            return;
+        }
+
+        for (int i = at+1; i <= N; i++) {
+            arr[idx] = i;
+            dfs(arr, idx + 1, i);
+        }
+    }
+}
+```
+
+```java
+//중복 순열 review
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class Main {
+
+    static int N, M;
+    static StringBuilder sb = new StringBuilder();
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        dfs(new int[M], 0);
+        System.out.println(sb);
+    }
+
+    static void dfs(int arr[], int idx) {
+        if (idx == arr.length) {
+            for (int i = 0; i < arr.length; i++) {
+                sb.append(arr[i] + " ");
+            }
+            sb.append("\n");
+            return;
+        }
+
+        for (int i = 1; i <= N; i++) {
+            arr[idx] = i;
+            dfs(arr, idx + 1);
+        }
+    }
+}
+```
+
+```java
+//중복 조합 review
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class Main {
+
+    static int N, M;
+    static StringBuilder sb = new StringBuilder();
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        dfs(new int[M], 0, 1);
+        System.out.println(sb);
+    }
+
+    static void dfs(int arr[], int idx, int at) {
+        if (idx == arr.length) {
+            for (int i = 0; i < arr.length; i++) {
+                sb.append(arr[i] + " ");
+            }
+            sb.append("\n");
+            return;
+        }
+
+        for (int i = at; i <= N; i++) {
+            arr[idx] = i;
+            dfs(arr, idx + 1, i);
+        }
+    }
+}
+```
