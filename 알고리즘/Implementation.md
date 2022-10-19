@@ -2915,3 +2915,262 @@ public class Main {
     }
 }
 ```
+
+```java
+import java.io.*;
+import java.util.*;
+
+public class SW2072 {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+        int t;
+
+        t = Integer.parseInt(br.readLine());
+
+        for (int i = 1; i <= t; i++) {
+            int sum = 0;
+            st = new StringTokenizer(br.readLine());
+            while (st.hasMoreTokens()) {
+                int num = Integer.parseInt(st.nextToken());
+                if (num % 2 == 1)
+                    sum += num;
+            }
+
+            bw.write("#" + i + " " + sum + "\n");
+        }
+        bw.flush();
+        bw.close();
+    }
+}
+```
+
+```java
+import java.io.*;
+import java.util.*;
+
+public class SW2071 {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+        int t;
+
+        t = Integer.parseInt(br.readLine());
+
+        for (int i = 1; i <= t; i++) {
+            int sum = 0;
+            st = new StringTokenizer(br.readLine());
+            while (st.hasMoreTokens())
+                sum += Integer.parseInt(st.nextToken());
+            bw.write("#" + i + " " + Math.round((double)sum/10) + "\n");
+        }
+        bw.flush();
+        bw.close();
+    }
+}
+```
+
+```java
+import java.io.*;
+
+public class SW1545 {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int n = Integer.parseInt(br.readLine());
+
+        for (int i = n; i >= 0; i--) {
+            bw.write(i + " ");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+}
+```
+
+```java
+import java.io.*;
+
+public class SW2019 {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int n = Integer.parseInt(br.readLine());
+
+        int answer = 1;
+        for (int i = 0; i <= n; i++) {
+            bw.write(answer + " ");
+            answer *= 2;
+        }
+
+        bw.flush();
+        bw.close();
+    }
+}
+```
+
+```java
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class SW1936 {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int A = Integer.parseInt(st.nextToken());
+        int B = Integer.parseInt(st.nextToken());
+
+        if (A != 1) {
+            if (A > B)
+                bw.write("A");
+            else
+                bw.write("B");
+        }else{
+            if (B == 2)
+                bw.write("B");
+            else
+                bw.write("A");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+}
+```
+
+```java
+import java.io.*;
+
+public class SW1933 {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        int n = Integer.parseInt(br.readLine());
+
+        for (int i = 1; i <= n; i++) {
+            if (n % i == 0)
+                bw.write(i + " ");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+}
+```
+
+```java
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class SW1938 {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        int a = Integer.parseInt(st.nextToken());
+        int b = Integer.parseInt(st.nextToken());
+
+        bw.write(a + b + "\n");
+        bw.write(a - b + "\n");
+        bw.write(a * b + "\n");
+        bw.write(a / b + "\n");
+
+        bw.flush();
+        bw.close();
+    }
+}
+```
+
+```java
+import java.io.*;
+
+public class SW2025 {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int input = Integer.parseInt(br.readLine());
+
+        System.out.println((input * (input+1)) / 2);
+    }
+}
+```
+
+```java
+import java.io.*;
+
+public class SW2027 {
+
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                if (i == j)
+                    bw.write("#");
+                else
+                    bw.write("+");
+            }
+            bw.write("\n");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+}
+```
+
+```java
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class SW2029 {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+        int t = Integer.parseInt(br.readLine());
+        int a, b;
+
+        for (int i = 1; i <= t; i++) {
+            st = new StringTokenizer(br.readLine());
+            a = Integer.parseInt(st.nextToken());
+            b = Integer.parseInt(st.nextToken());
+            bw.write("#" + i + " " + (a / b) + " " + (a % b) + "\n");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+}
+```
+
+```java
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class SW2043q {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int P = Integer.parseInt(st.nextToken());
+        int K = Integer.parseInt(st.nextToken());
+
+        System.out.println(P - K + 1);
+    }
+}
+```
