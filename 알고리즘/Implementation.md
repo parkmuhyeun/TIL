@@ -3174,3 +3174,202 @@ public class SW2043q {
     }
 }
 ```
+
+```java
+import java.io.*;
+
+public class SW2046- {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int n = Integer.parseInt(br.readLine());
+
+        for (int i = 0; i < 3; i++) {
+            bw.write("#");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+}
+```
+
+```java
+import java.io.*;
+import java.util.Locale;
+
+public class SW2047 {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        bw.write(br.readLine().toUpperCase(Locale.ROOT));
+
+        bw.flush();
+        bw.close();
+    }
+}
+```
+
+```java
+import java.io.*;
+
+public class SW2050 {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        String input = br.readLine();
+
+        for (int i = 0; i < input.length(); i++) {
+            bw.write((input.charAt(i) - 'A' + 1) + " ");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+}
+```
+
+```java
+import java.io.*;
+
+public class SW2056 {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int t = Integer.parseInt(br.readLine());
+
+        for (int i = 1; i <= t; i++) {
+            String input = br.readLine();
+            String month = input.substring(4, 6);
+
+            bw.write("#" + i + " ");
+            if (isValidMonth(Integer.parseInt(month))) {
+                String day = input.substring(6,8);
+                if (isValidDay(Integer.parseInt(month), Integer.parseInt(day))) {
+                    bw.write(input.substring(0, 4) + "/" + month + "/" + day +"\n");
+                }else
+                    bw.write("-1\n");
+            }else
+                bw.write("-1\n");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+
+    private static boolean isValidMonth(int month) {
+        return 1 <= month && month <= 12;
+    }
+
+    private static boolean isValidDay(int month, int day) {
+        if (month == 2)
+            return 1 <= day && day <= 28;
+        else if (month == 4 || month == 6 || month == 9 || month == 11)
+            return 1 <= day && day <= 30;
+        else
+            return 1 <= day && day <= 31;
+    }
+}
+```
+
+```java
+import java.io.*;
+
+public class SW2058 {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String input = br.readLine();
+
+        int sum = 0;
+        for (int i = 0; i < input.length(); i++) {
+            sum += input.charAt(i) - '0';
+        }
+
+        System.out.println(sum);
+    }
+}
+```
+
+```java
+import java.io.*;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class SW2063 {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+        int n = Integer.parseInt(br.readLine());
+        int[] arr = new int[n];
+        st = new StringTokenizer(br.readLine());
+
+        for (int i = 0; i < n; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
+        Arrays.sort(arr);
+        System.out.print(arr[n/2]);
+    }
+}
+```
+
+```java
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class SW2068 {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+
+        int t = Integer.parseInt(br.readLine());
+
+        for (int i = 1; i <= t; i++) {
+            st = new StringTokenizer(br.readLine());
+            int max = -1;
+            for (int j = 0; j < 10; j++) {
+                int next = Integer.parseInt(st.nextToken());
+                if (max < next)
+                    max = next;
+            }
+            bw.write("#" + i + " " + max + "\n");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+}
+```
+
+```java
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class SW2070 {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+
+        int t = Integer.parseInt(br.readLine());
+
+        for (int i = 1; i <= t; i++) {
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+
+            bw.write("#" + i + " ");
+            if (a < b)
+                bw.write("<");
+            else if (a == b)
+                bw.write("=");
+            else
+                bw.write(">");
+            bw.write("\n");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+}
+```
