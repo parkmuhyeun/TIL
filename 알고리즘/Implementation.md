@@ -3373,3 +3373,178 @@ public class SW2070 {
     }
 }
 ```
+
+```java
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class SW1204 {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+        int[] arr = new int[101];
+        int t = Integer.parseInt(br.readLine());
+
+        for (int i = 1; i <= t; i++) {
+            br.readLine();
+            st = new StringTokenizer(br.readLine());
+            while (st.hasMoreTokens())
+                arr[Integer.parseInt(st.nextToken())] += 1;
+
+            int cnt = arr[0];
+            int idx = 0;
+            for (int j = 1; j < 100; j++) {
+                if (cnt <= arr[j]) {
+                    cnt = arr[j];
+                    idx = j;
+                }
+            }
+
+            bw.write("#" + i + " " + idx + "\n");
+
+            for (int j = 0; j < 100; j++) {
+                arr[j] = 0;
+            }
+        }
+
+        bw.flush();
+        bw.close();
+    }
+}
+```
+
+```java
+import java.io.*;
+
+public class SW1954 {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int t = Integer.parseInt(br.readLine());
+
+        int[] dx = {0, 1, 0, -1};
+        int[] dy = {1, 0, -1, 0};
+        for (int i = 1; i <= t; i++) {
+            int n = Integer.parseInt(br.readLine());
+            int[][] arr = new int[n][n];
+            int x = 0, y = 0, num = 2, dir = 0;
+            arr[0][0] = 1;
+            while (num <= n * n) {
+                int nx = x + dx[dir];
+                int ny = y + dy[dir];
+                if (nx < 0 || n <= nx || ny < 0 || n <= ny || arr[nx][ny] != 0) {
+                    dir = (dir + 1) % 4;
+                    continue;
+                }
+                arr[nx][ny] = num++;
+                x = nx;
+                y = ny;
+            }
+
+            bw.write("#" + i + "\n");
+            for (int j = 0; j < n; j++) {
+                for (int k = 0; k < n; k++) {
+                    bw.write(arr[j][k] + " ");
+                }
+                bw.write("\n");
+            }
+        }
+
+        bw.flush();
+        bw.close();
+    }
+
+}
+```
+
+```java
+import java.io.*;
+
+public class SW1926 {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        int n = Integer.parseInt(br.readLine());
+
+        for (int i = 1; i <= n; i++) {
+            String s = String.valueOf(i);
+            int cnt = 0;
+            for (int j = 0; j < s.length(); j++) {
+                char c = s.charAt(j);
+                if (c != '0' && (c - '0') % 3 == 0)
+                    cnt++;
+            }
+
+            if (cnt == 0) {
+                bw.write(""+i);
+            } else {
+                for (int j = 0; j < cnt; j++) {
+                    bw.write("-");
+                }
+            }
+            bw.write(" ");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+
+}
+```
+
+```java
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class SW1859 {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+
+        int t = Integer.parseInt(br.readLine());
+        for (int i = 1; i <= t; i++) {
+            int n = Integer.parseInt(br.readLine());
+            st = new StringTokenizer(br.readLine());
+
+            int[] sell = new int[n];
+            for (int j = 0; j < n; j++) {
+                sell[j] = Integer.parseInt(st.nextToken());
+            }
+
+            int j = n - 1;
+            int k;
+            int cnt = 0;
+            long sum = 0;
+            long buy = 0;
+            int price = 0;
+            while (j >= 0) {
+                price = sell[j];
+                for (k = j-1; k >= 0; k--) {
+                    if (sell[k] <= price) {
+                        cnt++;
+                        buy += sell[k];
+                    } else {
+                        if (cnt != 0)
+                            sum += (long) cnt * price - buy;
+                        cnt = 0;
+                        buy = 0;
+                        break;
+                    }
+                }
+                j = k;
+            }
+            if(cnt > 0)
+                sum += (long) cnt * price - buy;
+
+            bw.write("#" + i +" " + sum + "\n");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+
+}
+```
