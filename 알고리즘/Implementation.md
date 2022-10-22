@@ -3162,7 +3162,7 @@ public class SW2029 {
 import java.io.*;
 import java.util.StringTokenizer;
 
-public class SW2043q {
+public class SW2043 {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -3178,7 +3178,7 @@ public class SW2043q {
 ```java
 import java.io.*;
 
-public class SW2046- {
+public class SW2046 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -3540,6 +3540,256 @@ public class SW1859 {
                 sum += (long) cnt * price - buy;
 
             bw.write("#" + i +" " + sum + "\n");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+
+}
+```
+
+
+```java
+import java.io.*;
+
+public class SW2007 {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        int t = Integer.parseInt(br.readLine());
+
+        for (int i = 1; i <= t; i++) {
+            String input = br.readLine();
+            int answer = 0;
+
+            for (int length = 1; length <= 15; length++) {
+                boolean flag = false;
+                String pattern = input.substring(0, length);
+                int k = length;
+
+                while (k + length <= 30) {
+                    String next = input.substring(k, k + length);
+                    if (!pattern.equals(next)) {
+                        flag = true;
+                        break;
+                    }
+                    k += length;
+                }
+                if (!flag) {
+                    answer = length;
+                    break;
+                }
+            }
+
+            bw.write("#" + i + " " + answer + "\n");
+        }
+        
+        bw.flush();
+        bw.close();
+    }
+}
+```
+
+```java
+import java.io.*;
+
+public class SW2005 {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        int t = Integer.parseInt(br.readLine());
+
+        for (int i = 1; i <= t; i++) {
+            int n = Integer.parseInt(br.readLine());
+            int[][] arr = new int[n][n];
+
+            for (int j = 0; j < n; j++) {
+                arr[j][0] = 1;
+                arr[j][j] = 1;
+            }
+            
+            for (int j = 2; j < n; j++) {
+                for (int k = 1; k < n; k++) {
+                    arr[j][k] = arr[j-1][k-1] + arr[j-1][k];
+                }
+            }
+
+            bw.write("#" + i + "\n");
+            for (int j = 0; j < n; j++) {
+                for (int k = 0; k < n; k++) {
+                    if (arr[j][k] != 0)
+                        bw.write(arr[j][k] + " ");
+                }
+                bw.write("\n");
+            }
+        }
+
+        bw.flush();
+        bw.close();
+    }
+}
+```
+
+```java
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class SW2001 {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+
+        int t = Integer.parseInt(br.readLine());
+        int n, m;
+        int[][] arr = new int[15][15];
+        
+       for (int i = 1; i <= t; i++) {
+           st = new StringTokenizer(br.readLine());
+           n = Integer.parseInt(st.nextToken());
+           m = Integer.parseInt(st.nextToken());
+
+           for (int j = 0; j < n; j++) {
+               st = new StringTokenizer(br.readLine());
+               for (int k = 0; k < n; k++) {
+                   arr[j][k] = Integer.parseInt(st.nextToken());
+               }
+           }
+
+           int max = -1;
+           for (int j = 0; j < n - m + 1; j++) {
+               for (int k = 0; k < n - m + 1; k++) {
+                   int sum = 0;
+                   for (int l = j; l < j + m; l++) {
+                       for (int o = k; o < k + m; o++) {
+                           sum += arr[l][o];
+                       }
+                   }
+                   max = Math.max(max, sum);
+               }
+           }
+           
+           bw.write("#" + i + " " +max + "\n");
+
+           for (int j = 0; j < n; j++) {
+               for (int k = 0; k < n; k++) {
+                   arr[j][k] = 0;
+               }
+           }
+        }
+
+        bw.flush();
+        bw.close();
+    }
+}
+```
+
+```java
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class SW1961 {
+
+    static int n;
+    static String[][] res;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+
+        int t = Integer.parseInt(br.readLine());
+
+        for (int i = 1; i <= t; i++) {
+            n = Integer.parseInt(br.readLine());
+            int[][] arr = new int[n][n];
+            res = new String[n][3];
+            for (int j = 0; j < n; j++) {
+                st = new StringTokenizer(br.readLine());
+                for (int k = 0; k < n; k++) {
+                    arr[j][k] = Integer.parseInt(st.nextToken());
+                }
+            }
+
+            int[][] rotate1 = rotate(arr);
+            write(rotate1, 0);
+
+            int[][] rotate2 = rotate(rotate1);
+            write(rotate2, 1);
+
+            int[][] rotate3 = rotate(rotate2);
+            write(rotate3, 2);
+
+            bw.write("#" + i + "\n");
+            for (int j = 0; j < n; j++) {
+                for (int k = 0; k < 3; k++) {
+                    bw.write(res[j][k] + " ");
+                }
+                bw.write("\n");
+            }
+        }
+
+        bw.flush();
+        bw.close();
+    }
+
+    private static void write(int[][] rotate, int x) {
+        for (int j = 0; j < n; j++) {
+            StringBuilder sb = new StringBuilder();
+            for (int k = 0; k < n; k++) {
+                sb.append(rotate[j][k]);
+            }
+            res[j][x] = sb.toString();
+        }
+    }
+
+    static int[][] rotate(int[][] arr) {
+        int length = arr.length;
+        int[][] copy = new int[length][length];
+        for (int i = 0; i < length; i++) {
+            for (int j = 0; j < length; j++) {
+                copy[j][length - i - 1] = arr[i][j];
+            }
+        }
+        return copy;
+    }
+}
+```
+
+```java
+import java.io.*;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class SW1984 {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+
+        int t = Integer.parseInt(br.readLine());
+        int[] arr = new int[10];
+
+        for (int i = 1; i <= t; i++) {
+            st = new StringTokenizer(br.readLine());
+            for (int j = 0; j < 10; j++) {
+                arr[j] = Integer.parseInt(st.nextToken());
+            }
+            Arrays.sort(arr);
+
+            int sum = 0;
+            for (int j = 1; j < 9; j++) {
+                sum += arr[j];
+            }
+
+            bw.write("#" + i + " " + (int)Math.round((double)sum / 8) + "\n");
         }
 
         bw.flush();
