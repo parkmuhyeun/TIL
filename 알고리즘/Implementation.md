@@ -3767,7 +3767,7 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class SW1984 {
+public class SW1970 {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -3794,6 +3794,180 @@ public class SW1984 {
 
         bw.flush();
         bw.close();
+    }
+
+}
+```
+
+```java
+import java.io.*;
+
+public class Solution {
+
+    static int[] cnt = new int[8];
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        int t = Integer.parseInt(br.readLine());
+
+        for (int i = 1; i <= t; i++) {
+            int money = Integer.parseInt(br.readLine());
+
+            money = getCnt(money, 0, 50000);
+            money = getCnt(money, 1, 10000);
+            money = getCnt(money, 2, 5000);
+            money = getCnt(money, 3, 1000);
+            money = getCnt(money, 4, 500);
+            money = getCnt(money, 5, 100);
+            money = getCnt(money, 6, 50);
+            getCnt(money, 7, 10);
+
+            bw.write("#" + i + "\n");
+            for (int j = 0; j < 8; j++) {
+                bw.write(cnt[j] + " ");
+            }
+            bw.write("\n");
+
+            for (int j = 0; j < 8; j++) {
+                cnt[j] = 0;
+            }
+        }
+
+        bw.flush();
+        bw.close();
+    }
+
+    private static int getCnt(int money, int idx, int div) {
+        int mok = money / div;
+        if (mok != 0) {
+            cnt[idx] = mok;
+            money -= mok * div;
+        }
+
+        return money;
+    }
+
+}
+```
+
+```java
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class SW1946 {
+
+    static int[] cnt = new int[8];
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+
+        int t = Integer.parseInt(br.readLine());
+        int n;
+
+        for (int i = 1; i <= t; i++) {
+            n = Integer.parseInt(br.readLine());
+            int cnt = 0;
+
+            bw.write("#" + i + "\n");
+            for (int j = 0; j < n; j++) {
+                st = new StringTokenizer(br.readLine());
+                char c = st.nextToken().charAt(0);
+                int k = Integer.parseInt(st.nextToken());
+
+                if (cnt + k <= 10) {
+                    for (int l = 0; l < k; l++) {
+                        bw.write(c);
+                    }
+                }else{
+                    int remain = 10 - cnt;
+                    for (int l = 0; l < remain; l++) {
+                        bw.write(c);
+                    }
+                    cnt = 0;
+                    bw.write("\n");
+                    k -= remain;
+
+                    int iter = k / 10;
+                    for (int l = 0; l < iter; l++) {
+                        for (int m = 0; m < 10; m++) {
+                            bw.write(c);
+                        }
+                        bw.write("\n");
+                    }
+                    k -= 10 * iter;
+
+                    for (int l = 0; l < k; l++) {
+                        bw.write(c);
+                    }
+                }
+                cnt += k;
+            }
+            bw.write("\n");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+
+}
+```
+
+```java
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class SW1206 {
+
+    static int[][] arr = new int[255][1000];
+    static int[] h = new int[1000];
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+
+        int n;
+
+        for (int i = 1; i <= 1; i++) {
+            n = Integer.parseInt(br.readLine());
+            st = new StringTokenizer(br.readLine());
+            for (int j = 0; j < n; j++) {
+                int height = Integer.parseInt(st.nextToken());
+                h[j] = height;
+                for (int k = 0; k < height; k++) {
+                    arr[254-k][j] = 1;
+                }
+            }
+
+            int ans = 0;
+            for (int j = 2; j < n - 2; j++) {
+                int height = h[j];
+                for (int k = 0; k < height; k++) {
+                    if (isGood(k, j))
+                        ans++;
+                }
+            }
+
+            bw.write("#" + i + " " +  ans + "\n");
+            for (int j = 0; j < n; j++) {
+                for (int k = 0; k < h[j]; k++) {
+                    arr[254-k][j] = 0;
+                }
+            }
+        }
+
+        bw.flush();
+        bw.close();
+    }
+
+    private static boolean isGood(int y, int x) {
+        for (int i = 1; i <= 2; i++) {
+            if (arr[254-y][x + i] == 1 || arr[254-y][x - i] == 1)
+                return false;
+        }
+
+        return true;
     }
 
 }
