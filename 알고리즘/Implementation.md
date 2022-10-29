@@ -3972,3 +3972,152 @@ public class SW1206 {
 
 }
 ```
+
+```java
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.StringTokenizer;
+
+public class SW1208 {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+        int n;
+
+        for (int i = 1; i <= 10; i++) {
+            List<Integer> heights = new ArrayList<>();
+            n = Integer.parseInt(br.readLine());
+            st = new StringTokenizer(br.readLine());
+            for (int j = 0; j < 100; j++) {
+                heights.add(Integer.parseInt(st.nextToken()));
+            }
+
+            for (int j = 0; j < n; j++) {
+                heights.sort(Collections.reverseOrder());
+                heights.set(0, heights.get(0) - 1);
+                heights.set(99, heights.get(99) + 1);
+            }
+            heights.sort(Collections.reverseOrder());
+
+            bw.write("#" + i + " " + (heights.get(0) - heights.get(99)) + "\n");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+
+}
+```
+
+```java
+import java.io.*;
+import java.util.*;
+
+public class SW1244 {
+
+    static int answer;
+    static int cnt;
+    static int reach;
+    static int max;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+        int input;
+        int t = Integer.parseInt(br.readLine());
+
+        for (int i = 1; i <= t; i++) {
+            st = new StringTokenizer(br.readLine());
+            input = Integer.parseInt(st.nextToken());
+            reach = -1;
+            answer = -1;
+            cnt = Integer.parseInt(st.nextToken());
+            int[] nums = getDigits(input);
+            Arrays.sort(nums);
+            StringBuilder sb = new StringBuilder();
+            for (int j = nums.length - 1; j >= 0; j--) {
+                sb.append(nums[j]);
+            }
+            max = Integer.parseInt(sb.toString());
+            dfs(0, getDigits(input), 0);
+
+            if (reach != -1 && reach != cnt && isOdd() && hasDuplicate(nums)) {
+                StringBuilder change = new StringBuilder(answer);
+                int length = change.length();
+                char temp = change.charAt(length - 2);
+                change.setCharAt(length - 2, change.charAt(length - 1));
+                change.setCharAt(length -1 , temp);
+                answer = Integer.parseInt(change.toString());
+            }
+
+            bw.write("#" + i + " " + answer + "\n");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+
+    private static boolean isOdd() {
+        return (cnt - reach) % 2 != 0;
+    }
+
+    private static boolean hasDuplicate(int[] nums) {
+        int now = nums[0];
+        for (int j = 1; j < nums.length; j++) {
+            int next = nums[j];
+            if (now == next)
+                return true;
+            now = next;
+        }
+        return false;
+    }
+
+    private static int[] getDigits(int input) {
+        return Arrays
+                .stream(String.valueOf(input).split(""))
+                .mapToInt(Integer::parseInt)
+                .toArray();
+    }
+
+    static void dfs(int depth, int[] nums, int s) {
+        if (reach != -1 && depth >= reach) {
+            return;
+        }
+
+        if (depth == cnt) {
+            StringBuilder sb = new StringBuilder();
+            for (int num : nums) {
+                sb.append(num);
+            }
+            answer = Math.max(answer, Integer.parseInt(sb.toString()));
+            if (answer == max) {
+                if (reach == -1)
+                    reach = depth;
+                else
+                    reach = Math.min(reach, depth);
+            }
+            return;
+        }
+
+        int length = nums.length;
+        for (int i = s; i < length - 1; i++) {
+            for (int j = i + 1; j < length; j++) {
+                swap(nums, i, j);
+                dfs(depth + 1, nums, i);
+                swap(nums, j, i);
+            }
+        }
+    }
+
+    private static void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+}
+```
