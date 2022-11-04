@@ -4121,3 +4121,210 @@ public class SW1244 {
     }
 }
 ```
+
+```java
+import java.io.*;
+
+public class SW2805 {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        int t = Integer.parseInt(br.readLine());
+        int n;
+        int start, mid, end;
+        int profit;
+
+        for (int i = 1; i <= t; i++) {
+            n = Integer.parseInt(br.readLine());
+            int[][] farm = new int[n][n];
+            mid = n / 2;
+            start = mid;
+            end = mid;
+            profit = 0;
+
+            for (int j = 0; j < n; j++) {
+                String[] split = br.readLine().split("");
+                for (int k = 0; k < n; k++) {
+                    farm[j][k] = Integer.parseInt(split[k]);
+                }
+            }
+
+            for (int j = 0; j <= mid; j++) {
+                for (int k = start; k <= end; k++) {
+                    profit += farm[j][k];
+                }
+                start -= 1;
+                end += 1;
+            }
+
+            start+= 1;
+            end -= 1;
+            for (int j = mid + 1; j < n; j++) {
+                start += 1;
+                end -= 1;
+                for (int k = start; k <= end; k++) {
+                    profit += farm[j][k];
+                }
+            }
+
+            bw.write("#" + i + " " + profit + "\n");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+
+}
+```
+
+```java
+import java.io.*;
+
+public class 2806 {
+
+    static int n;
+    static int answer;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        int t = Integer.parseInt(br.readLine());
+        for (int i = 1; i <= t; i++) {
+            n = Integer.parseInt(br.readLine());
+            int[][] board = new int[n][n];
+            answer = 0;
+            dfs(0, board);
+
+            bw.write("#" + i + " " + answer + "\n");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+
+    static void dfs(int depth, int[][] board) {
+        if (depth == n) {
+            answer += 1;
+        }
+
+        for (int i = 0; i < n; i++) {
+            if (canPut(depth, i, board)) {
+                board[depth][i] = 1;
+                dfs(depth + 1, board);
+                board[depth][i] = 0;
+            }
+        }
+    }
+
+    private static boolean canPut(int y, int x, int[][] board) {
+        //행
+        for (int i = 0; i < n; i++) {
+            if (board[i][x] == 1) {
+                return false;
+            }
+        }
+        //열
+        for (int i = 0; i < n; i++) {
+            if (board[y][i] == 1) {
+                return false;
+            }
+        }
+
+        //대각선(오른쪽 위, 왼쪽아래)
+        for (int i = y, j = x; i >= 0 && j < n; i--, j++) {
+            if (board[i][j] == 1)
+                return false;
+        }
+
+        for (int i = y, j = x; i < n && j >= 0; i++, j--) {
+            if (board[i][j] == 1)
+                return false;
+        }
+
+        //대각선(오른쪽 아래 왼쪽 위)
+        for (int i = y, j = x; i < n && j < n; i++, j++) {
+            if (board[i][j] == 1)
+                return false;
+        }
+
+        for (int i = y, j = x; i >= 0 && j >= 0; i--, j--) {
+            if (board[i][j] == 1)
+                return false;
+        }
+
+        return true;
+    }
+}
+```
+
+```java
+import java.io.*;
+import java.util.*;
+
+public class SW1983 {
+
+    static String[] grade = new String[]{"A+", "A0", "A-", "B+", "B0", "B-", "C+", "C0", "C-", "D0"};
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+        int t = Integer.parseInt(br.readLine());
+        int n, k;
+
+        for (int i = 1; i <= t; i++) {
+            st = new StringTokenizer(br.readLine());
+            n = Integer.parseInt(st.nextToken());
+            k = Integer.parseInt(st.nextToken());
+            List<Score> scores = new ArrayList<>();
+            for (int j = 1; j <= n; j++) {
+                st = new StringTokenizer(br.readLine());
+                scores.add(new Score(j, getScore(st)));
+            }
+            scores.sort(Comparator.comparingDouble(Score::getScore).reversed());
+
+            int limit = n / 10;
+            int type = 0;
+            int cnt = 1;
+            for (int j = 0; j < n; j++) {
+                if (scores.get(j).index == k) {
+                    break;
+                }
+
+                if (cnt == limit) {
+                    type += 1;
+                    cnt = 0;
+                }
+                cnt++;
+            }
+
+            bw.write("#" + i + " " +grade[type] + "\n");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+
+    private static double getScore(StringTokenizer st) {
+        return (Double.parseDouble(st.nextToken()) * 0.35)
+                + (Double.parseDouble(st.nextToken()) * 0.45)
+                + (Double.parseDouble(st.nextToken()) * 0.2);
+    }
+
+}
+
+class Score{
+    int index;
+    double score;
+
+    public Score(int index, double score) {
+        this.index = index;
+        this.score = score;
+    }
+
+    public double getScore() {
+        return score;
+    }
+}
+```
