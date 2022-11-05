@@ -4328,3 +4328,151 @@ class Score{
     }
 }
 ```
+
+
+```java
+import java.io.*;
+
+public class SW1215 {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int n, answer;
+        char[][] board = new char[8][8];
+
+        for (int i = 1; i <= 10; i++) {
+            n = Integer.parseInt(br.readLine());
+            answer = 0;
+            for (int j = 0; j < 8; j++) {
+                String[] split = br.readLine().split("");
+                for (int k = 0; k < 8; k++) {
+                    board[j][k] = split[k].charAt(0);
+                }
+            }
+
+            answer = getAnswerByRow(n, answer, board);
+            answer = getAnswerByCol(n, answer, board);
+
+            bw.write("#" + i + " " + answer + "\n");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+
+    private static int getAnswerByRow(int n, int answer, char[][] board) {
+        for (int j = 0; j < 8; j++) {
+            for (int k = 0; k <= 8 - n; k++) {
+                int front = (k + (k + n - 1)) / 2;
+                int back = front + 1;
+                if (n % 2 != 0) {
+                    front -= 1;
+                }
+
+                for (int l = 0; l < n / 2; l++) {
+                    if (board[j][front] != board[j][back]) {
+                        break;
+                    }
+                    front -= 1;
+                    back += 1;
+                    if (l == n / 2 - 1) {
+                        answer += 1;
+                    }
+                }
+            }
+        }
+        return answer;
+    }
+
+
+    private static int getAnswerByCol(int n, int answer, char[][] board) {
+        for (int j = 0; j < 8; j++) {
+            for (int k = 0; k <= 8 - n; k++) {
+                int front = (k + (k + n - 1)) / 2;
+                int back = front + 1;
+                if (n % 2 != 0) {
+                    front -= 1;
+                }
+
+                for (int l = 0; l < n / 2; l++) {
+                    if (board[front][j] != board[back][j]) {
+                        break;
+                    }
+                    front -= 1;
+                    back += 1;
+                    if (l == n / 2 - 1) {
+                        answer += 1;
+                    }
+                }
+            }
+        }
+        return answer;
+    }
+}
+
+```
+
+```java
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class SW1209 {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+        int[][] arr = new int[100][100];
+
+        for (int i = 1; i <= 10; i++) {
+            int max = -1;
+            br.readLine();
+            for (int j = 0; j < 100; j++) {
+                st = new StringTokenizer(br.readLine());
+                for (int k = 0; k < 100; k++) {
+                    arr[j][k] = Integer.parseInt(st.nextToken());
+                }
+            }
+
+            //행
+            int sum = 0;
+            for (int j = 0; j < 100; j++) {
+                sum = 0;
+                for (int k = 0; k < 100; k++) {
+                    sum += arr[j][k];
+                }
+                max = Math.max(max, sum);
+            }
+
+            //열
+            for (int j = 0; j < 100; j++) {
+                sum = 0;
+                for (int k = 0; k < 100; k++) {
+                    sum += arr[k][j];
+                }
+                max = Math.max(max, sum);
+            }
+
+            //대각선 2개
+            sum = 0;
+            for (int j = 0, k = 0; j < 100; j++, k++) {
+                sum += arr[j][k];
+            }
+            max = Math.max(max, sum);
+
+            sum = 0;
+            for (int j = 0, k = 0; j >= 0; j--, k++) {
+                sum += arr[j][k];
+            }
+            max = Math.max(max, sum);
+
+            bw.write("#" + i + " " + max + "\n");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+}
+
+```
