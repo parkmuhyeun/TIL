@@ -4476,3 +4476,139 @@ public class SW1209 {
 }
 
 ```
+
+```java
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
+public class SW2817 {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+        int t = Integer.parseInt(br.readLine());
+        int n, k;
+
+        for (int i = 1; i <= t; i++) {
+            List<Integer> partSum = new ArrayList<>();
+            st = new StringTokenizer(br.readLine());
+            n = Integer.parseInt(st.nextToken());
+            k = Integer.parseInt(st.nextToken());
+            st = new StringTokenizer(br.readLine());
+            int answer = 0;
+
+            for (int j = 0; j < n; j++) {
+                int num = Integer.parseInt(st.nextToken());
+                int size = partSum.size();
+                for (int l = 0; l < size; l++) {
+                    int put = partSum.get(l) + num;
+                    if (put >= k) {
+                        if (put == k) {
+                            answer++;
+                        }
+                        continue;
+                    }
+                    partSum.add(put);
+                }
+
+                if (num >= k) {
+                    if (num == k) {
+                        answer++;
+                    }
+                    continue;
+                }
+                partSum.add(num);
+            }
+
+            bw.write("#" + i + " " + answer + "\n");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+}
+
+```
+
+```java
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class SW1220 {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+        int[][] board = new int[100][100];
+
+        for (int i = 1; i <= 10; i++) {
+            br.readLine();
+            int answer = 0;
+            for (int j = 0; j < 100; j++) {
+                st = new StringTokenizer(br.readLine());
+                for (int k = 0; k < 100; k++) {
+                    board[j][k] = Integer.parseInt(st.nextToken());
+                }
+            }
+
+            boolean flag;
+            for (int x = 0; x < 100; x++) {
+                flag = false;
+                for (int y = 0; y < 100; y++) {
+                    if (!flag && board[y][x] == 1) {
+                        flag = true;
+                    }
+
+                    if (flag && board[y][x] == 2) {
+                        answer += 1;
+                        flag = false;
+                    }
+                }
+            }
+
+            bw.write("#" + i + " " + answer + "\n");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+}
+```
+
+```java
+import java.io.*;
+
+public class SW1289 {
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int t = Integer.parseInt(br.readLine());
+
+        for (int i = 1; i <= t; i++) {
+            int answer = 0;
+            String[] split = br.readLine().split("");
+            int length = split.length;
+            int[] arr = new int[length];
+            for (int j = 0; j < length; j++) {
+                int original = Integer.parseInt(split[j]);
+                if (arr[j] != original) {
+                    answer++;
+                    for (int k = j; k < length; k++) {
+                        arr[k] = original;
+                    }
+                }
+            }
+
+            bw.write("#" + i + " " + answer + "\n");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+}
+```
