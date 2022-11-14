@@ -4612,3 +4612,150 @@ public class SW1289 {
     }
 }
 ```
+
+```java
+import java.io.*;
+import java.util.HashMap;
+import java.util.StringTokenizer;
+
+public class SW1493 {
+    static int[][] arr = new int[301][301];
+    static HashMap<Integer, Pos> pos = new HashMap<>();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+        int t = Integer.parseInt(br.readLine());
+
+        int cnt = 1;
+        int val = 1;
+        for (int i = 300; i >= 0; i--){
+            int row = i;
+            for (int j = 0; j <= 300; j++) {
+                if (j == cnt) {
+                    break;
+                }
+                arr[row][j] = val;
+                pos.put(val, new Pos(row, j));
+                val++;
+                row++;
+            }
+            cnt++;
+        }
+
+        for (int i = 1; i <= t; i++) {
+            st = new StringTokenizer(br.readLine());
+            int left = Integer.parseInt(st.nextToken());
+            int right = Integer.parseInt(st.nextToken());
+
+            Pos leftPos = toPos(left);
+            Pos rightPos = toPos(right);
+            int answer = toResult(300 - leftPos.y + 300 - rightPos.y, leftPos.x + rightPos.x);
+            bw.write("#" + i + " " + answer + "\n");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+
+    private static int toResult(int y, int x) {
+        return arr[300 - (y + 1)][x + 1];
+    }
+
+    private static Pos toPos(int res) {
+        return pos.get(res);
+    }
+}
+
+class Pos {
+    int y;
+    int x;
+
+    public Pos(int y, int x) {
+        this.y = y;
+        this.x = x;
+    }
+}
+```
+
+```java
+import java.io.*;
+
+public class SW1213 {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        for (int i = 1; i <= 10; i++) {
+            br.readLine();
+            String find = br.readLine();
+            String search = br.readLine();
+            int answer = 0;
+            int findLength = find.length();
+            for (int j = 0; j <= search.length() - findLength; j++) {
+                String substring = search.substring(j, j + findLength);
+                if (substring.equals(find)) {
+                    answer++;
+                }
+            }
+
+            bw.write("#" + i + " " + answer + "\n");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+
+}
+
+```
+
+```java
+import java.io.*;
+import java.util.*;
+
+public class 5948 {
+    static List<Integer> sums = new ArrayList<>();
+    static HashSet<Integer> check = new HashSet<>();
+    static int[] nums = new int[7];
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+        int t = Integer.parseInt(br.readLine());
+
+        for (int i = 1; i <= t; i++) {
+            st = new StringTokenizer(br.readLine());
+            for (int j = 0; j < 7; j++) {a
+                nums[j] = Integer.parseInt(st.nextToken());
+            }
+            dfs(0, 0, 0);
+            sums.sort(Comparator.reverseOrder());
+
+            bw.write("#" + i + " " + sums.get(4) + "\n");
+            sums.clear();
+            check.clear();
+        }
+
+        bw.flush();
+        bw.close();
+    }
+
+    static void dfs(int depth, int sum, int at) {
+        if (depth == 3) {
+            if (!check.contains(sum)) {
+                sums.add(sum);
+                check.add(sum);
+            }
+            return;
+        }
+
+        for (int i = at; i < 7; i++) {
+            dfs(depth + 1, sum + nums[i], i + 1);
+        }
+    }
+
+}
+
+```
