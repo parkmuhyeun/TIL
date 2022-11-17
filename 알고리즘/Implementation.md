@@ -4759,3 +4759,130 @@ public class 5948 {
 }
 
 ```
+
+```java
+import java.io.*;
+import java.util.*;
+
+public class 1234 {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+        
+        for (int i = 1; i <= 10; i++) {
+            st = new StringTokenizer(br.readLine());
+            int cnt = Integer.parseInt(st.nextToken());
+            String numbers = st.nextToken();
+            boolean flag = false;
+            StringBuilder sb = new StringBuilder(numbers);
+
+            while (true) {
+                int prev = sb.charAt(0) - '0';
+                int now;
+                for (int j = 1; j < sb.length(); j++) {
+                    now = sb.charAt(j) - '0';
+                    if (prev == now) {
+                        sb = new StringBuilder(sb.substring(0, j - 1) + sb.substring(j+1, sb.length()));
+                        break;
+                    }
+
+                    if (j == sb.length() - 1) {
+                        flag = true;
+                    }
+
+                    prev = now;
+                }
+
+                if (flag || sb.length() == 1) {
+                    break;
+                }
+            }
+
+            bw.write("#" + i + " " + sb + "\n");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+
+}
+
+```
+
+```java
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
+public class SW6808 {
+    static int win;
+    static int lose;
+    static boolean[] visited = new boolean[9];
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st;
+
+        int t = Integer.parseInt(br.readLine());
+        for (int i = 1; i <= t; i++) {
+            win = 0;
+            lose = 0;
+            st = new StringTokenizer(br.readLine());
+            List<Integer> gyu = new ArrayList<>();
+            List<Integer> in = new ArrayList<>();
+            for (int j = 0; j < 9; j++) {
+                gyu.add(Integer.parseInt(st.nextToken()));
+            }
+            
+            for (int j = 1; j <= 18; j++) {
+                if (!gyu.contains(j)) {
+                    in.add(j);
+                }
+            }
+            dfs(0, gyu, in, new int[9]);
+
+            bw.write("#" + i + " " + win + " " + lose + "\n");
+        }
+
+        bw.flush();
+        bw.close();
+    }
+
+    static void dfs(int depth, List<Integer> gyu, List<Integer> in, int[] now) {
+        if (depth == 9) {
+            int sum = 0;
+
+            for (int i = 0; i < 9; i++) {
+                int gyuCard = gyu.get(i);
+                int inCard = now[i];
+                if (gyuCard > inCard) {
+                    sum += gyuCard + inCard;
+                }else{
+                    sum -= gyuCard + inCard;
+                }
+            }
+
+
+            if (sum > 0) {
+                win++;
+            }
+
+            if (sum < 0) {
+                lose++;
+            }
+        }
+
+        for (int i = 0; i < 9; i++) {
+            if (!visited[i]) {
+                visited[i] = true;
+                now[depth] = in.get(i);
+                dfs(depth+1, gyu, in, now);
+                visited[i] = false;
+            }
+        }
+    }
+}
+```
