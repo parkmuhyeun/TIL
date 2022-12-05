@@ -4886,3 +4886,159 @@ public class SW6808 {
     }
 }
 ```
+
+```java
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class L118667 {
+
+    public static int solution(int[] queue1, int[] queue2) {
+        long q1Sum = Arrays.stream(queue1).sum();
+        long q2Sum = Arrays.stream(queue2).sum();
+        long sum = q1Sum + q2Sum;
+        if (sum % 2 != 0) {
+            return -1;
+        }
+        if (q1Sum == sum / 2) {
+            return 0;
+        }
+        Queue<Integer> q1 = new LinkedList<>();
+        initQueue(queue1, q1);
+        Queue<Integer> q2 = new LinkedList<>();
+        initQueue(queue2, q2);
+        int length = 2 * (queue1.length + queue2.length);
+
+        for (int count = 1; count <= length; count++) {
+            if (q1Sum < q2Sum) {
+                Integer poll = q2.poll();
+                q1.add(poll);
+                q2Sum -= poll;
+                q1Sum += poll;
+            }else{
+                Integer poll = q1.poll();
+                q2.add(poll);
+                q1Sum -= poll;
+                q2Sum += poll;
+            }
+
+            if (q1Sum == q2Sum) {
+                return count;
+            }
+        }
+
+        return -1;
+    }
+
+    private static void initQueue(int[] queue, Queue<Integer> q) {
+        for (int i = 0; i < queue.length; i++) {
+            q.add(queue[i]);
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(solution(new int[]{100000000}, new int[]{100000000}));
+    }
+}
+```
+
+```java
+import java.util.*;
+
+public class L118669 {
+    static HashSet<Integer> gate = new HashSet<>();
+    static HashSet<Integer> summit = new HashSet<>();
+    static int[] intensity;
+
+    public static int[] solution(int n, int[][] paths, int[] gates, int[] summits) {
+        List<List<Edge>> vertex = new ArrayList<>();
+        intensity = new int[n + 1];
+        Arrays.fill(intensity, Integer.MAX_VALUE);
+        Arrays.sort(summits);
+
+        for (int i = 0; i < n + 1; i++) {
+            vertex.add(new ArrayList<>());
+        }
+
+        for (int i = 0; i < gates.length; i++) {
+            gate.add(gates[i]);
+        }
+
+        for (int i = 0; i < summits.length; i++) {
+            summit.add(summits[i]);
+        }
+
+        for (int i = 0; i < paths.length; i++) {
+            int now = paths[i][0];
+            int next = paths[i][1];
+            int weight = paths[i][2];
+            if (gate.contains(now) || summit.contains(next)) {
+                vertex.get(now).add(new Edge(weight, next));
+            } else if (gate.contains(next) || summit.contains(now)) {
+                vertex.get(next).add(new Edge(weight, now));
+            }else{
+                vertex.get(now).add(new Edge(weight, next));
+                vertex.get(next).add(new Edge(weight, now));
+            }
+        }
+
+        return dijkstra(gates, vertex, summits);
+    }
+
+    static int[] dijkstra(int[] gates, List<List<Edge>> vertex, int[] summits) {
+        PriorityQueue<Edge> pq = new PriorityQueue<>(Comparator.comparingInt(Edge::getWeight));
+
+        for (int i = 0; i < gates.length; i++) {
+            int start = gates[i];
+            pq.add(new Edge(0, start));
+            intensity[start] = 0;
+        }
+
+        while (!pq.isEmpty()) {
+            Edge curEdge = pq.poll();
+
+            if (intensity[curEdge.pos] < curEdge.weight) {
+                continue;
+            }
+            for (int i = 0; i < vertex.get(curEdge.pos).size(); i++) {
+                Edge nextEdge = vertex.get(curEdge.pos).get(i);
+                int cost = Math.max(intensity[curEdge.pos], nextEdge.weight);
+                if (intensity[nextEdge.pos] > cost) {
+                    intensity[nextEdge.pos] = cost;
+                    pq.add(new Edge(cost, nextEdge.pos));
+                }
+            }
+        }
+
+        int index = -1;
+        int minIntensity = Integer.MAX_VALUE;
+        for (int summit : summits) {
+            if (intensity[summit] < minIntensity) {
+                minIntensity = intensity[summit];
+                index = summit;
+            }
+        }
+
+        return new int[]{index, minIntensity};
+    }
+
+    public static void main(String[] args) {
+        System.out.println(Arrays.toString(solution(5, new int[][]{{1, 3, 10}, {1, 4, 20}, {2, 3, 4}, {2, 4, 6}, {3, 5, 20}, {4, 5, 6}}, new int[]{1, 2}, new int[]{5})));
+    }
+}
+
+class Edge {
+    int weight;
+    int pos;
+
+    public Edge(int weight, int pos) {
+        this.weight = weight;
+        this.pos = pos;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+}
+```
