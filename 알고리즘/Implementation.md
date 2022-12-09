@@ -5042,3 +5042,224 @@ class Edge {
     }
 }
 ```
+
+```java
+import java.util.Arrays;
+
+public class Solution {
+    static int[] dy = {-1, 1, 0, 0};
+    static int[] dx = {0, 0, -1, 1};
+    static boolean flag = true;
+
+    public static int[] solution(String[][] places) {
+        int length = places.length;
+        int[] answer = new int[length];
+        String[][][] board = new String[length][5][5];
+
+        for (int i = 0; i < length; i++) {
+            for (int j = 0; j < 5; j++) {
+                String[] split = places[i][j].split("");
+                for (int k = 0; k < 5; k++) {
+                    board[i][j][k] = split[k];
+                }
+            }
+        }
+
+        boolean[][] visited = new boolean[5][5];
+        for (int i = 0; i < length; i++) {
+            for (int j = 0; j < 5; j++) {
+                for (int k = 0; k < 5; k++) {
+                    if (board[i][j][k].equals("P")) {
+                        visited[j][k] = true;
+                        dfs(0, new Pos(j, k), board[i], visited);
+                        visited[j][k] = false;
+                    }
+
+                    if (!flag) {
+                        break;
+                    }
+                }
+                if (!flag) {
+                    break;
+                }
+            }
+            answer[i] = flag ? 1 : 0;
+            flag = true;
+        }
+
+        return answer;
+    }
+
+    public static void dfs(int depth, Pos pos, String[][] board, boolean[][] visited) {
+        int y = pos.y;
+        int x = pos.x;
+
+        if (depth == 3 || board[y][x].equals("X") || !flag) {
+            return;
+        }
+
+        if (depth != 0 && board[y][x].equals("P")) {
+            flag = false;
+        }
+
+        for (int i = 0; i < 4; i++) {
+            int ny = y + dy[i];
+            int nx = x + dx[i];
+
+            if (ny < 0 || 4 < ny || nx < 0 || 4 < nx || visited[ny][nx]) {
+                continue;
+            }
+
+            visited[ny][nx] = true;
+            Pos nextPos = new Pos(ny, nx);
+            dfs(depth+1, nextPos, board, visited);
+            visited[ny][nx] = false;
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(Arrays.toString(solution(new String[][]{
+                {"POOOP", "OXXOX", "OPXPX", "OOXOX", "POXXP"},
+                {"POOPX", "OXPXP", "PXXXO", "OXXXO", "OOOPP"},
+                {"PXOPX", "OXOXP", "OXPOX", "OXXOP", "PXPOX"},
+                {"OOOXX", "XOOOX", "OOOXX", "OXOOX", "OOOOO"},
+                {"PXPXP", "XPXPX", "PXPXP", "XPXPX", "PXPXP"}
+        })));
+    }
+}
+
+class Pos {
+    int y;
+    int x;
+
+    public Pos(int y, int x) {
+        this.y = y;
+        this.x = x;
+    }
+}
+```
+
+```java
+import java.util.*;
+
+class Solution {
+    static List<Character[]> comb = new ArrayList<>();
+    
+    public static long solution(String expression) {
+        Stack<Long> nStack = new Stack<>();
+        Stack<Character> cStack = new Stack<>();
+        Set<Character> cSet = new HashSet<>();
+        long answer = 0;
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < expression.length(); i++) {
+            char c = expression.charAt(i);
+            if (Character.isDigit(c)) {
+                sb.append(c);
+            }else{
+                nStack.push(Long.parseLong(sb.toString()));
+                cStack.push(c);
+                cSet.add(c);
+                sb = new StringBuilder();
+            }
+        }
+        nStack.push(Long.parseLong(sb.toString()));
+
+        List<Character> ope = new ArrayList<>();
+        initOperand(cSet, ope);
+        dfs(0, new Character[ope.size()], ope);
+
+        for (int i = 0; i < comb.size(); i++) {
+            Character[] order = comb.get(i);
+            Stack<Long> copyNStack = new Stack<>();
+            Stack<Character> copyCStack = new Stack<>();
+
+            for (int j = nStack.size() - 1; j >= 0; j--) {
+                copyNStack.push(nStack.get(j));
+            }
+
+            for (int j = cStack.size() - 1; j >= 0; j--) {
+                copyCStack.push(cStack.get(j));
+            }
+
+            for (int j = 0; j < order.length; j++) {
+                calculate(order[j], copyNStack, copyCStack);
+            }
+
+            answer = Math.max(answer, Math.abs(copyNStack.pop()));
+        }
+
+        return answer;
+    }
+
+    private static void calculate(Character ope, Stack<Long> nStack, Stack<Character> cStack) {
+        Stack<Long> nStack2 = new Stack<>();
+        Stack<Character> cStack2 = new Stack<>();
+
+        while (!cStack.isEmpty()) {
+            nStack2.push(nStack.pop());
+            Character popOpe = cStack.pop();
+            if (popOpe == ope) {
+                long right = nStack.pop();
+                long left = nStack2.pop();
+                nStack.push(calculateByOperand(left, right, popOpe));
+            }else{
+                cStack2.push(popOpe);
+            }
+        }
+        nStack2.push(nStack.pop());
+
+        while (!nStack2.isEmpty()) {
+            nStack.push(nStack2.pop());
+        }
+
+        while (!cStack2.isEmpty()) {
+            cStack.push(cStack2.pop());
+        }
+    }
+
+    private static long calculateByOperand(long left, long right, Character popOpe) {
+        if (popOpe == '+') {
+            return left + right;
+        } else if (popOpe == '-') {
+            return left - right;
+        }
+        return left * right;
+    }
+
+
+    private static void initOperand(Set<Character> cSet, List<Character> ope) {
+        if (cSet.contains('+')) {
+            ope.add('+');
+        }
+        if (cSet.contains('-')) {
+            ope.add('-');
+        }
+        if (cSet.contains('*')) {
+            ope.add('*');
+        }
+    }
+
+    static boolean[] visited = new boolean[3];
+    static void dfs(int depth, Character[] now, List<Character> ope) {
+        if (depth == ope.size()) {
+            Character[] clone = now.clone();
+            comb.add(clone);
+            return;
+        }
+
+        for (int i = 0; i < ope.size(); i++) {
+            if (!visited[i]) {
+                visited[i] = true;
+                now[depth] = ope.get(i);
+                dfs(depth + 1, now, ope);
+                visited[i] = false;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(solution("100-200*300-500+20"));
+    }
+}
+```
