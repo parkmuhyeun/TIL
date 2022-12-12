@@ -5263,3 +5263,128 @@ class Solution {
     }
 }
 ```
+
+```java
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashSet;
+
+public class L64065 {
+
+    public static int[] solution(String s) {
+        String[] split = s.split("},\\{");
+        split[0] = split[0].replaceAll("\\{", "");
+        int length = split.length;
+        split[length-1] = split[length-1].replaceAll("}", "");
+
+        Arrays.sort(split, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                String[] split1 = o1.split(",");
+                String[] split2 = o2.split(",");
+                return split1.length - split2.length;
+            }
+        });
+
+        int[] answer = new int[length];
+        HashSet<String> exist = new HashSet<>();
+        int index = 0;
+
+        for (int i = 0; i < length; i++) {
+            String tuple = split[i];
+            String[] tupleSplit = tuple.split(",");
+            for (int j = 0; j < tupleSplit.length; j++) {
+                if (!exist.contains(tupleSplit[j])) {
+                    answer[index++] = Integer.parseInt(tupleSplit[j]);
+                    exist.add(tupleSplit[j]);
+                }
+            }
+        }
+
+        return answer;
+    }
+
+    public static void main(String[] args) {
+//        System.out.println(Arrays.toString(solution("{{2},{2,1},{2,1,3},{2,1,3,4}}")));
+        System.out.println(Arrays.toString(solution("{{1,2,3},{2,1},{1,2,4,3},{2}}")));
+    }
+}
+
+```
+
+```java
+import java.util.Arrays;
+
+class L77485 {
+
+    public static int[] solution(int rows, int columns, int[][] queries) {
+        int[][] board = new int[rows][columns];
+        int num = 1;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                board[i][j] = num++;
+            }
+        }
+
+        int length = queries.length;
+        int[] answer = new int[length];
+        for (int i = 0; i < length; i++) {
+            int[] query = queries[i];
+            answer[i] = rotate(new Pos(query[0] - 1, query[1] - 1), new Pos(query[2] - 1, query[3] - 1), board);
+        }
+
+        return answer;
+    }
+
+    static int rotate(Pos start, Pos end, int[][] board) {
+        int min = 987654321;
+
+//        x1+1, y1 ~ x2,y1 까지 왼쪽에서
+        int last = board[start.y][start.x];
+        for (int i = start.x + 1; i <= end.x; i++) {
+            min = Math.min(min, board[start.y][i]);
+            int temp = board[start.y][i];
+            board[start.y][i] = last;
+            last = temp;
+        }
+
+//        x2, y1+1 ~ x2, y2 까지 위에서
+        for (int i = start.y + 1; i <= end.y; i++) {
+            min = Math.min(min, board[i][end.x]);
+            int temp = board[i][end.x];
+            board[i][end.x] = last;
+            last = temp;
+        }
+//        x1, y2 ~ x2-1, y2 까지 오른쪽에서
+        for (int i = end.x-1; i >= start.x; i--) {
+            min = Math.min(min, board[end.y][i]);
+            int temp = board[end.y][i];
+            board[end.y][i] = last;
+            last = temp;
+        }
+//        x1, y1 ~ x1, y2-1 까지 아래에서
+        for (int i = end.y - 1; i >= start.y; i--) {
+            min = Math.min(min, board[i][start.x]);
+            int temp = board[i][start.x];
+            board[i][start.x] = last;
+            last = temp;
+        }
+        return min;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(Arrays.toString(solution(6, 6, new int[][]{{2, 2, 5, 4}, {3, 3, 6, 6}, {5, 1, 6, 3}})));
+//        System.out.println(Arrays.toString(solution(3, 3, new int[][]{{1,1,2,2}, {1,2,2,3}, {2,1,3,2},{2,2,3,3}})));
+    }
+}
+
+class Pos {
+    int y;
+    int x;
+
+    public Pos(int y, int x) {
+        this.y = y;
+        this.x = x;
+    }
+}
+```
